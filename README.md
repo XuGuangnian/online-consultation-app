@@ -1,9 +1,12 @@
 <p align="left">
-  <a href="https://react.docschina.org">
-    <img src="https://img.shields.io/badge/react-18.0.0-brightgreen.svg" alt="react">
+  <a href="https://cn.vuejs.org/">
+    <img src="https://img.shields.io/badge/vue-3.2.0-brightgreen.svg" alt="vue3">
   </a>
-  <a href="https://react.docschina.org/docs/hooks-intro.html">
-    <img src="https://img.shields.io/static/v1?label=react-hook&message=base&color=blueviolet" alt="react-hook">
+    <a href="https://www.tslang.cn/docs/handbook/basic-types.html">
+    <img src="https://img.shields.io/static/v1?label=typescript&message=base&color=blue" alt="typescript">
+  </a>
+  <a href="https://cn.vitejs.dev/">
+    <img src="https://img.shields.io/static/v1?label=vite&message=build&color=blueviolet" alt="vite">
   </a>
 </p>
 
@@ -26,7 +29,7 @@
 1. 克隆整个预习资料和笔记代码到本地命令
 
    ```bash
-   git clone https://gitee.com/heima-class/react-foundation.git
+   git clone https://gitee.com/mengi/online-consultation-app.git
    ```
 
 2. 以后有更新, 保证终端在这个文件夹下, 执行

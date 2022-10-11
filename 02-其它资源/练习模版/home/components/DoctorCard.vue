@@ -14,7 +14,7 @@
 <style scoped lang="scss">
 .doctor-card {
   width: 135px;
-  height: 190px;
+  // height: 190px;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 0px 11px 0px rgba(229, 229, 229, 0.2);

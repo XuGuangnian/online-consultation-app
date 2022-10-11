@@ -18,7 +18,8 @@ import DoctorCard from './DoctorCard.vue'
 <style lang="scss" scoped>
 .follow-doctor {
   background-color: var(--cp-bg);
-  height: 250px;
+  // height: 250px;
+  padding-bottom: 20px;
   .head {
     display: flex;
     justify-content: space-between;

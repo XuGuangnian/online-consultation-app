@@ -3,6 +3,11 @@
 <template>
   <div class="patient-page">
     <cp-nav-bar title="家庭档案" />
+    <!-- 头部选择提示 -->
+    <div class="patient-change" v-if="false">
+      <h3>请选择患者信息</h3>
+      <p>以便医生给出更准确的治疗，信息仅医生可见</p>
+    </div>
     <div class="patient-list">
       <div class="patient-item">
         <div class="info">
@@ -29,12 +34,36 @@
       </div>
       <div class="patient-tip">最多可添加 6 人</div>
     </div>
+    <!-- 患者选择下一步 -->
+    <div class="patient-next" v-if="false">
+      <van-button type="primary"  round block>下一步</van-button>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .patient-page {
   padding: 46px 0 80px;
+}
+.patient-change {
+  padding: 15px;
+  > h3 {
+    font-weight: normal;
+    margin-bottom: 5px;
+  }
+  > p {
+    color: var(--cp-text3);
+  }
+}
+.patient-next {
+  padding: 15px;
+  background-color: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  box-sizing: border-box;
 }
 .patient-list {
   padding: 15px;

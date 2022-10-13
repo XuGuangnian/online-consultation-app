@@ -7,10 +7,24 @@ import RoomMessage from './components/RoomMessage.vue'
 <template>
   <div class="room-page">
     <cp-nav-bar title="医生问诊室" />
-    <!-- 1. 顶部订单状态 -->
+    <!-- 1. 问诊状态-->
     <room-status />
-    <RoomMessage />
-    <!-- 2. 底部订单操作栏 -->
+    <!-- 2. 问诊聊天列表消息 -->
+    <room-message />
+    <!-- 3. 底部操作栏：发消息 -->
     <room-action />
   </div>
 </template>
+<style lang="scss" scoped>
+.room-page {
+  padding-top: 90px;
+  padding-bottom: 60px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--cp-bg);
+  .van-pull-refresh {
+    width: 100%;
+    min-height: calc(100vh - 150px);
+  }
+}
+</style>

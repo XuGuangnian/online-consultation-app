@@ -3,11 +3,14 @@
 <template>
   <div class="room-status">
     <!-- 问诊状态 -->
+    <!-- 1. 未接诊 -->
     <div class="wait">已通知医生尽快接诊，24小时内医生未回复将自动退款</div>
+    <!-- 2. 接诊：咨询中 -->
     <!-- <div class="chat">
       <span>咨询中</span>
       <span>剩余时间：23:10:34</span>
     </div> -->
+    <!-- 3. 问诊结束 -->
     <!-- <div class="end"><van-icon name="passed" /> 已结束</div> -->
   </div>
 </template>

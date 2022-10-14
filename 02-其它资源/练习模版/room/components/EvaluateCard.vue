@@ -1,7 +1,21 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div class="evalutate-card">
+  <!-- 1. 已经评价过 -->
+  <div class="evalutate-card" v-if="true">
+    <p class="title">医生服务评价</p>
+    <p class="desc">我们会更加努力提升服务质量</p>
+    <van-rate
+      :modelValue="3"
+      size="7vw"
+      gutter="3vw"
+      color="#FADB14"
+      void-icon="star"
+      void-color="rgba(0,0,0,0.04)"
+    />
+  </div>
+  <!-- 2. 还没有评价 -->
+  <div class="evalutate-card" v-else>
     <p class="title">感谢您的评价</p>
     <p class="desc">本次在线问诊服务您还满意吗？</p>
     <van-rate
@@ -20,7 +34,9 @@
     ></van-field>
     <div class="footer">
       <van-checkbox>匿名评价</van-checkbox>
-      <van-button type="primary" size="small" round> 提交评价 </van-button>
+      <van-button type="primary" size="small" round>
+        提交评价
+      </van-button>
     </div>
   </div>
 </template>

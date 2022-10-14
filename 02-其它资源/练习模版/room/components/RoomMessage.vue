@@ -61,6 +61,7 @@ import EvaluateCard from './EvaluateCard.vue'
     </div>
     <!-- 7. 接收图片 -->
     <div class="msg msg-from" v-if="false">
+      <van-image src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" />
       <div class="content">
         <div class="time">20:12</div>
         <van-image
@@ -68,7 +69,6 @@ import EvaluateCard from './EvaluateCard.vue'
           src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg"
         />
       </div>
-      <van-image src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" />
     </div>
     <!-- 8. 处方消息 -->
     <div class="msg msg-recipe" v-if="false">

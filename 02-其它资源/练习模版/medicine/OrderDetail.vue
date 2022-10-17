@@ -12,6 +12,7 @@
         <van-icon name="arrow" />
       </div>
     </div>
+    <!-- 药品列表 -->
     <div class="order-medical">
       <div class="head">
         <h3>优医药房</h3>
@@ -45,30 +46,9 @@
         <van-cell title="支付方式" value="支付宝支付" />
       </van-cell-group>
     </div>
-    <!-- 已取消 -->
-    <!-- <van-action-bar>
-      <van-action-bar-icon icon="delete-o" text="删除" />
-      <van-action-bar-button type="primary" text="沟通记录" />
-    </van-action-bar> -->
-    <!-- 待收货 -->
     <van-action-bar>
       <van-action-bar-button type="primary" text="确认收货" />
     </van-action-bar>
-    <!-- 待发货 -->
-    <!-- <van-action-bar>
-      <van-action-bar-button type="primary" text="提醒发货" />
-    </van-action-bar> -->
-    <!-- 待支付 -->
-    <!-- <van-action-bar>
-      <p class="price">需要支付：<span>￥60</span></p>
-      <van-action-bar-button color="#bbb" text="取消问诊" />
-      <van-action-bar-button type="primary" text="继续支付" />
-    </van-action-bar> -->
-    <!-- 已完成 -->
-    <!-- <van-action-bar>
-      <van-action-bar-icon icon="delete-o" text="删除" />
-      <van-action-bar-button type="primary" text="再次购买" />
-    </van-action-bar> -->
   </div>
 </template>
 

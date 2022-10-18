@@ -1388,7 +1388,7 @@ onMounted(async ()=>{
 </template>
 ```
 
-## 导航切换{#case-nav-toogel}
+## 导航切换(课堂练习){#case-nav-toogel}
 
 > 完成：频道导航切换效果
 
@@ -1406,7 +1406,7 @@ import ChannelNav from './components/ChannelNav.vue';
 import ArticleList from './components/ArticleList.vue'
 import { ref } from 'vue';
 
-// 数据App维护，因为切换频道ID的时候 列表需要根据频道ID更新
+// 存储选中频道ID，因为切换频道ID的时候 列表需要根据频道ID更新
 const channelId = ref(0)
 </script>
 

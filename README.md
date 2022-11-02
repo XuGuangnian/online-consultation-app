@@ -29,7 +29,7 @@
 1. 克隆整个预习资料和笔记代码到本地命令
 
    ```bash
-   git clone https://gitee.com/mengi/online-consultation-app.git
+   git clone https://gitee.com/heima-class/online-consultation-app.git
    ```
 
 2. 以后有更新, 保证终端在这个文件夹下, 执行

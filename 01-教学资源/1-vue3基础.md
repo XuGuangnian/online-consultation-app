@@ -8,7 +8,7 @@
 
 2020 年 9 月 18 日发布，许多开发者还在观望。
 
-2022 年 2 月 7 日称为默认版本，意味着 vue3 是现在也是未来 趋势。
+2022 年 2 月 7 日称为默认版本，意味着 vue3 是现在也是未来趋势。
 
 | 库名称                                                     | 简介                                                         |
 | :--------------------------------------------------------- | :----------------------------------------------------------- |
@@ -112,7 +112,7 @@ pnpm create vite
 
 6. 进入项目目录，安装依赖，启动项目即可。
 
-## 代码分析{#code-analysis}
+## 安装插件和代码分析{#code-analysis}
 
 > 对 vite 初始化的代码进行分析
 
@@ -313,7 +313,7 @@ export default {
 
 使用步骤：
 
-- 从 `vue` 中导出 `reactive` 函数
+- 从 `vue` 中导入 `reactive` 函数
 - 在 `setup` 函数中，使用 `reactive` 函数，传入一个普通对象，返回一个响应式数据对象
 - 最后 `setup` 函数返回一个对象，包含该响应式对象即可，模板中可使用
 
@@ -354,7 +354,7 @@ export default {
 
 使用步骤：
 
-- 从 `vue` 中导出 `ref` 函数
+- 从 `vue` 中导入 `ref` 函数
 - 在 `setup` 函数中，使用 `ref` 函数，传入普通数据（简单or复杂），返回一个响应式数据
 - 最后 `setup` 函数返回一个对象，包含该响应式数据即可
 - 注意：使用 `ref` 创建的数据，`js` 中需要 `.value` ，`template` 中可省略
@@ -504,7 +504,7 @@ export default {
 
 大致步骤：
 
-- 从 `vue` 中导出 `computed` 函数
+- 从 `vue` 中导入 `computed` 函数
 - 在 `setup` 函数中，使用 `computed` 函数，传入一个函数，函数返回计算好的数据
 - 最后 `setup` 函数返回一个对象，包含该计算属性数据即可，然后模板内使用
 
@@ -588,10 +588,7 @@ export default {
   const count = ref(0);
   const user = reactive({
     name: "tom",
-    info: {
-      gender: "男",
-      age: 18,
-    },
+    age:1
   });
   
   // 2. 监听多个响应式数据
@@ -607,98 +604,37 @@ export default {
   
   // 4s改变数据
   setTimeout(() => {
-    user.info.age++;
+    user.age++;
   }, 4000);
 </script>
 
 <template>
   <p>计数器：{{ count }}</p>
   <p>
-    姓名：{{ user.name }} 性别：{{ user.info.gender }} 年龄：{{ user.info.age }}
+    姓名：{{ user.name }} 年龄：{{ user.age }}
   </p>
 </template>
 ```
 
-- 使用 `watch` 监听响应式对象数据中的一个属性(简单)
+- 使用 `watch` 监听响应式对象数据
 
 ```vue
 <script setup>
-  import { reactive, watch } from "vue";
-  const user = reactive({
-    name: "tom",
-    info: {
-      gender: "男",
-      age: 18,
-    },
-  });
-  // 3. 监听响应式对象数据的一个数据，简单类型
-  // watch(()=>数据, 改变后回调函数)
-  watch(()=>user.name, () => {
-    console.log("数据改变了");
-  });
+  import { ref, watch } from "vue";
+  const obj = ref({a:1})
+  // 1. 监听一个响应式数据
+  watch(obj, () => {
+    console.log("obj-a改变了");
+  },{deep:true, immediate:true});
   // 2s改变数据
   setTimeout(() => {
-    user.name = 'jack';
-  }, 2000);
-  // 4s改变数据
-  setTimeout(() => {
-    user.info.age = 60;
-  }, 4000);
-</script>
-
-<template>
-  <p>
-    姓名：{{ user.name }} 性别：{{ user.info.gender }} 年龄：{{ user.info.age }}
-  </p>
-</template>
-```
-
-- 使用 `watch` 监听响应式对象数据中的一个属性(复杂)，配置深度监听
-
-```vue
-<script setup>
-  import { reactive, watch } from "vue";
-  const user = reactive({
-    name: "tom",
-    info: {
-      gender: "男",
-      age: 18,
-    },
-  });
-  // 4. 监听响应式对象数据的一个数据，复杂类型
-  // watch(()=>数据, 改变后回调函数, {deep: true})
-  watch(
-    () => user.info,
-    () => {
-      console.log("数据改变了");
-    },
-    {
-      // 开启深度监听
-      deep: true,
-    }
-  );
-  // 2s改变数据
-  setTimeout(() => {
-    user.info.age = 60;
+    obj.value.a++
   }, 2000);
 </script>
 
 <template>
-  <p>
-    姓名：{{ user.name }} 性别：{{ user.info.gender }} 年龄：{{ user.info.age }}
-  </p>
+  <p>计数器：{{ count }}</p>
 </template>
-```
-
-- 使用 `watch` 监听，配置默认执行
-
-```diff
-      {
-        // 开启深度监听
-        deep: true,
-+        // 默认执行一次
-+        immediate: true
-      }
 ```
 
 
@@ -714,8 +650,6 @@ export default {
 
 
 ## 生命周期函数{#cycle}
-
-
 
 > 掌握：vue3的常用生命周期函数
 

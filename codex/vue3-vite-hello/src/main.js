@@ -13,10 +13,12 @@ import './style.css'
 // import App from './view/data数据处理/watch函数.vue'
 // import App from './view/生命周期/index.vue'
 // import App from './view/模版ref/index.vue'
-import App from './view/组件通信/index.vue'
+// import App from './view/组件通信/index.vue'
+import App from './view/案例/index.vue'
 
 
-
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 
 /**
@@ -26,5 +28,6 @@ import App from './view/组件通信/index.vue'
  */
 // createApp(App).mount('#app')
 const app = createApp(App)
+app.use(ElementPlus)
 app.mount('#app')
 

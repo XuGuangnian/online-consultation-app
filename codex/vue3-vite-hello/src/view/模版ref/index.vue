@@ -1,14 +1,15 @@
 <template>
   <div>
     <h1 ref="h1">模版ref使用</h1>
+    <hr>
+    <el-form ref="son" />
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
-
-
-
+// 导入子组件 => 导入即注册
+import ElForm from './son.vue'
 /**
  * 场景一：获取模版中某个元素的dom对象
  * 步骤：
@@ -21,6 +22,20 @@ const h1 = ref(null)
 onMounted(()=>{
   console.log('组件挂在后：',h1.value)
   h1.value.style.border = '10px solid red'
+})
+
+/**
+ * 场景二：获取模版中某个组件实例，调用实例方法
+ * 场景说明：element的form组件，怎么做兜底校验？
+ * vue2用法：
+ * 1. <el-form ref="form"></el-form>
+ * 2. this.$refs.form.validate()
+ */
+const son = ref(null)
+onMounted(()=>{
+  console.log('子组件实例：',son.value)
+  son.value.validate()
+  console.log(son.value.zd)
 })
 
 </script>

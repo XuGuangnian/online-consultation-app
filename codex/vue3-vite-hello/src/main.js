@@ -8,7 +8,10 @@ import './style.css'
 // import App from './view/vue2vs3/index.vue'
 // import App from './view/setup入口函数/index.vue'
 // import App from './view/data变量定义/reactive函数.vue'
-import App from './view/data变量定义/ref函数.vue'
+// import App from './view/data变量定义/ref函数.vue'
+// import App from './view/data数据处理/computed函数.vue'
+import App from './view/data数据处理/watch函数.vue'
+
 
 
 /**

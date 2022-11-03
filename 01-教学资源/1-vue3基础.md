@@ -487,7 +487,7 @@ export default {
 
 > 掌握：使用 computed 函数定义计算属性
 
-大致步骤：
+步骤：
 
 - 从 `vue` 中导入 `computed` 函数
 - 在 `setup` 函数中，使用 `computed` 函数，传入一个函数，函数返回计算好的数据

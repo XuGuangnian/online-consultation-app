@@ -12,7 +12,8 @@ import { ref } from 'vue';
     console.log(123)
   }
   const msg = ref('abc')
-  // 2. 提供方法（暴漏）=> 全局宏方法
+  // 2. 提供方法（暴漏）=> 
+  // 说明： defineExpose 是个全局宏方法
   defineExpose({
     validate,
     zd:msg

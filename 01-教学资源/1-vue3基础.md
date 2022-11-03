@@ -62,22 +62,7 @@ vite（法语意为 "快速的"，发音 `/vit/`，发音同 "veet") 是一种�
 - 基于 `webpack` 构建项目，基于 `vite` 构建项目，谁更快体验更好？vite
 - 基于 `webpack` 的 `vue-cli` 可以创建 vue 项目吗？可以，慢一点而已
 
-> vite优缺点说明
 
-* vite优点：
-
-  1. vite启动开发服务器比webpack快
-     由于vite启动的时候不需要打包，也就无需分析模块依赖、编译，所以启动速度非常快。当浏览器请求需要的模块时，再对模块进行编译，这种按需动态编译的模式，极大缩短了编译时间，当项目越大，文件越多时，vite的开发时优势越明显
-
-  2. vite热更新比webpack快
-     vite在HRM方面，当某个模块内容改变时，让浏览器去重新请求该模块即可，而不是像webpack重新将该模块的所有依赖重新编译；
-  3. vite使用esbuild(Go 编写) 预构建依赖，而webpack基于nodejs，比node快 10-100 倍
-
-* vite缺点：
-  1. 生态不及webpack，加载器、插件不够丰富
-  2. 打包到生产环境时，vite使用传统的rollup进行打包，生产环境esbuild构建对于css和代码分割不够友好。所以，vite的优势是体现在开发阶段
-  3. 没被大规模重度使用，会隐藏一些问题
-  4. 项目的开发浏览器要支持esmodule，而且不能识别commonjs语法
 
 ## vite 创建项目{#vite-create-project}
 

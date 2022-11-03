@@ -11,7 +11,9 @@ import './style.css'
 // import App from './view/data变量定义/ref函数.vue'
 // import App from './view/data数据处理/computed函数.vue'
 // import App from './view/data数据处理/watch函数.vue'
-import App from './view/生命周期/index.vue'
+// import App from './view/生命周期/index.vue'
+import App from './view/模版ref/index.vue'
+
 
 
 

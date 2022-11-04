@@ -149,7 +149,7 @@ const { count, doubleCount } = storeToRefs(store)
 - 当你想从 store 中解构对应的状态使用，需要使用 `storeToRefs`
 
 
-## 使用 Pinia 改造头条{#case}
+## 使用 Pinia 改造头条(作业){#case}
 
 > 掌握：使用 Pinia 维护头条需要共享的数据 当前频道ID
 

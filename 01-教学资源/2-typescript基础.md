@@ -421,7 +421,7 @@ const axios = (config: Config) => {};
 小结：
 
 - 对象的方法使用箭头函数类型怎么写？`{sayHi:()=>void}`
-- 对象的可选参数怎么设置？`{name?: string}`
+- 对象的可选属性怎么设置？`{name?: string}`
 - 对象类型会使用 `{}` 如何提供可阅读性？`类型别名`
 
 :::warning 练习
@@ -566,7 +566,7 @@ interface Person {
 interface Person {
   age: number;
 }
-// 类型会合并，注意：属性类型和方法类型不能重复定义
+// 类型会合并
 const p: Person = {
   name: 'jack',
   age: 18,
@@ -578,37 +578,6 @@ const p: Person = {
 - 它们都可以定义对象类型
 - 它们都可以复用，interface 使用 `extends` , type 使用 `&`
 - type 不能重复定义，interface 可以重复会合并
-
-## 类型推断{#type-infer}
-
-> 知道：TS 的的类型推断机制作用
-
-- 在 TS 中存在类型推断机制，在没有指定类型的情况下，TS 也会给变量提供类型。
-
-发生类型推断的几个场景场景：
-
-- 声明变量并初始化时
-
-```typescript
-// 变量 age 的类型被自动推断为：number
-let age = 18;
-```
-
-- 决定函数返回值时
-
-```typescript
-// 函数返回值的类型被自动推断为：number
-const add = (num1: number, num2: number) => {
-  return num1 + num2;
-};
-```
-
-:::tip 建议：
-
-- 将来在开发项目的时候，能省略类型注解的地方就省略，`充分利用TS推断` 的能力，提高开发效率。
-- 在你还没有熟悉 ts 类型的时候建议都加上类型，比如今天第一次写 ts 最好都写上
-- 如果你不知道类型怎么写，可以把鼠标放至变量上，可以通过 `Vscode` 提示看到类型
-  :::
 
 ## 字面量类型{#literal}
 
@@ -675,35 +644,36 @@ changeDirection('up')
 - 解释：参数 `direction` 的值只能是 `up/down/left/right` 中的任意一个
 - 优势：相比于 `string` 类型，使用字面量类型更加精确、严谨
 
+## 类型推断{#type-infer}
 
+> 知道：TS 的的类型推断机制作用
 
-## any 类型{#any}
+- 在 TS 中存在类型推断机制，在没有指定类型的情况下，TS 也会给变量提供类型。
 
-> 知道：any 类型的作用是逃避 TS 的类型检查
+发生类型推断的几个场景场景：
 
-- 显式any情况：当变量的类型指定为 any 的时候，不会有任何错误，也不会有代码提示，TS会忽略类型检查
+- 声明变量并初始化时
 
-```ts
-let obj: any = { age: 18 }
-obj.bar = 100
-obj()
-const n: number = obj
+```typescript
+// 变量 age 的类型被自动推断为：number
+let age = 18;
 ```
 
-以上的代码虽然没有报错提示，但是将来是可能出现错误的。
+- 决定函数返回值时
 
-- 隐式any的情况：声明变量不给类型或初始值，函数参数不给类型或初始值
-
-```ts
-// 声明变量不给类型或初始值
-let a;
-// 函数参数不给类型或初始值
-const fn = (n) => {}
+```typescript
+// 函数返回值的类型被自动推断为：number
+const add = (num1: number, num2: number) => {
+  return num1 + num2;
+};
 ```
 
-小结：
+:::tip 建议：
 
-- `any` 的使用越多，程序可能出现的漏洞越多，因此**不推荐**使用 `any` 类型，尽量避免使用。
+- 将来在开发项目的时候，能省略类型注解的地方就省略，`充分利用TS推断` 的能力，提高开发效率。
+- 在你还没有熟悉 ts 类型的时候建议都加上类型，比如今天第一次写 ts 最好都写上
+- 如果你不知道类型怎么写，可以把鼠标放至变量上，可以通过 `Vscode` 提示看到类型
+  :::
 
 
 
@@ -736,6 +706,8 @@ const img = document.getElementById('img') as HTMLImageElement
 ```
 
 ## 泛型{#generic}
+
+> 作用：泛型（Generics）可以在保证类型安全前提下，给别名、接口、函数等添加**类型参数**，从而实现复用
 
 :::tip
 
@@ -842,7 +814,33 @@ let id2 = getId('2')
 let id2 = getId({name:'jack'})
 ```
 
+## any 类型{#any}
 
+> 知道：any 类型的作用是逃避 TS 的类型检查
+
+- 显式any情况：当变量的类型指定为 any 的时候，不会有任何错误，也不会有代码提示，TS会忽略类型检查
+
+```ts
+let obj: any = { age: 18 }
+obj.bar = 100
+obj()
+const n: number = obj
+```
+
+以上的代码虽然没有报错提示，但是将来是可能出现错误的。
+
+- 隐式any的情况：声明变量不给类型或初始值，函数参数不给类型或初始值
+
+```ts
+// 声明变量不给类型或初始值
+let a;
+// 函数参数不给类型或初始值
+const fn = (n) => {}
+```
+
+小结：
+
+- `any` 的使用越多，程序可能出现的漏洞越多，因此**不推荐**使用 `any` 类型，尽量避免使用。
 
 
 
@@ -852,7 +850,7 @@ let id2 = getId({name:'jack'})
 
 # TypeScript 应用
 
-## 创建 vue-ts 项目{#vue-ts}
+## 创建 vue-ts 项目(预习){#vue-ts}
 
 > 创建一个基于 ts 的 vue 项目，来学习 ts 语法
 

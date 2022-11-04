@@ -42,7 +42,7 @@ let age: number = 18
 
 发现：
 
-- 在程序运行的时候 `Uncaught TypeError` 这个错误挺常见的
+- 在程序运行的时候 <span style="color:red">Uncaught TypeError...</span> 这个错误挺常见的
 - 这些错误导致在开发项目的时候，需要花挺多的时间去定位和处理 BUG
 
 ```js

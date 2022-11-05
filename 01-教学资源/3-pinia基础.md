@@ -21,8 +21,8 @@ Why should I use Pinia?
 
 ![image-20220727155944251](assets/image-20220727155944251.png)
 
-- 可以创建多个全局仓库，不用像 Vuex 一个仓库嵌套模块，结构复杂。
-- 管理数据简单，提供数据和修改数据的逻辑即可，不像Vuex需要记忆太多的API。
+- 可以创建**多个全局仓库**，不用像 Vuex 一个仓库嵌套模块，结构复杂。
+- 管理数据简单，**提供数据和修改数据的逻辑即可**，不像Vuex需要记忆太多的API。
 
 
 
@@ -47,28 +47,38 @@ npm i pinia
 
 - 导入，实例化，当做插件使用，和其他插件使用套路相同
 
-```typescript{2,5,8}
+`main.ts`
+
+```diff
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
++ import { createPinia } from 'pinia'
 import App from './App.vue'
 
-const pinia = createPinia()
++ const pinia = createPinia()
 const app = createApp(App)
 
-app.use(pinia)
++ app.use(pinia)
 app.mount('#app')
 ```
 
-- 创建仓库&使用仓库
+* 创建仓库&使用仓库
+
+`stores/a.js`
 
 ```js
+// 创建一个store
 import { defineStore } from "pinia"
-import { computed, ref } from "vue"
+import { ref } from "vue"
 
 export const useCounterStore = defineStore("counter", () => {
+  // 1. 使用ref或reactive函数定义变量和修改变量方法
+  //...
+  
+  // 2. 返回定义的变量和修改变量方法
   return {}
 })
 ```
+`views/index.vue`
 
 ```vue
 <script setup lang="ts">
@@ -164,17 +174,17 @@ const { count, doubleCount } = storeToRefs(store)
 
 - 安装 `pinia` 和使用 `pinia` 插件
 
-```ts{4,7,10}
+```diff
 import { createApp } from 'vue';
 import './styles/index.css'
 // 1. 导入创建pinia的函数
-import { createPinia } from 'pinia'
++ import { createPinia } from 'pinia'
 import App from './App.vue';
 // 2. 创建pinia插件实例
-const pinia = createPinia()
++ const pinia = createPinia()
 const app = createApp(App)
 // 3. 使用插件
-app.use(pinia)
++ app.use(pinia)
 
 app.mount('#app');
 ```

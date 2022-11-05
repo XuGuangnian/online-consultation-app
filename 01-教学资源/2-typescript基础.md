@@ -977,7 +977,7 @@ const money = ref<number>(10)
 const money = ref(10)
 ```
 
-2. 如果是复杂类型，推荐指定泛型
+2. 如果是复杂类型，推荐显示指定泛型
 
 ```ts
 type Todo = {
@@ -1020,10 +1020,6 @@ interface Book {
 
 const book: Book = reactive({ title: 'Vue 3 指引' })
 ```
-
-- 不推荐使用 `reactive()` 的泛型参数，因为底层和ref实现不一样。
-
-
 
 ## computed与Typescript{#ts-computed}
 
@@ -1089,7 +1085,7 @@ function handleChange(event: Event) {
 
 > 掌握：在ts中通过ref获取dom的操作
 
-模板 `ref` 需要通过一个显式指定的泛型参数，（）不设置默认值
+模板 `ref` 需要通过一个显式指定的泛型参数
 
 ```vue
 <script setup lang="ts">
@@ -1398,18 +1394,18 @@ onMounted(async ()=>{
 
 `App.vue`
 
-```vue{4,7,11}
+```diff
 <script setup lang="ts">
 import ChannelNav from './components/ChannelNav.vue';
 import ArticleList from './components/ArticleList.vue'
 import { ref } from 'vue';
 
-// 存储选中频道ID，因为切换频道ID的时候 列表需要根据频道ID更新
-const channelId = ref(0)
+-// 存储选中频道ID，因为切换频道ID的时候 列表需要根据频道ID更新
++ const channelId = ref(0)
 </script>
 
 <template>
-  <ChannelNav :channelId="channelId" />
++  <ChannelNav :channelId="channelId" />
   <ArticleList />
 </template>
 ```

@@ -1,7 +1,14 @@
 <template>
   <div class="app">
     <el-table :data="list" border>
+      <!-- el-table-column 指定某一列显示什么数据 -->
       <el-table-column label="ID" prop="goods_id"></el-table-column>
+      <el-table-column label="图片" prop="goods_img">
+        <!-- 作用域插槽  -->
+        <template #default="{row}">
+          <img class="img" :src="row.goods_img" />
+        </template>
+      </el-table-column>
       <el-table-column label="商品" prop="goods_name" width="150"></el-table-column>
       <el-table-column label="价格" prop="goods_price"></el-table-column>
       <el-table-column label="操作" width="100">
@@ -21,6 +28,7 @@ const list = ref([])
 const geList = async () => {
   const res = await axios.get('https://applet-base-api-t.itheima.net/api/cart')
   list.value = res.data.list
+  console.log('列表数据：',res.data.list)
 }
 
 onMounted(() => {
@@ -37,5 +45,10 @@ const delRow = async (id) => {
 .app {
   width: 980px;
   margin: 100px auto 0;
+}
+.img {
+  display: inline-block;
+  width: 200px;
+  height: 200px;
 }
 </style>

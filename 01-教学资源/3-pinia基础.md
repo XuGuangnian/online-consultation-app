@@ -7,7 +7,7 @@
 
 <img src="assets/logo.svg" alt="https://pinia.vuejs.org/logo.svg" style="zoom:50%;" />
 
-What is Pinia ?
+[What is Pinia](https://pinia.vuejs.org/zh/index.html) ?
 
 - `Pinia` 是一个状态管理工具，它和 `Vuex` 一样为 `Vue` 应用程序提供共享状态管理能力。
 - 语法和 `Vue3` 一样，它实现状态管理有两种语法：`选项式API` 与  `组合式API`，我们学习组合式API语法。

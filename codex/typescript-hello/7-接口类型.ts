@@ -28,7 +28,7 @@ interface Istu {
   game?: () => void
 }
 
-// 2. 集成另外一个接口类型定义
+// 2. 继承另外一个接口类型定义
 interface Iplugs {
   isSingle: boolean
   sarly: number

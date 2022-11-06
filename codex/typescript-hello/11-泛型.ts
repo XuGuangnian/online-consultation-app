@@ -28,7 +28,7 @@ let data2: Data1<string, number> = {
   }
 }
 
-// 场景二：泛型接口 =》interface 接口名<Type1, Type2...> {}
+// 场景二：泛型接口 =》语法：interface 接口名<Type1, Type2...> {}
 interface Data2<Type1> {
   meta: string
   data: Type1
@@ -38,3 +38,20 @@ let data3: Data2<number> = {
   meta: '',
   data: 1
 }
+
+// 场景三：泛型函数 =》语法：const fn = <Type1, Type2...>(a:Type1, b:Type2):Type1=>{}
+const fn1 = <First, Second>(a: First, b: Second) => {
+
+}
+// 1. 完整写法
+fn1<number, number>(1, 1)
+fn1<string, boolean>('', true)
+// 2. ts有类型推断机制，可以省略不写
+fn1(1, true)
+
+
+
+
+export { }
+
+

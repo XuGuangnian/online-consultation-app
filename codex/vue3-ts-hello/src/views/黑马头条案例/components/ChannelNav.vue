@@ -14,6 +14,15 @@ const getChannels = async () => {
   list.value = res.data.data.channels
 }
 
+// 接收选中频道ID
+defineProps<{
+  seledId: number
+}>()
+// 子传父修改选中频道ID
+const emit = defineEmits<{
+  (e: 'change-seled', data: number)
+}>()
+
 onMounted(() => {
   getChannels()
 })
@@ -24,7 +33,8 @@ onMounted(() => {
     <nav class="list">
       <a
         class="item"
-        :class="{ active: i === 0 }"
+        :class="{ active: item.id === seledId }"
+        @click="emit('change-seled', item.id)"
         href="javascript:;"
         v-for="(item, i) in list"
         :key="item.id"

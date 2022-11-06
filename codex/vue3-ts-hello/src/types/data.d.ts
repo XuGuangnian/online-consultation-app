@@ -20,3 +20,30 @@ export type ResData = {
   }
   message: string
 }
+
+// 文章对象
+export type ArticleItem = {
+  art_id: string;
+  aut_id: string;
+  aut_name: string;
+  comm_count: number;
+  cover: {
+    cover: number;
+    images: string[];
+  };
+  is_top: number;
+  pubdate: string;
+  title: string;
+};
+
+// 文章接口响应数据
+export type ArticleResData = {
+  data: {
+    pre_timestamp: string;
+    results: ArticleItem[];
+  };
+  message: string;
+};
+
+// 作业1：后台接口返回数据的类型怎么重用？泛型别名
+// 作业2：预习pinia用法，改造头条案例

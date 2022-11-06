@@ -20,13 +20,12 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-// 说明：ref是泛型函数，可以接收泛型类型参数
-type List = {
-  id: number
-  name: string
-  done: boolean
-}[]
+// 导入类型声明文件
+import type { List, Data } from '../../types/data'
 
+import { fn } from '../../utils/test'
+
+// 说明：ref是泛型函数，可以接收泛型类型参数
 // 1. 简单类型
 const count = ref(0)
 const str = ref<string>('')

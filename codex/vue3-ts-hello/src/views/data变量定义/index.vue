@@ -13,11 +13,13 @@
     <ul>
       <li v-for="item in list" :key="item.id">{{ item.name }}</li>
     </ul>
+    <hr />
+    <p>{{ newList }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 // 说明：ref是泛型函数，可以接收泛型类型参数
 type List = {
   id: number
@@ -57,6 +59,11 @@ setTimeout(() => {
     },
   ]
 }, 2000)
+
+// 需求：使用计算属性获取id=1的数据
+const newList = computed(() => {
+  return list.value.filter((item) => item.id === 1)
+})
 </script>
 
 <style scoped></style>

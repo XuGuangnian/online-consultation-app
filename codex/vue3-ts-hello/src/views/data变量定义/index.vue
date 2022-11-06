@@ -1,0 +1,62 @@
+<template>
+  <div>
+    <h1>vue3定义响应变量配合ts使用</h1>
+    <ul>
+      <li>{{ count }}</li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+    <hr />
+    <ul>
+      <li v-for="item in list" :key="item.id">{{ item.name }}</li>
+    </ul>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+// 说明：ref是泛型函数，可以接收泛型类型参数
+type List = {
+  id: number
+  name: string
+  done: boolean
+}[]
+
+// 1. 简单类型
+const count = ref(0)
+const str = ref<string>('')
+
+// 2. 复杂类型(需要指定)
+const list = ref<List>([
+  // {
+  //   id: 0,
+  //   name: '学习',
+  //   done: false,
+  // },
+  // {
+  //   id: 1,
+  //   name: '找工作',
+  //   done: false,
+  // },
+])
+// 实际开发，数据从后台异步获取的
+setTimeout(() => {
+  list.value = [
+    {
+      id: 0,
+      name: '学习',
+      done: false,
+    },
+    {
+      id: 1,
+      name: '找工作',
+      done: false,
+    },
+  ]
+}, 2000)
+</script>
+
+<style scoped></style>

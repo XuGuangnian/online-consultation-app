@@ -707,7 +707,7 @@ const img = document.getElementById('img') as HTMLImageElement
 
 ## 泛型{#generic}
 
-> 作用：泛型（Generics）可以在保证类型安全前提下，给别名、接口、函数等添加**类型参数**，从而实现复用
+> 作用：泛型（Generics）可以在保证类型安全前提下，给别名、接口、函数等添加**类型参数**，从而实现**复用**
 
 :::tip
 

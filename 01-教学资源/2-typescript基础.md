@@ -926,7 +926,7 @@ const { money, car = '小黄车' } = defineProps<{
 
 
 
-如果提供的默认值需要在模板中渲染，需要额外添加配置
+如果提供的默认值需要在模板中渲染，需要额外添加配置，才能正常显示默认值
 
 https://vuejs.org/guide/extras/reactivity-transform.html#explicit-opt-in
 

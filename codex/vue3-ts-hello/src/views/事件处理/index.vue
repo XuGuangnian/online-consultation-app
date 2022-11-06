@@ -7,6 +7,8 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import axios from 'axios'
+import _ from 'lodash'
 
 /**
  * 1. 通过$event查看事件对象的类型
@@ -22,6 +24,12 @@ const inputDom = ref<HTMLInputElement>()
 onMounted(() => {
   inputDom.value?.focus()
 })
+// ts已经准备好js所有内置对象的类型
+let arr = [1, 2, 3]
+arr.filter
+
+axios.post
+console.log(_.isArray([]))
 </script>
 
 <style scoped></style>

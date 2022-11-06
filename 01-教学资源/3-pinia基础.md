@@ -156,7 +156,7 @@ const { count, doubleCount } = storeToRefs(store)
 
 小结：
 
-- 当你想从 store 中解构对应的状态使用，需要使用 `storeToRefs`
+- 当你想从 store 中解构**对应的状态使用**，需要使用 `storeToRefs`
 
 
 ## 使用 Pinia 改造头条(作业){#case}

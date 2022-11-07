@@ -14,12 +14,15 @@ export type ChannelItem = {
   id: number
   name: string
 }
-export type ResData = {
-  data: {
-    channels: ChannelItem[]
-  }
-  message: string
-}
+// export type ChannelResData = {
+//   data: {
+//     channels: ChannelItem[]
+//   }
+//   message: string
+// }
+export type ChannelResData = ResData<{
+  channels: ChannelItem[]
+}>
 
 // 文章对象
 export type ArticleItem = {
@@ -37,13 +40,22 @@ export type ArticleItem = {
 };
 
 // 文章接口响应数据
-export type ArticleResData = {
-  data: {
-    pre_timestamp: string;
-    results: ArticleItem[];
-  };
-  message: string;
-};
+// export type ArticleResData = {
+//   data: {
+//     pre_timestamp: string;
+//     results: ArticleItem[];
+//   };
+//   message: string;
+// };
+export type ArticleResData = ResData<{
+  pre_timestamp: string;
+  results: ArticleItem[];
+}>
 
 // 作业1：后台接口返回数据的类型怎么重用？泛型别名
+type ResData<T> = {
+  data: T
+  message: string
+};
 // 作业2：预习pinia用法，改造头条案例
+

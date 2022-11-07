@@ -6,5 +6,4 @@ import './style.css'
 // import App from './views/事件处理/index.vue'
 import App from './views/黑马头条案例/index.vue'
 
-
 createApp(App).mount('#app')

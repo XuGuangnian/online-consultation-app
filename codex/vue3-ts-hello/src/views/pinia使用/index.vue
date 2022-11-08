@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-
+// 使用store
 // 1. 导入pinia的store
 import {useHelloStore} from '../../stores/hello'
 

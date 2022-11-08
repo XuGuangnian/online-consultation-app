@@ -1,5 +1,5 @@
 /**
- * 我的第一个pinia store
+ * 创建我的第一个pinia store
  * 步骤：
  * 1. 导入 defineStore函数
  * 2. 使用 defineStore('仓库ID', ()=>{  定义全局状态数据和修改数据方法  })

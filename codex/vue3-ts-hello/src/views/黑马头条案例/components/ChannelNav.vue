@@ -4,6 +4,9 @@ import { onMounted, ref } from 'vue'
 // 导入类型
 import { ChannelItem, ChannelResData } from '../../../types/data'
 
+// 导入store
+import {useToutiaoStore} from '../../../stores/toutiao'
+
 // 定义响应变量
 const list = ref<ChannelItem[]>([])
 
@@ -16,14 +19,16 @@ const getChannels = async () => {
   list.value = res.data.data.channels
 }
 
-// 接收选中频道ID
-defineProps<{
-  seledId: number
-}>()
-// 子传父修改选中频道ID
-const emit = defineEmits<{
-  (e: 'change-seled', data: number): void
-}>()
+// // 接收选中频道ID
+// defineProps<{
+//   seledId: number
+// }>()
+// // 子传父修改选中频道ID
+// const emit = defineEmits<{
+//   (e: 'change-seled', data: number): void
+// }>()
+
+const store = useToutiaoStore()
 
 onMounted(() => {
   getChannels()
@@ -35,8 +40,8 @@ onMounted(() => {
     <nav class="list">
       <a
         class="item"
-        :class="{ active: item.id === seledId }"
-        @click="emit('change-seled', item.id)"
+        :class="{ active: item.id === store.seledId }"
+        @click="store.changeSeled(item.id)"
         href="javascript:;"
         v-for="(item, i) in list"
         :key="item.id"

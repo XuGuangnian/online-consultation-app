@@ -3,21 +3,28 @@ import { ref, watch } from 'vue'
 import { ArticleItem, ArticleResData } from '../../../types/data'
 import axios from 'axios'
 
-const props = defineProps<{
-  seledId: number
-}>()
+// 导入store
+import {useToutiaoStore} from '../../../stores/toutiao'
+
+// const props = defineProps<{
+//   seledId: number
+// }>()
 // 1. 定义文章列表
 const list = ref<ArticleItem[]>([])
+
+
+  const store = useToutiaoStore()
+
 watch(
-  props,
+  ()=> store.seledId, // 只监控store中seledId变化
   async (newVal) => {
-    console.log('频道ID变化了：', newVal.seledId)
+    console.log('频道ID变化了：', store.seledId)
     // 需要默认执行一次，加载渲染推荐频道的新闻列表
     const res = await axios.get<ArticleResData>(
       'http://geek.itheima.net/v1_0/articles',
       {
         params: {
-          channel_id: newVal.seledId, // 当前频道的ID
+          channel_id: store.seledId, // 当前频道的ID
           timestamp: Date.now(),
         },
       }

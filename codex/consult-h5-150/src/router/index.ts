@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
-import Test from '@/views/test/index.vue'
+// import Test from '@/views/test/index.vue'
+const Test = () => import('@/views/test/index.vue')
 
 // 路由配置数组
 const routes = [

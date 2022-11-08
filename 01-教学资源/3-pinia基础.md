@@ -17,6 +17,15 @@
 
 Why should I use Pinia?
 
+> 回顾：
+>
+> 1. vuex全局有几个store？
+>    答：1个store =>但是今天学习的pinia可以创建多个store
+>
+> 2. vuex核心的api？
+>    答：state定义变量 + getters计算属性 + mutations修改变量(同步) + actions获取异步数据=>
+>    今天学习的pinia没有这么多繁琐的api，只需要定义state和修改state的方法
+
 - Pinia的数据流转图
 
 ![image-20220727155944251](assets/image-20220727155944251.png)

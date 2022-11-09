@@ -72,6 +72,6 @@ $divBd: 2px solid rgb(0, 123, 255);
 .test {
   color: $fontColor;
   font-size: 16px;
-  border: $divBd;
+  border: var(--cp-div-bd);
 }
 </style>

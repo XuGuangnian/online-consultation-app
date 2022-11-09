@@ -12,6 +12,14 @@
       <!-- #icon-文件夹名称-图片名称 -->
       <use href="#icon-home-docs" />
     </svg>
+    <hr />
+    <!-- 问题❓：使用打包后的精灵图，比较麻烦，
+      优化需求：<cp-icon name="home-docs" />
+    api: name=文件夹名称-图片名称
+    -->
+    <cp-icon name="home-docs" />
+    <cp-icon name="consult-alipay" />
+
     <ul>
       <li>{{ store.user }}</li>
       <li @click="changeUser">修改user</li>

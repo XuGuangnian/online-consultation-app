@@ -6,6 +6,12 @@ const clickRight = () => {
 }
 // 是否同意网站使用协议
 const agree = ref(false)
+/**
+ * 动态切换密码框眼睛图标，控制是否显示密码
+ * 1. 定义个响应变量isShowPass
+ * 2. 根据isShowPass控制是否显示密码
+ */
+const isShowPass = ref(false)
 </script>
 
 <template>
@@ -21,8 +27,17 @@ const agree = ref(false)
     </div>
     <!-- == 2. form 表单 == -->
     <van-form autocomplete="off">
+      <!-- 1. 手机号输入框 -->
       <van-field placeholder="请输入手机号" type="tel"></van-field>
-      <van-field placeholder="请输入密码" type="password"></van-field>
+      <!-- 2. 密码输入框 -->
+      <van-field placeholder="请输入密码" :type="isShowPass ? 'text' : 'password'">
+        <template #button>
+          <cp-icon
+            @click="isShowPass = !isShowPass"
+            :name="`login-eye-${isShowPass ? 'on' : 'off'}`"
+          ></cp-icon>
+        </template>
+      </van-field>
       <div class="cp-cell">
         <van-checkbox v-model="agree">
           <span>我已同意</span>

@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+// 导入校验规则
+import { mobileRules, passwordRules } from '@/utils/rules'
+import { Toast } from 'vant'
+// 导入账号密码登录api
+import { loginByPassword } from '@/api/user'
+// 导入用户store
+import { useUserStore } from '@/stores'
+import { useRoute, useRouter } from 'vue-router'
 
 const clickRight = () => {
   console.log('点击了右边文字')
@@ -11,7 +19,33 @@ const agree = ref(false)
  * 1. 定义个响应变量isShowPass
  * 2. 根据isShowPass控制是否显示密码
  */
+
 const isShowPass = ref(false)
+// 准备账号密码响应变量
+const mobile = ref('13230000088')
+const password = ref('abc12345')
+// 点击登录=》
+const store = useUserStore()
+// 跳转页面使用
+const router = useRouter()
+// 获取路由参数
+const route = useRoute()
+const login = async () => {
+  console.log('校验通过了，才执行login')
+  if (!agree.value) return Toast.fail('请勾选用户协议')
+  // 进行登录
+  try {
+    const res = await loginByPassword(mobile.value, password.value)
+    console.log('登录成功：', res.data)
+    store.setUser(res.data)
+    // 说明：存在route.query.returnUrl回跳地址=》跳转returnUrl地址
+    // 相反，默认跳转用户个人中心
+    router.push((route.query.returnUrl as string) || '/user')
+    Toast.success('登录成功')
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
@@ -26,11 +60,21 @@ const isShowPass = ref(false)
       </a>
     </div>
     <!-- == 2. form 表单 == -->
-    <van-form autocomplete="off">
+    <van-form @submit="login" autocomplete="off">
       <!-- 1. 手机号输入框 -->
-      <van-field placeholder="请输入手机号" type="tel"></van-field>
+      <van-field
+        v-model="mobile"
+        :rules="mobileRules"
+        placeholder="请输入手机号"
+        type="tel"
+      ></van-field>
       <!-- 2. 密码输入框 -->
-      <van-field placeholder="请输入密码" :type="isShowPass ? 'text' : 'password'">
+      <van-field
+        v-model="password"
+        :rules="passwordRules"
+        placeholder="请输入密码"
+        :type="isShowPass ? 'text' : 'password'"
+      >
         <template #button>
           <cp-icon
             @click="isShowPass = !isShowPass"
@@ -47,7 +91,7 @@ const isShowPass = ref(false)
         </van-checkbox>
       </div>
       <div class="cp-cell">
-        <van-button block round type="primary">登 录</van-button>
+        <van-button native-type="submit" block round type="primary">登 录</van-button>
       </div>
       <div class="cp-cell">
         <a href="javascript:;">忘记密码？</a>

@@ -21,8 +21,8 @@ const onClickLeft = () => {
 
 // 1. 接收父传子变量
 defineProps<{
-  middle: string
-  right: string
+  title: string
+  rightText: string
 }>()
 // 2. 子传父
 const emit = defineEmits<{
@@ -36,8 +36,8 @@ const emit = defineEmits<{
     left-arrow
     @click-left="onClickLeft"
     fixed
-    :title="middle"
-    :right-text="right"
+    :title="title"
+    :right-text="rightText"
     @click-right="emit('click-right')"
   ></van-nav-bar>
 </template>

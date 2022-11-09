@@ -9,11 +9,15 @@ import '@/styles/index.scss'
 // vant需要单独引入的样式
 import 'vant/es/toast/style'
 
+// 注册图标
+import 'virtual:svg-icons-register'
+
 // 1. 创建vue根实例
 const app = createApp(App)
 
 // 2. 注册pinia和router
 app.use(pinia)
 app.use(router)
+
 // 3. 挂载渲染App根组件
 app.mount('#app')

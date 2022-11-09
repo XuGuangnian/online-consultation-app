@@ -2,6 +2,16 @@
   <div>
     <h1 class="test">测试页面</h1>
     <p class="cp-use" style="font-size: 18px">我是p元素</p>
+    <img src="@/icons/consult/alipay.svg" alt="" />
+    <!-- 测试精灵图 -->
+    <svg aria-hidden="true">
+      <!-- #icon-文件夹名称-图片名称 -->
+      <use href="#icon-login-eye-off" />
+    </svg>
+    <svg aria-hidden="true">
+      <!-- #icon-文件夹名称-图片名称 -->
+      <use href="#icon-home-docs" />
+    </svg>
     <ul>
       <li>{{ store.user }}</li>
       <li @click="changeUser">修改user</li>

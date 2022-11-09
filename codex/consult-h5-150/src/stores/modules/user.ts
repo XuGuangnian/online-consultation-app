@@ -23,14 +23,30 @@ export const useUserStore = defineStore(
       user.value = {} as User
     }
 
+    // 测试
+    const meng = ref(1)
+    const cg = (val: number) => {
+      meng.value = val
+    }
+
     // 返回变量和方法
     return {
       user,
       setUser,
-      delUser
+      delUser,
+      meng,
+      cg
     }
   },
+  // 方式1：默认存储所有数据，以store的ID作为存储的key
+  // {
+  //   persist: true // 开启数据持久化
+  // }
+  // 方式2：自定义存储的key，指定存储那些数据
   {
-    persist: true // 开启数据持久化
+    persist: {
+      key: 'cp-user-150',
+      paths: ['user'] // 数组内放入的变量名都会持久化存储
+    }
   }
 )

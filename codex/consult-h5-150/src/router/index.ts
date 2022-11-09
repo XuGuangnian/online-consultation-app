@@ -6,6 +6,11 @@ const Test = () => import('@/views/test/index.vue')
 // 路由配置数组
 const routes = [
   {
+    path: '/login',
+    component: () => import('@/views/login/index.vue')
+  },
+  // 测试页面
+  {
     path: '/test',
     name: 'test',
     component: Test

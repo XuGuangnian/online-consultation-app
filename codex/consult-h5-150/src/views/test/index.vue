@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="test">测试页面</h1>
-    <p style="font-size: 18px">我是p元素</p>
+    <p class="cp-use" style="font-size: 18px">我是p元素</p>
     <ul>
       <li>{{ store.user }}</li>
       <li @click="changeUser">修改user</li>
@@ -64,9 +64,14 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+// 1. 通过scss定义css变量 => 语法：$变量名:css变量值
+// 说明：scss定义的变量最终通过sass打包成css
+$fontColor: red;
+$divBd: 2px solid rgb(0, 123, 255);
 .test {
+  color: $fontColor;
   font-size: 16px;
-  border: 2px solid red;
+  border: $divBd;
 }
 </style>

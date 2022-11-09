@@ -10,7 +10,7 @@ const request = axios.create({
   timeout: 10000
 })
 
-// 2. 请求拦截器，携带token
+// 2. 请求拦截器，携带token =》发请求之前
 request.interceptors.request.use(
   (config) => {
     const store = useUserStore()
@@ -22,7 +22,7 @@ request.interceptors.request.use(
   (err) => Promise.reject(err)
 )
 
-// 3. 响应拦截器，剥离无效数据，401拦截
+// 3. 响应拦截器，剥离无效数据，401拦截 =》发请求之后
 request.interceptors.response.use(
   (res) => {
     // 后台约定，响应成功，但是code不是10000，是业务逻辑失败
@@ -39,6 +39,11 @@ request.interceptors.response.use(
       const store = useUserStore()
       store.delUser()
       // 跳转登录，带上接口失效所在页面的地址，登录完成后回跳使用
+      // 为什么携带出现401页面的地址？
+      // router.currentRoute.value.fullPath 当前访问页面的path地址
+      // 说明：vue3=》router.currentRoute.value 是个ref变量，所以访问需要加value
+      // 答：为了让用户重新登录后，跳转回上次访问页面=》交互体验好
+      // 注意：fullPath完整path地址，会携带地址参数，但是path不会
       router.push(`/login?returnUrl=${router.currentRoute.value.fullPath}`)
     }
     return Promise.reject(err)

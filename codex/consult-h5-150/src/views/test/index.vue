@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>测试页面</h1>
+    <h1 class="test">测试页面</h1>
+    <p style="font-size: 18px">我是p元素</p>
     <ul>
       <li>{{ store.user }}</li>
       <li @click="changeUser">修改user</li>
@@ -21,6 +22,11 @@
 <script setup lang="ts">
 // import { useUserStore } from '@/stores/modules/user'
 import { useUserStore } from '@/stores'
+import { useRoute } from 'vue-router'
+
+// 导入封装request
+import { request } from '@/utils/request'
+import { onMounted } from 'vue'
 
 const store = useUserStore()
 // 点击修改用户store全局数据
@@ -33,6 +39,34 @@ const changeUser = () => {
     avatar: ''
   })
 }
+// 获取当前页面地址
+const route = useRoute()
+console.log('路由对象：', route)
+// 测试request方法
+// 测试401
+const getHome = async () => {
+  const res = await request.get('/patient/myUser')
+  console.log(res)
+}
+// 测试正常和异常
+const login = async () => {
+  const res = await request.post('/login/password', {
+    mobile: '13211112222',
+    // 密码 abc123456 测试：出现非10000的情况
+    password: 'abc12345000'
+  })
+  console.log('登录成功：', res)
+}
+
+onMounted(() => {
+  // getHome()
+  login()
+})
 </script>
 
-<style scoped></style>
+<style scoped>
+.test {
+  font-size: 16px;
+  border: 2px solid red;
+}
+</style>

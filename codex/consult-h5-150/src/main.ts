@@ -3,6 +3,9 @@ import App from './App.vue'
 import router from './router'
 import pinia from '@/stores'
 
+// vant需要单独引入的样式
+import 'vant/es/toast/style'
+
 // 1. 创建vue根实例
 const app = createApp(App)
 

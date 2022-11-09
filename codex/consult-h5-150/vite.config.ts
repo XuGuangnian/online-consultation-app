@@ -13,7 +13,7 @@ export default defineConfig({
     vue({
       reactivityTransform: true
     }),
-    // 2. 配置vant组件库按需引入
+    // 2. 配置vant组件库按需引入 =》项目下src/components中组件，也会被自动全局注册
     Components({
       dts: false, // 关闭自动生成类型声明文件
       resolvers: [VantResolver()]

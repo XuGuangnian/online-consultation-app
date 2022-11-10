@@ -15,6 +15,13 @@ const clickRight = () => {
 // 是否同意网站使用协议
 const agree = ref(false)
 /**
+ * 登录开发问题总结：
+ * 1. api函数封装返回值问题
+ * 2. ts类型使用问题
+ * 3. 关于可选链操作符?使用
+ */
+
+/**
  * 一、动态切换密码框眼睛图标，控制是否显示密码
  * 1. 定义个响应变量isShowPass
  * 2. 根据isShowPass控制是否显示密码
@@ -123,7 +130,7 @@ const send = async () => {
       <!-- 3. 验证码输入 -->
       <van-field v-else v-model="code" :rules="codeRules" placeholder="短信验证码">
         <template #button>
-          <span @click="send" class="btn-send" :class="{ active: time > 0 }">
+          <span @click="send" :class="{ active: time > 0 }">
             {{ time > 0 ? `${time}s后再次发送` : '发送验证码' }}
           </span>
         </template>
@@ -147,6 +154,9 @@ const send = async () => {
 </template>
 
 <style lang="scss" scoped>
+.active {
+  color: red;
+}
 .login {
   padding-top: 46px;
   &-head {

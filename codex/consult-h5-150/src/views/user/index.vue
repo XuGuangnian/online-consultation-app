@@ -1,35 +1,58 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { userInfo } from '@/api/user'
+import type { UserInfo } from '@/types/user'
+import { onMounted, ref } from 'vue'
+// 一、获取用户数据渲染展示
+// 1. 响应变量存储用户数据
+const userData = ref({} as UserInfo)
+// 2. 获取用户数据
+const getUserInfo = async () => {
+  const { data } = await userInfo()
+  console.log('用户数据：', data)
+  userData.value = data
+}
+// 3. 组件挂载
+onMounted(() => {
+  getUserInfo()
+})
+// 二、快捷工具渲染
+const tools = [
+  { label: '我的问诊', path: '/user/consult' },
+  { label: '我的处方', path: '/' },
+  { label: '家庭档案', path: '/user/patient' },
+  { label: '地址管理', path: '/user/address' },
+  { label: '我的评价', path: '/' },
+  { label: '官方客服', path: '/' },
+  { label: '设置', path: '/' }
+]
+</script>
 
 <template>
   <div class="user-page">
     <!-- 1. 头部展示 -->
     <div class="user-page-head">
       <div class="top">
-        <van-image
-          round
-          fit="cover"
-          src="https://yanxuan-item.nosdn.127.net/ef302fbf967ea8f439209bd747738aba.png"
-        />
+        <van-image round fit="cover" :src="userData.avatar" />
         <div class="name">
-          <p>用户907456</p>
+          <p>{{ userData.account }}</p>
           <p><van-icon name="edit" /></p>
         </div>
       </div>
       <van-row>
         <van-col span="6">
-          <p>150</p>
+          <p>{{ userData.collectionNumber }}</p>
           <p>收藏</p>
         </van-col>
         <van-col span="6">
-          <p>23</p>
+          <p>{{ userData.likeNumber }}</p>
           <p>关注</p>
         </van-col>
         <van-col span="6">
-          <p>270</p>
+          <p>{{ userData.score }}</p>
           <p>积分</p>
         </van-col>
         <van-col span="6">
-          <p>3</p>
+          <p>{{ userData.couponNumber }}</p>
           <p>优惠券</p>
         </van-col>
       </van-row>
@@ -42,30 +65,35 @@
       <van-row>
         <van-col span="6">
           <cp-icon name="user-paid" />
-          <p>待付款</p>
+          <p>待付款:{{ userData.orderInfo?.paidNumber }}</p>
         </van-col>
         <van-col span="6">
           <cp-icon name="user-shipped" />
-          <p>待发货</p>
+          <p>待发货:{{ userData.orderInfo?.receivedNumber }}</p>
         </van-col>
         <van-col span="6">
           <cp-icon name="user-received" />
-          <p>待收货</p>
+          <p>待收货:{{ userData.orderInfo?.shippedNumber }}</p>
         </van-col>
         <van-col span="6">
           <cp-icon name="user-finished" />
-          <p>已完成</p>
+          <p>已完成:{{ userData.orderInfo?.finishedNumber }}</p>
         </van-col>
       </van-row>
     </div>
     <!-- 2. 快捷工具 -->
     <div class="user-page-group">
       <h3>快捷工具</h3>
-      <van-cell title="标题" is-link :border="false">
-        <template #icon><cp-icon name="user-tool-01" /></template>
-      </van-cell>
-      <van-cell title="标题" is-link :border="false">
-        <template #icon><cp-icon name="user-tool-01" /></template>
+      <!-- is-link 开启链接 -->
+      <van-cell
+        v-for="(tool, i) in tools"
+        :key="i"
+        :title="tool.label"
+        is-link
+        :to="tool.path"
+        :border="false"
+      >
+        <template #icon><cp-icon :name="`user-tool-0${i + 1}`" /></template>
       </van-cell>
     </div>
     <!-- 3. 退出登录 -->

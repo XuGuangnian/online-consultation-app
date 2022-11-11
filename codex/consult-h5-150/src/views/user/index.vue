@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { userInfo } from '@/api/user'
+import { useUserStore } from '@/stores'
 import type { UserInfo } from '@/types/user'
+import { Dialog, Toast } from 'vant'
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 // 一、获取用户数据渲染展示
 // 1. 响应变量存储用户数据
 const userData = ref({} as UserInfo)
@@ -25,6 +28,32 @@ const tools = [
   { label: '官方客服', path: '/' },
   { label: '设置', path: '/' }
 ]
+// 三、退出登录
+const store = useUserStore()
+// 说明：use开头的钩子函数，只能在setup中使用
+const router = useRouter()
+const logout = () => {
+  /**
+   * 1. 用户确认
+   * 2. 点击确定，执行退出：
+   *    1. 调用退出登录api接口（没有）
+   *    2. 删除pinia用户信息
+   *    3. 跳回登录页
+   */
+  Dialog.confirm({
+    title: '提示',
+    message: '确认退出在线问诊吗，亲？'
+  })
+    .then(() => {
+      // on confirm 确定
+      store.delUser()
+      Toast.success('退出成功！')
+      router.push('/login')
+    })
+    .catch(() => {
+      // on cancel 取消
+    })
+}
 </script>
 
 <template>
@@ -97,7 +126,7 @@ const tools = [
       </van-cell>
     </div>
     <!-- 3. 退出登录 -->
-    <a class="logout" href="javascript:;">退出登录</a>
+    <a @click="logout" class="logout" href="javascript:;">退出登录</a>
   </div>
 </template>
 

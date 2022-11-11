@@ -1,4 +1,4 @@
-import type { User, CodeType, UserInfo } from '@/types/user'
+import type { User, CodeType, UserInfo, PatientList } from '@/types/user'
 import { request } from '@/utils/request'
 
 // 说明❓：封装api函数，通过request.method<指定data数据类型>
@@ -18,6 +18,9 @@ export const sendMobileCode = (mobile: string, type: CodeType) =>
 export const loginByMobile = (mobile: string, code: string) =>
   request.post<User>('/login', { mobile, code })
 
+// 获取用户详情信息
 export function userInfo() {
   return request.get<UserInfo>('/patient/myUser')
 }
+// 获患者信息列表
+export const getPatientList = () => request.get<PatientList>('/patient/mylist')

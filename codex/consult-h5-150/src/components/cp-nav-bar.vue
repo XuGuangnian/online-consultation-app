@@ -22,7 +22,7 @@ const onClickLeft = () => {
 // 1. 接收父传子变量
 defineProps<{
   title: string
-  rightText: string
+  rightText?: string // 指定属性可选的
 }>()
 // 2. 子传父
 const emit = defineEmits<{

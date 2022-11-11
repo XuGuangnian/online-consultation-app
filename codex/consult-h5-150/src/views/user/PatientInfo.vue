@@ -1,33 +1,45 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getPatientList } from '@/api/user'
+import type { PatientList } from '@/types/user'
+import { onMounted, ref } from 'vue'
+
+const patientList = ref<PatientList>([])
+// 获取患者列表方法
+const loadList = async () => {
+  const { data } = await getPatientList()
+  console.log('患者列表：', data)
+  patientList.value = data
+}
+onMounted(() => {
+  loadList()
+})
+</script>
 
 <template>
   <div class="patient-page">
-    <cp-nav-bar title="家庭档案" />
+    <!-- 1. 导航栏 -->
+    <cp-nav-bar title="家庭档案"></cp-nav-bar>
     <!-- 头部选择提示 -->
     <div class="patient-change" v-if="false">
       <h3>请选择患者信息</h3>
       <p>以便医生给出更准确的治疗，信息仅医生可见</p>
     </div>
+    <!-- 2. 患者列表 -->
     <div class="patient-list">
-      <div class="patient-item">
+      <div v-for="item in patientList" :key="item.id" class="patient-item">
         <div class="info">
-          <span class="name">李富贵</span>
-          <span class="id">321***********6164</span>
-          <span>男</span>
-          <span>32岁</span>
+          <span class="name">{{ item.name }}</span>
+          <span class="id">{{ item.idCard.replace(/^(.{6})(?:\d+)(.{4})$/, '\$1******\$2') }}</span>
+          <span>{{ item.gender === 0 ? '女' : '男' }}</span>
+          <span>{{ item.age }}岁</span>
         </div>
+        <!-- 点击修改 -->
         <div class="icon"><cp-icon name="user-edit" /></div>
-        <div class="tag">默认</div>
+        <!-- 默认患者显示div.tag元素 -->
+        <div class="tag" v-if="item.defaultFlag === 1">默认</div>
       </div>
-      <div class="patient-item">
-        <div class="info">
-          <span class="name">李富贵</span>
-          <span class="id">321***********6164</span>
-          <span>男</span>
-          <span>32岁</span>
-        </div>
-        <div class="icon"><cp-icon name="user-edit" /></div>
-      </div>
+
+      <!-- 点击新增患者 -->
       <div class="patient-add">
         <cp-icon name="user-add" />
         <p>添加患者</p>
@@ -36,7 +48,7 @@
     </div>
     <!-- 患者选择下一步 -->
     <div class="patient-next" v-if="false">
-      <van-button type="primary"  round block>下一步</van-button>
+      <van-button type="primary" round block>下一步</van-button>
     </div>
   </div>
 </template>

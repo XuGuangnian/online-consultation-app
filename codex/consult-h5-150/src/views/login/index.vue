@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onUnmounted } from 'vue'
 // 导入校验规则
 import { mobileRules, passwordRules, codeRules } from '@/utils/rules'
 import { Toast, type FormInstance } from 'vant'
@@ -20,6 +20,22 @@ const agree = ref(false)
  * 2. ts类型使用问题
  * 3. 关于可选链操作符?使用
  */
+type Obj = {
+  name: string
+  age: number
+}
+let obj = ref({} as Obj) // 通过断言指定类型,不用加可选链?
+console.log('读取值：', obj.value.age)
+obj.value.age = 123
+// let obj = ref<Obj>() // 通过泛型指定类型
+// // !在ts中叫非空断言=》语法：变量!
+// console.log('读取值：', obj.value?.age)
+// // 修改值=> 使用非空断言
+// obj.value!.age = 1
+// if (obj.value) {
+//   // obj.value如果存在执行复制，让代码更严谨
+//   obj.value.age = 1
+// }
 
 /**
  * 一、动态切换密码框眼睛图标，控制是否显示密码
@@ -75,10 +91,11 @@ const send = async () => {
   try {
     // 输入手机号时，对手机号进行校验
     await form.value?.validate('mobile')
-    const { data } = await sendMobileCode(mobile.value, 'login')
-    Toast.success('发送成功')
+    const res = await sendMobileCode(mobile.value, 'login')
+    Toast.success('发送成功') // Toast.success 只能传一个参数
+    console.log(res.data.code)
     // 填入验证码
-    code.value = data.code
+    code.value = res.data.code
     // 倒计时开始
     time.value = 60
     timeId = window.setInterval(() => {
@@ -89,6 +106,10 @@ const send = async () => {
     console.log(error)
   }
 }
+onUnmounted(() => {
+  // 避免内存泄露
+  window.clearInterval(timeId)
+})
 </script>
 
 <template>

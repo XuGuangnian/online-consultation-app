@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores'
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 // import Test from '@/views/test/index.vue'
@@ -45,5 +46,25 @@ const router = createRouter({
   // history: createWebHashHistory(import.meta.env.BASE_URL),
   routes
 })
+
+// 页面访问拦截：前置路由守卫
+/**
+ * vue2: to 去哪 from 从哪来 next:Function 放行
+ * 说明：vue2需要通过next函数放行
+ * vue3: to 去哪 from 从哪来
+ */
+router.beforeEach((to) => {
+  /**
+   * 页面访问拦截:
+   * 根据是否有token，决定用户是否可以访问to页面
+   * 1. 有token同时排除=》登录、注册等=》正常访问=》什么也不需要做
+   * 2. 没有token =》跳回登录页 =》 return 'path地址'
+   */
+  const store = useUserStore()
+  // 说明：['/login', '/other']不需要登录就可以访问=》vip用户
+  // 如果没有token，同时不在vip里边=》重新登录
+  if (!store.user.token && !['/login', '/other'].includes(to.path)) return '/login'
+})
+
 // 2. 导出路由实例
 export default router

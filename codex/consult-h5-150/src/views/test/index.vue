@@ -1,6 +1,15 @@
 <template>
   <div>
     <h1 class="test">测试页面</h1>
+    <!-- <Son v-model="show" v-model:msg="msg"></Son> -->
+    <Son
+      :model-value="show"
+      @update:model-value="show = $event"
+      :msg="msg"
+      @update:msg="msg = $event"
+    ></Son>
+
+    <hr />
     <p class="cp-use" style="font-size: 18px">我是p元素</p>
     <img src="@/icons/consult/alipay.svg" alt="" />
     <!-- 测试精灵图 -->
@@ -44,8 +53,10 @@ import { useRoute } from 'vue-router'
 
 // 导入封装request
 import { request } from '@/utils/request'
-import { onMounted } from 'vue'
-
+import { onMounted, ref } from 'vue'
+import Son from './son.vue'
+const show = ref(true)
+const msg = ref('hi')
 const store = useUserStore()
 // 点击修改用户store全局数据
 const changeUser = () => {

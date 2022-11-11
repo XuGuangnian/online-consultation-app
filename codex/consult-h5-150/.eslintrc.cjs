@@ -22,12 +22,7 @@ module.exports = {
         trailingComma: 'none'
       }
     ],
-    'vue/multi-word-component-names': [
-      'warn',
-      {
-        ignores: ['index']
-      }
-    ],
+    'vue/multi-word-component-names': 'off',
     'vue/no-setup-props-destructure': ['off']
   }
 }

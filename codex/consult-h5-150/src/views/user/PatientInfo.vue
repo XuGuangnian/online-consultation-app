@@ -40,7 +40,7 @@ onMounted(() => {
       </div>
 
       <!-- 点击新增患者 -->
-      <div class="patient-add">
+      <div class="patient-add" v-if="patientList.length < 6">
         <cp-icon name="user-add" />
         <p>添加患者</p>
       </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getPatientList } from '@/api/user'
-import type { PatientList } from '@/types/user'
-import { onMounted, ref } from 'vue'
+import type { PatientList, Patient } from '@/types/user'
+import { onMounted, ref, watch } from 'vue'
 
 const patientList = ref<PatientList>([])
 // 1. 获取患者列表方法
@@ -15,11 +15,35 @@ onMounted(() => {
 })
 // 2. 新增患者
 // 控制新增患者弹层显隐
-const show = ref(false)
+const show = ref(true)
 // 打开新增患者弹层
 const openDialog = () => {
   show.value = true
 }
+const closeDialog = () => {
+  show.value = false
+}
+// 性别选项
+const options = [
+  { label: '男', value: 1 },
+  { label: '女', value: 0 }
+]
+// 存储选中的性别value值
+const gender = ref(0)
+// 新增患者表单数据
+const patient = ref<Patient>({
+  name: '', // 患者名字
+  idCard: '', // 患者身份证
+  gender: 1, // 患者性别
+  defaultFlag: 0 // 是否设置为默认患者 0不是默认 1是默认患者
+})
+// 是否是默认患者
+const defaultFlag = ref(false)
+// 监控defaultFlag变化，把defaultFlag选中的boolean值转换成0 | 1
+watch(defaultFlag, () => {
+  console.log('是否是默认患者', defaultFlag)
+  patient.value.defaultFlag = defaultFlag.value ? 1 : 0
+})
 </script>
 
 <template>
@@ -59,14 +83,33 @@ const openDialog = () => {
     </div>
 
     <!-- 新增患者弹层 -->
-    <van-popup v-model:show="show" position="left">
+    <van-popup v-model:show="show" position="bottom">
       <!-- 放置弹层内容 -->
       <!-- 1. 导航栏 -->
-      <cp-nav-bar title="新增患者"></cp-nav-bar>
+      <cp-nav-bar title="新增患者" :back="closeDialog"></cp-nav-bar>
       <!-- 2. 新增患者表单 -->
-      123
+      <van-form autocomplete="off">
+        <van-field v-model="patient.name" label="真实姓名" placeholder="请输入真实姓名" />
+        <van-field v-model="patient.idCard" label="身份证号" placeholder="请输入身份证号" />
+        <van-field label="性别">
+          <!-- 不是输入框的，通过具名插槽自定义表单项 -->
+          <!-- 单选按钮组件 -->
+          <template #input>
+            <cp-radio-btn v-model="patient.gender" :options="options"></cp-radio-btn>
+          </template>
+        </van-field>
+        <van-field label="默认就诊人">
+          <template #input>
+            <!-- 说明：需要单独绑定一个boolean值变量 -->
+            <van-checkbox round v-model="defaultFlag" />
+          </template>
+        </van-field>
+      </van-form>
     </van-popup>
   </div>
+
+  <!-- 测试单选组件 -->
+  <!-- <cp-radio-btn v-model="gender" :options="options"></cp-radio-btn> -->
 </template>
 
 <style lang="scss" scoped>

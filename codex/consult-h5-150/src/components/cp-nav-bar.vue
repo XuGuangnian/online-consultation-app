@@ -6,6 +6,11 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const onClickLeft = () => {
   // 点击左侧会执行 =》返回上次访问页面
+  // 自定义返回逻辑
+  if (props.back) {
+    //  return 阻止代码往后执行 + 执行传入的back函数
+    return props.back()
+  }
   /**
    * 返回上次访问页面可能不存在？
    * 使用router.replace跳转，不能返回
@@ -20,9 +25,10 @@ const onClickLeft = () => {
 }
 
 // 1. 接收父传子变量
-defineProps<{
+const props = defineProps<{
   title: string
   rightText?: string // 指定属性可选的
+  back?: () => void // 接收一个back函数，自定义返回逻辑
 }>()
 // 2. 子传父
 const emit = defineEmits<{

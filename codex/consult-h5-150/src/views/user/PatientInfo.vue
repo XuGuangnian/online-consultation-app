@@ -4,7 +4,7 @@ import type { PatientList } from '@/types/user'
 import { onMounted, ref } from 'vue'
 
 const patientList = ref<PatientList>([])
-// 获取患者列表方法
+// 1. 获取患者列表方法
 const loadList = async () => {
   const { data } = await getPatientList()
   console.log('患者列表：', data)
@@ -13,6 +13,13 @@ const loadList = async () => {
 onMounted(() => {
   loadList()
 })
+// 2. 新增患者
+// 控制新增患者弹层显隐
+const show = ref(false)
+// 打开新增患者弹层
+const openDialog = () => {
+  show.value = true
+}
 </script>
 
 <template>
@@ -40,7 +47,7 @@ onMounted(() => {
       </div>
 
       <!-- 点击新增患者 -->
-      <div class="patient-add" v-if="patientList.length < 6">
+      <div @click="openDialog" class="patient-add" v-if="patientList.length < 6">
         <cp-icon name="user-add" />
         <p>添加患者</p>
       </div>
@@ -50,10 +57,25 @@ onMounted(() => {
     <div class="patient-next" v-if="false">
       <van-button type="primary" round block>下一步</van-button>
     </div>
+
+    <!-- 新增患者弹层 -->
+    <van-popup v-model:show="show" position="left">
+      <!-- 放置弹层内容 -->
+      <!-- 1. 导航栏 -->
+      <cp-nav-bar title="新增患者"></cp-nav-bar>
+      <!-- 2. 新增患者表单 -->
+      123
+    </van-popup>
   </div>
 </template>
 
 <style lang="scss" scoped>
+::v-deep .van-popup {
+  width: 100%;
+  height: 100%;
+  padding-top: 46px;
+  box-sizing: border-box;
+}
 .patient-page {
   padding: 46px 0 80px;
 }

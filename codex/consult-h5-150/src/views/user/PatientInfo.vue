@@ -29,7 +29,7 @@ const options = [
   { label: '女', value: 0 }
 ]
 // 存储选中的性别value值
-const gender = ref(0)
+// const gender = ref(0)
 // 新增患者表单数据
 const patient = ref<Patient>({
   name: '', // 患者名字

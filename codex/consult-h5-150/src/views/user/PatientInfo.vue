@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { getPatientList } from '@/api/user'
+import { getPatientList, addPatient } from '@/api/user'
 import type { PatientList, Patient } from '@/types/user'
+import { Toast } from 'vant'
 import { onMounted, ref, watch } from 'vue'
+// 导入校验身份证格式插件
+import Validator from 'id-validator'
 
 const patientList = ref<PatientList>([])
 // 1. 获取患者列表方法
@@ -15,9 +18,11 @@ onMounted(() => {
 })
 // 2. 新增患者
 // 控制新增患者弹层显隐
-const show = ref(true)
+const show = ref(false)
 // 打开新增患者弹层
 const openDialog = () => {
+  // 重置患者表单数据为默认值
+  patient.value = { ...defaultPatinet }
   show.value = true
 }
 const closeDialog = () => {
@@ -30,13 +35,15 @@ const options = [
 ]
 // 存储选中的性别value值
 // const gender = ref(0)
-// 新增患者表单数据
-const patient = ref<Patient>({
+// 准备一个患者表单数据默认值
+const defaultPatinet: Patient = {
   name: '', // 患者名字
   idCard: '', // 患者身份证
   gender: 1, // 患者性别
   defaultFlag: 0 // 是否设置为默认患者 0不是默认 1是默认患者
-})
+}
+// 新增患者表单数据
+const patient = ref<Patient>({ ...defaultPatinet })
 // console.log(patient)
 // 是否是默认患者
 const defaultFlag = ref(false)
@@ -45,6 +52,36 @@ watch(defaultFlag, () => {
   console.log('是否是默认患者', defaultFlag)
   patient.value.defaultFlag = defaultFlag.value ? 1 : 0
 })
+
+// 点击导航栏保存按钮=》提交
+// 创建校验身份证插件实例
+const cardValid = new Validator()
+const submit = async () => {
+  /**
+   * 流程：
+   * 1. 校验患者名字和身份证
+   *    校验身份证格式：
+   * 2. 校验通过调用api函数新增患者
+   *    新增成功后：
+   *    1. 关闭弹层
+   *    2. 刷新患者列表
+   */
+  if (!patient.value.name) return Toast.fail('请输入患者名字！')
+  if (!patient.value.idCard) return Toast.fail('请输入患者身份证！')
+  // 校验身份证格式
+  if (!cardValid.isValid(patient.value.idCard)) return Toast.fail('身份证格式错误！')
+  const { sex } = cardValid.getInfo(patient.value.idCard)
+  if (patient.value.gender !== sex) return Toast.fail('选择的性别和身份证性别不一致！')
+  try {
+    console.log('可以新增患者了')
+    await addPatient(patient.value)
+    closeDialog()
+    loadList()
+    Toast.success('保存成功')
+  } catch (error) {
+    console.log(error)
+  }
+}
 </script>
 
 <template>
@@ -87,7 +124,12 @@ watch(defaultFlag, () => {
     <van-popup v-model:show="show" position="bottom">
       <!-- 放置弹层内容 -->
       <!-- 1. 导航栏 -->
-      <cp-nav-bar title="新增患者" :back="closeDialog"></cp-nav-bar>
+      <cp-nav-bar
+        title="新增患者"
+        @click-right="submit"
+        right-text="保存"
+        :back="closeDialog"
+      ></cp-nav-bar>
       <!-- 2. 新增患者表单 -->
       <van-form autocomplete="off">
         <van-field v-model="patient.name" label="真实姓名" placeholder="请输入真实姓名" />
@@ -114,7 +156,7 @@ watch(defaultFlag, () => {
 </template>
 
 <style lang="scss" scoped>
-::v-deep .van-popup {
+::v-deep() .van-popup {
   width: 100%;
   height: 100%;
   padding-top: 46px;

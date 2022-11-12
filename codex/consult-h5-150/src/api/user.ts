@@ -1,4 +1,4 @@
-import type { User, CodeType, UserInfo, PatientList } from '@/types/user'
+import type { User, CodeType, UserInfo, PatientList, Patient } from '@/types/user'
 import { request } from '@/utils/request'
 
 // 说明❓：封装api函数，通过request.method<指定data数据类型>
@@ -24,3 +24,6 @@ export function userInfo() {
 }
 // 获患者信息列表
 export const getPatientList = () => request.get<PatientList>('/patient/mylist')
+
+// 添加患者信息
+export const addPatient = (patient: Patient) => request.post('/patient/add', patient)

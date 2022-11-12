@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
+import { ref } from 'vue'
 // 导入校验规则
 import { mobileRules, passwordRules, codeRules } from '@/utils/rules'
-import { Toast, type FormInstance } from 'vant'
+import { Toast } from 'vant'
 // 导入账号密码登录api
-import { loginByPassword, sendMobileCode, loginByMobile } from '@/api/user'
+import { loginByPassword, loginByMobile } from '@/api/user'
 // 导入用户store
 import { useUserStore } from '@/stores'
 import { useRoute, useRouter } from 'vue-router'
+import { useSendCode } from './service'
 
 const clickRight = () => {
   console.log('点击了右边文字')
@@ -81,35 +82,36 @@ const login = async () => {
 // 2. 验证码登录
 // == 发送验证码 ==
 const isPass = ref(true) // true 密码登录 | false 短信登录
-const code = ref('') // 验证码
-const time = ref(0) // 倒计时时间
-const form = ref<FormInstance>() // 获取表单实例
-let timeId: number // 倒计时定时器ID
-const send = async () => {
-  // 已经倒计时time的值大于0，60s内不能重复发送验证码
-  if (time.value > 0) return
-  try {
-    // 输入手机号时，对手机号进行校验
-    await form.value?.validate('mobile')
-    const res = await sendMobileCode(mobile.value, 'login')
-    Toast.success('发送成功') // Toast.success 只能传一个参数
-    console.log(res.data.code)
-    // 填入验证码
-    code.value = res.data.code
-    // 倒计时开始
-    time.value = 60
-    timeId = window.setInterval(() => {
-      time.value--
-      if (time.value <= 0) window.clearInterval(timeId)
-    }, 1000)
-  } catch (error) {
-    console.log(error)
-  }
-}
-onUnmounted(() => {
-  // 避免内存泄露
-  window.clearInterval(timeId)
-})
+// const code = ref('') // 验证码
+// const time = ref(0) // 倒计时时间
+// const form = ref<FormInstance>() // 获取表单实例
+// let timeId: number // 倒计时定时器ID
+// const send = async () => {
+//   // 已经倒计时time的值大于0，60s内不能重复发送验证码
+//   if (time.value > 0) return
+//   try {
+//     // 输入手机号时，对手机号进行校验
+//     await form.value?.validate('mobile')
+//     const res = await sendMobileCode(mobile.value, 'login')
+//     Toast.success('发送成功') // Toast.success 只能传一个参数
+//     console.log(res.data.code)
+//     // 填入验证码
+//     code.value = res.data.code
+//     // 倒计时开始
+//     time.value = 60
+//     timeId = window.setInterval(() => {
+//       time.value--
+//       if (time.value <= 0) window.clearInterval(timeId)
+//     }, 1000)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+// onUnmounted(() => {
+//   // 避免内存泄露
+//   window.clearInterval(timeId)
+// })
+const { code, time, form, send } = useSendCode(mobile.value)
 </script>
 
 <template>

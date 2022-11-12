@@ -37,6 +37,7 @@ const patient = ref<Patient>({
   gender: 1, // 患者性别
   defaultFlag: 0 // 是否设置为默认患者 0不是默认 1是默认患者
 })
+// console.log(patient)
 // 是否是默认患者
 const defaultFlag = ref(false)
 // 监控defaultFlag变化，把defaultFlag选中的boolean值转换成0 | 1

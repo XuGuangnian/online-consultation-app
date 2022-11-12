@@ -40,7 +40,7 @@ export interface Patient {
   /**
    * 性别 1男 0女
    */
-  gender: number
+  gender: 0 | 1
 
   id?: string
   /**

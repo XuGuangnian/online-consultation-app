@@ -3,12 +3,12 @@
 defineProps<{
   // 单选列表
   options: { label: string; value: number | string }[]
-  modelValue: number // 选中的value值
+  modelValue: number | string // 选中的value值
 }>()
 
 // 自定义事件
 const emit = defineEmits<{
-  (e: 'update:modelValue', data: number): void
+  (e: 'update:modelValue', data: number | string): void
 }>()
 </script>
 

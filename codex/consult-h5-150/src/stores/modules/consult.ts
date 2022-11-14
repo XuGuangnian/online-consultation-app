@@ -14,7 +14,7 @@ export const useConsultStore = defineStore(
      * 
      * //全局变量
       1. == 问诊记录数据，创建订单使用 == 
-      // 修改全局变量的方法
+      修改全局变量的方法
       2. 修改问诊类型type方法：1找医生 2极速问诊 3开药问诊
       3. 修改极速问诊类型illnessType方法：0普通  1三甲
       4. 修改科室id方法
@@ -24,11 +24,11 @@ export const useConsultStore = defineStore(
       8. 清空问诊记录方法
      */
     const consult = ref<PartialConsult>({})
-    // 1. 首页使用：记录问诊类型
+    // 1. 首页使用：记录问诊类型 =》1-问医生 2-极速问诊 3-开药问诊
     const setType = (type: ConsultType) => {
       consult.value.type = type
     }
-    // 2. 问诊级别页面：记录问诊界别=》1. 三甲 2. 普通
+    // 2. 问诊级别页面：记录问诊级别=》1-三甲 0-普通
     const setIllnessType = (type: 0 | 1) => {
       consult.value.illnessType = type
     }

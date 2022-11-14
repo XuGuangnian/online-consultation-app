@@ -147,7 +147,7 @@ onMounted(() => {
           @delete="onDeleteImg"
           v-model="fileList"
         ></van-uploader>
-        <p class="tip">上传内容仅医生可见,最多9张图,最大5MB</p>
+        <p v-if="fileList.length === 0" class="tip">上传内容仅医生可见,最多9张图,最大5MB</p>
       </div>
     </div>
 

@@ -34,9 +34,7 @@
     ></van-field>
     <div class="footer">
       <van-checkbox>匿名评价</van-checkbox>
-      <van-button type="primary" size="small" round>
-        提交评价
-      </van-button>
+      <van-button type="primary" size="small" round> 提交评价 </van-button>
     </div>
   </div>
 </template>

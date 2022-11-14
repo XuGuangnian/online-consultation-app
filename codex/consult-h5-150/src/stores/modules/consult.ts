@@ -2,7 +2,7 @@
  * 极速问诊store
  */
 import type { ConsultType } from '@/enums'
-import type { PartialConsult } from '@/types/consult'
+import type { PartialConsult, InllnessType } from '@/types/consult'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -37,9 +37,7 @@ export const useConsultStore = defineStore(
       consult.value.depId = id
     }
     // 4. 病情描述页面：记录病情
-    const setIllness = (
-      illness: Pick<PartialConsult, 'illnessDesc' | 'illnessTime' | 'pictures' | 'consultFlag'>
-    ) => {
+    const setIllness = (illness: InllnessType) => {
       consult.value.illnessDesc = illness.illnessDesc
       consult.value.illnessTime = illness.illnessTime
       consult.value.consultFlag = illness.consultFlag

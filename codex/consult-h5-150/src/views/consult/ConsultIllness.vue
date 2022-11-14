@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+import type { InllnessType } from '@/types/consult'
+
 // 患病时间选项
 const timeOptions = [
   { label: '一周内', value: 1 },
@@ -11,6 +14,14 @@ const flagOptions = [
   { label: '就诊过', value: 0 },
   { label: '没就诊过', value: 1 }
 ]
+
+// 1. 记录病情描述：基本情况、患病时间、是否就诊过、病情描述图片
+const formData = ref<InllnessType>({
+  illnessDesc: '',
+  illnessTime: undefined,
+  consultFlag: undefined,
+  pictures: []
+})
 </script>
 
 <template>
@@ -28,20 +39,24 @@ const flagOptions = [
     <!-- 2. 病情描述-表单 -->
     <div class="illness-form">
       <!-- 病情描述-基本情况 -->
+      <!-- 1. 输入病情 -->
       <van-field
+        v-model="formData.illnessDesc"
         type="textarea"
         rows="3"
         placeholder="请详细描述您的病情，病情描述不能为空"
       ></van-field>
+      <!-- 2. 选择患病时间 -->
       <div class="item">
         <p>本次患病多久了？</p>
-        <cp-radio-btn :options="timeOptions" />
+        <cp-radio-btn v-model="formData.illnessTime" :options="timeOptions" />
       </div>
+      <!-- 3. 选择是否就诊过 -->
       <div class="item">
         <p>此次病情是否去医院就诊过？</p>
-        <cp-radio-btn :options="flagOptions" />
+        <cp-radio-btn v-model="formData.consultFlag" :options="flagOptions" />
       </div>
-      <!-- 病情描述-图片上传 -->
+      <!-- 4. 病情描述-图片上传（作业） -->
       <div class="illness-img">
         <van-uploader></van-uploader>
         <p class="tip">上传内容仅医生可见,最多9张图,最大5MB</p>

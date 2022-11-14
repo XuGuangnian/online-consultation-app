@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import type { InllnessType } from '@/types/consult'
+import type { UploaderAfterRead, UploaderFileListItem } from 'vant/lib/uploader/types'
+import type { InllnessType, Image } from '@/types/consult'
 import { useConsultStore } from '@/stores'
 import { useRouter } from 'vue-router'
 import { Dialog } from 'vant'
+import { uploadImage } from '@/api/consult'
 
 // 患病时间选项
 const timeOptions = [
@@ -26,7 +28,32 @@ const formData = ref<InllnessType>({
   pictures: []
 })
 // 2. 病情描述图片上传（作业）
-
+const fileList = ref<Image[]>([])
+const onAfterRead: UploaderAfterRead = (item) => {
+  // TODO 上传图片：调用后台api上传接口
+  if (Array.isArray(item)) return
+  if (!item.file) return
+  // 开始上传
+  item.status = 'uploading'
+  item.message = '上传中...'
+  uploadImage(item.file)
+    .then((res) => {
+      item.status = 'done'
+      item.message = undefined
+      // 给 item 加上 url 是为了删除可以根据 url 进行删除
+      item.url = res.data.url
+      // 存储上传成功图片url
+      formData.value.pictures?.push(res.data)
+    })
+    .catch(() => {
+      item.status = 'failed'
+      item.message = '上传失败'
+    })
+}
+const onDeleteImg = (item: UploaderFileListItem) => {
+  // TODO 删除图片
+  formData.value.pictures = formData.value.pictures?.filter((pic) => pic.url !== item.url)
+}
 // 3. 保存病情描述到pinia并跳转到患者选择页面
 // 通过计算属性处理按钮是否可用
 const disabled = computed(() => {
@@ -64,9 +91,11 @@ onMounted(() => {
     })
       .then(() => {
         // 点击确定=》帮我恢复
-        const { illnessDesc, illnessTime, consultFlag } = store.consult
+        const { illnessDesc, illnessTime, consultFlag, pictures } = store.consult
         // 给表单重新赋值
-        formData.value = { illnessDesc, illnessTime, consultFlag }
+        formData.value = { illnessDesc, illnessTime, consultFlag, pictures }
+        // 图片回显预览
+        fileList.value = pictures || []
       })
       .catch(() => {
         console.log('取消恢复')
@@ -109,7 +138,15 @@ onMounted(() => {
       </div>
       <!-- 4. 病情描述-图片上传（作业） -->
       <div class="illness-img">
-        <van-uploader></van-uploader>
+        <van-uploader
+          max-count="9"
+          :max-size="5 * 1024 * 1024"
+          upload-icon="photo-o"
+          upload-text="上传图片"
+          :after-read="onAfterRead"
+          @delete="onDeleteImg"
+          v-model="fileList"
+        ></van-uploader>
         <p class="tip">上传内容仅医生可见,最多9张图,最大5MB</p>
       </div>
     </div>

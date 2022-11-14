@@ -4,7 +4,8 @@ import type {
   PageParams,
   DoctorPage,
   FollowType,
-  TopDep
+  TopDep,
+  Image
 } from '@/types/consult'
 import { request } from '@/utils/request'
 // 获取健康知识列表
@@ -18,3 +19,9 @@ export const followDoctor = (id: string, type: FollowType = 'doc') =>
   request.post('/like', { id, type })
 // 获取所有科室
 export const getAllDep = () => request.get<TopDep[]>('/dep/all')
+// 上传病情描述图片
+export const uploadImage = (file: File) => {
+  const fd = new FormData()
+  fd.append('file', file)
+  return request.post<Image>('/upload', fd)
+}

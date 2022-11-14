@@ -16,3 +16,4 @@ export default pinia
 
 // 在index.ts对modules中store仓库做统一导出
 export * from './modules/user'
+export * from './modules/consult'

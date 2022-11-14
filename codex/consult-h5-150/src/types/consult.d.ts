@@ -1,3 +1,5 @@
+import { ConsultType, ConsultTime } from '@/enums'
+
 // 文章类型
 export type KnowledgeType = 'like' | 'recommend' | 'fatReduction' | 'food'
 // 通用泛型工具
@@ -82,3 +84,27 @@ export type DoctorPage = PageData<DoctorList>
 // }
 // 关注的类型
 export type FollowType = 'doc' | 'knowledge' | 'topic' | 'disease'
+
+// 3. 极速问诊
+// 图片列表
+export type Image = {
+  id: string
+  url: string
+}
+// 问诊记录
+export type Consult = {
+  id: string
+  type: ConsultType // 问诊类型：1找医生 2极速问诊 3开药问诊
+  illnessType: 0 | 1 // 问诊级别：0普通  1三甲
+  depId: string // 问诊科室id
+  illnessDesc: string // 病情描述
+  illnessTime: ConsultTime // 患病时间
+  consultFlag: 0 | 1 // 是否问诊过：0未问诊1问诊过
+  pictures: Image[] // 病例信息-图片集合
+  patientId: string // 患者id
+  couponId: string // 优惠卷id
+}
+
+// 问诊记录-全部可选
+// Required 转换为全部必须   Partial 转换问全部可选  两个内置的泛型类型
+export type PartialConsult = Partial<Consult>

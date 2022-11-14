@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { InllnessType } from '@/types/consult'
+import { useConsultStore } from '@/stores'
+import { useRouter } from 'vue-router'
+import { Dialog } from 'vant'
 
 // 患病时间选项
 const timeOptions = [
@@ -21,6 +24,54 @@ const formData = ref<InllnessType>({
   illnessTime: undefined,
   consultFlag: undefined,
   pictures: []
+})
+// 2. 病情描述图片上传（作业）
+
+// 3. 保存病情描述到pinia并跳转到患者选择页面
+// 通过计算属性处理按钮是否可用
+const disabled = computed(() => {
+  return (
+    !formData.value.illnessDesc ||
+    formData.value.illnessTime === undefined ||
+    formData.value.consultFlag === undefined
+  )
+})
+const store = useConsultStore()
+const router = useRouter()
+const next = () => {
+  /**
+   * 1. 保存病情描述到pinia
+   * 2. 跳转到患者选择页面
+   */
+  store.setIllness(formData.value)
+  // isSel=1 代表家庭档案作为选择患者使用
+  router.push('/user/patient?isSel=1')
+}
+
+// 4. 用户填完病情描述后把页面关了或者从下一个页面回来，可以快速基于之前的数据进行修改
+onMounted(() => {
+  /**
+   * 每次进入到病情描述页面：
+   * 1. 判断store中是否存储的有病情描述信息
+   * 2. 如果有就给用户提示：是否恢复之前的填写
+   */
+  if (store.consult.illnessDesc) {
+    Dialog.confirm({
+      title: '温馨提示',
+      message: '是否恢复之前填写的病情数据？',
+      // 说明❓：回退到当前页面情况，Dialog.confirm会自动关闭
+      closeOnPopstate: false // 是否在页面回退时自动关闭,注意默认值为true
+    })
+      .then(() => {
+        // 点击确定=》帮我恢复
+        const { illnessDesc, illnessTime, consultFlag } = store.consult
+        // 给表单重新赋值
+        formData.value = { illnessDesc, illnessTime, consultFlag }
+      })
+      .catch(() => {
+        console.log('取消恢复')
+      })
+  }
 })
 </script>
 
@@ -62,6 +113,9 @@ const formData = ref<InllnessType>({
         <p class="tip">上传内容仅医生可见,最多9张图,最大5MB</p>
       </div>
     </div>
+
+    <!-- 下一步按钮：保存病情描述并跳转到患者选择页面 -->
+    <van-button :disabled="disabled" block round type="primary" @click="next"> 下一步 </van-button>
   </div>
 </template>
 

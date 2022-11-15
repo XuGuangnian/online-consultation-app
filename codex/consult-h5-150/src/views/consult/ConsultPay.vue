@@ -4,26 +4,35 @@ import { getPatientDetail } from '@/api/user'
 import { useConsultStore } from '@/stores'
 import type { ConsultOrderPreData } from '@/types/consult'
 import type { Patient } from '@/types/user'
-import { Toast } from 'vant'
+import { Dialog, Toast } from 'vant'
 import { onMounted, ref } from 'vue'
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
 // 1. 获取支付信息
 const payInfo = ref<ConsultOrderPreData>()
 const store = useConsultStore()
+const router = useRouter()
 const getPayInfo = async () => {
-  const { data } = await getConsultOrderPre({
-    type: store.consult.type, // 问诊类型：极速问诊
-    illnessType: store.consult.illnessType // 问诊级别：三甲或普通
-  })
-  console.log('支付信息:', data)
-  payInfo.value = data
-  // 存储优惠券ID
-  store.setCunpon(data.couponId)
+  try {
+    const { data } = await getConsultOrderPre({
+      type: store.consult.type, // 问诊类型：极速问诊
+      illnessType: store.consult.illnessType // 问诊级别：三甲或普通
+    })
+    console.log('支付信息:', data)
+    payInfo.value = data
+    // 存储优惠券ID
+    store.setCunpon(data.couponId)
+  } catch (error) {
+    // 访问支付页面，但是缺少问诊数据，跳回首页
+    Toast.fail('缺少必要的问诊信息，请重新选择！')
+    router.push('/home')
+  }
 }
 
 // 2. 获取患者信息
 const patient = ref<Patient>()
 const getPatient = async () => {
+  if (!store.consult.patientId) return
   const { data } = await getPatientDetail(store.consult.patientId)
   console.log('患者信息：', data)
   patient.value = data
@@ -53,6 +62,32 @@ const openPay = async () => {
     store.clear()
   } catch (error) {
     console.log(error)
+  }
+}
+
+// 4. 支付窗口打开后，订单创建成功
+onBeforeRouteLeave(() => {
+  // 存在订单ID，说明订单已经创建成功了，页面不能再执行跳转
+  if (orderId.value) return false
+})
+// 控制是否关闭支付窗口
+const onClose = async () => {
+  try {
+    await Dialog.confirm({
+      title: '关闭支付',
+      message: '取消支付将无法获得医生回复，医生接诊名额有限，是否确认关闭？',
+      cancelButtonText: '仍要关闭',
+      confirmButtonText: '继续支付'
+    })
+    // 点击确定-继续支付代码走到这里
+    return false // onClose函数返回值是boolean
+  } catch (error) {
+    // 点击仍要关闭代码走到这里
+    console.log(error)
+    // 说明❓：订单ID改为空之后，才能正常跳转问诊记录列表
+    orderId.value = ''
+    router.push('/user/consult')
+    return true
   }
 }
 </script>
@@ -96,7 +131,12 @@ const openPay = async () => {
     />
 
     <!-- 支付弹层 -->
-    <van-action-sheet v-model:show="show" title="选择支付方式">
+    <van-action-sheet
+      :before-close="onClose"
+      :closeable="false"
+      v-model:show="show"
+      title="选择支付方式"
+    >
       <div class="pay-type">
         <p class="amount">￥{{ payInfo?.actualPayment.toFixed(2) }}</p>
         <van-cell-group>

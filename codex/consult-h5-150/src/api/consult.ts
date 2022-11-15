@@ -7,7 +7,8 @@ import type {
   TopDep,
   Image,
   ConsultOrderPreData,
-  ConsultOrderPreParams
+  ConsultOrderPreParams,
+  PartialConsult
 } from '@/types/consult'
 import { request } from '@/utils/request'
 // 获取健康知识列表
@@ -30,3 +31,7 @@ export const uploadImage = (file: File) => {
 // 拉取预支付订单信息
 export const getConsultOrderPre = (params: ConsultOrderPreParams) =>
   request.get<ConsultOrderPreData>('/patient/consult/order/pre', { params })
+
+// 生成订单
+export const createConsultOrder = (data: PartialConsult) =>
+  request.post<{ id: string }>('/patient/consult/order', data)

@@ -2,9 +2,38 @@
 import { getPatientList, addPatient, editPatient, delPatient } from '@/api/user'
 import type { PatientList, Patient } from '@/types/user'
 import { Dialog, Toast } from 'vant'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 // 导入校验身份证格式插件
 import Validator from 'id-validator'
+import { useRoute, useRouter } from 'vue-router'
+import { useConsultStore } from '@/stores'
+
+// 3. 家庭档案支持选择患者功能
+const route = useRoute()
+console.log('路由参数：', route)
+// 是否支持选择档案中的患者使用：true 支持 | false 不支持
+const isSel = computed(() => route.query.isSel === '1')
+// 点击选中患者的ID
+const selectedPatientId = ref<string | undefined>('')
+const selPatient = (id: string | undefined) => {
+  // 判断是否支持选中
+  if (isSel.value) {
+    selectedPatientId.value = id
+  }
+}
+// 点击进入支付页面
+const store = useConsultStore()
+const router = useRouter()
+const next = () => {
+  /**
+   * 1. 判断是否有选择患者
+   * 2. 存储选中患者ID到pinia
+   * 3. 跳转支付页面
+   */
+  if (!selectedPatientId.value) return Toast.fail('请选择一个患者！')
+  store.setPatient(selectedPatientId.value)
+  router.push('/consult/pay')
+}
 
 const patientList = ref<PatientList>([])
 // 1. 获取患者列表方法
@@ -12,6 +41,22 @@ const loadList = async () => {
   const { data } = await getPatientList()
   console.log('患者列表：', data)
   patientList.value = data
+  // 如果支持选择患者同时满足档案中存在患者
+  if (isSel.value && data.length > 0) {
+    /**
+     * 从患者列表中获取默认患者：
+     * 1. 如果有：默认患者选中
+     * 2. 如果没有：患者中第一个默认选中
+     */
+    const defPatient = data.find((item) => item.defaultFlag === 1)
+    if (defPatient) {
+      // 有
+      selectedPatientId.value = defPatient.id
+    } else {
+      // 没有
+      selectedPatientId.value = data[0].id
+    }
+  }
 }
 onMounted(() => {
   loadList()
@@ -110,15 +155,21 @@ const remove = async () => {
 <template>
   <div class="patient-page">
     <!-- 1. 导航栏 -->
-    <cp-nav-bar title="家庭档案"></cp-nav-bar>
+    <cp-nav-bar :title="isSel ? '选择患者' : '家庭档案'"></cp-nav-bar>
     <!-- 头部选择提示 -->
-    <div class="patient-change" v-if="false">
+    <div class="patient-change" v-if="isSel">
       <h3>请选择患者信息</h3>
       <p>以便医生给出更准确的治疗，信息仅医生可见</p>
     </div>
     <!-- 2. 患者列表 -->
     <div class="patient-list">
-      <div v-for="item in patientList" :key="item.id" class="patient-item">
+      <div
+        @click="selPatient(item.id)"
+        v-for="item in patientList"
+        :key="item.id"
+        class="patient-item"
+        :class="{ selected: selectedPatientId === item.id }"
+      >
         <div class="info">
           <span class="name">{{ item.name }}</span>
           <span class="id">{{ item.idCard.replace(/^(.{6})(?:\d+)(.{4})$/, '\$1******\$2') }}</span>
@@ -139,8 +190,8 @@ const remove = async () => {
       <div class="patient-tip">最多可添加 6 人</div>
     </div>
     <!-- 患者选择下一步 -->
-    <div class="patient-next" v-if="false">
-      <van-button type="primary" round block>下一步</van-button>
+    <div class="patient-next" v-if="isSel">
+      <van-button @click="next" type="primary" round block>下一步</van-button>
     </div>
 
     <!-- 新增患者弹层 -->

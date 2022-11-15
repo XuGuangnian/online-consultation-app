@@ -4,7 +4,7 @@ import EvaluateCard from './EvaluateCard.vue'
 </script>
 
 <template>
-  <!-- 消息列表 -->
+  <!-- 消息列表：医生和患者聊天的内容（列表） -->
   <template v-for="item in 2" :key="item">
     <!-- 1. 病情描述 -->
     <div class="msg msg-illness" v-if="true">

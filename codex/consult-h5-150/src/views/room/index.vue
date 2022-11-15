@@ -7,9 +7,9 @@ import RoomMessage from './components/RoomMessage.vue'
 <template>
   <div class="room-page">
     <cp-nav-bar title="医生问诊室" />
-    <!-- 1. 问诊状态-->
+    <!-- 1. 问诊状态：未接诊、咨询中、问诊结束-->
     <room-status />
-    <!-- 2. 问诊聊天列表消息 -->
+    <!-- 2. 问诊聊天列表消息：咨询中的医生和患者聊天的内容（列表） -->
     <room-message />
     <!-- 3. 底部操作栏：发消息 -->
     <room-action />

@@ -1,11 +1,45 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getConsultOrderPre } from '@/api/consult'
+import { getPatientDetail } from '@/api/user'
+import { useConsultStore } from '@/stores'
+import type { ConsultOrderPreData } from '@/types/consult'
+import type { Patient } from '@/types/user'
+import { onMounted, ref } from 'vue'
+
+// 1. 获取支付信息
+const payInfo = ref<ConsultOrderPreData>()
+const store = useConsultStore()
+const getPayInfo = async () => {
+  const { data } = await getConsultOrderPre({
+    type: store.consult.type, // 问诊类型：极速问诊
+    illnessType: store.consult.illnessType // 问诊级别：三甲或普通
+  })
+  console.log('支付信息:', data)
+  payInfo.value = data
+  // 存储优惠券ID
+  store.setCunpon(data.couponId)
+}
+
+// 2. 获取患者信息
+const patient = ref<Patient>()
+const getPatient = async () => {
+  const { data } = await getPatientDetail(store.consult.patientId)
+  console.log('患者信息：', data)
+  patient.value = data
+}
+
+onMounted(() => {
+  getPayInfo()
+  getPatient()
+})
+</script>
 
 <template>
   <div class="consult-pay-page">
     <cp-nav-bar title="支付" />
     <!-- 1. 支付信息 -->
     <div class="pay-info">
-      <p class="tit">图文问诊 49 元</p>
+      <p class="tit">图文问诊 {{ payInfo?.payment }} 元</p>
       <img class="img" src="@/assets/avatar-doctor.svg" />
       <p class="desc">
         <span>极速问诊</span>
@@ -13,21 +47,29 @@
       </p>
     </div>
     <van-cell-group>
-      <van-cell title="优惠券" value="-¥10.00" />
-      <van-cell title="积分抵扣" value="-¥10.00" />
-      <van-cell title="实付款" value="¥29.00" class="pay-price" />
+      <van-cell title="优惠券" :value="`-¥${payInfo?.couponDeduction}`" />
+      <van-cell title="积分抵扣" :value="`-¥${payInfo?.pointDeduction}`" />
+      <van-cell title="实付款" :value="`¥${payInfo?.actualPayment}`" class="pay-price" />
     </van-cell-group>
     <div class="pay-space"></div>
     <!-- 2. 患者信息  -->
     <van-cell-group>
-      <van-cell title="患者信息" value="李富贵 | 男 | 30岁"></van-cell>
-      <van-cell title="病情描述" label="头痛，头晕，恶心"></van-cell>
+      <van-cell
+        title="患者信息"
+        :value="`${patient?.name} | ${patient?.gender === 0 ? '女' : '男'} | ${patient?.age}岁`"
+      ></van-cell>
+      <van-cell title="病情描述" :label="store.consult.illnessDesc"></van-cell>
     </van-cell-group>
     <div class="pay-schema">
       <van-checkbox>我已同意 <span class="text">支付协议</span></van-checkbox>
     </div>
     <!-- 3. 支付 -->
-    <van-submit-bar button-type="primary" :price="2900" button-text="立即支付" text-align="left" />
+    <van-submit-bar
+      :price="payInfo!.actualPayment * 100"
+      button-type="primary"
+      button-text="立即支付"
+      text-align="left"
+    />
   </div>
 </template>
 

@@ -5,7 +5,9 @@ import type {
   DoctorPage,
   FollowType,
   TopDep,
-  Image
+  Image,
+  ConsultOrderPreData,
+  ConsultOrderPreParams
 } from '@/types/consult'
 import { request } from '@/utils/request'
 // 获取健康知识列表
@@ -25,3 +27,6 @@ export const uploadImage = (file: File) => {
   fd.append('file', file)
   return request.post<Image>('/upload', fd)
 }
+// 拉取预支付订单信息
+export const getConsultOrderPre = (params: ConsultOrderPreParams) =>
+  request.get<ConsultOrderPreData>('/patient/consult/order/pre', { params })

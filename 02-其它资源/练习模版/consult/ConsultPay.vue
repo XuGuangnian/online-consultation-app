@@ -26,7 +26,7 @@
     <div class="pay-schema">
       <van-checkbox>我已同意 <span class="text">支付协议</span></van-checkbox>
     </div>
-    <!-- 3. 支付 -->
+    <!-- 3. 打开支付弹层并创建问诊订单 -->
     <van-submit-bar button-type="primary" :price="2900" button-text="立即支付" text-align="left" />
   </div>
 </template>

@@ -86,7 +86,7 @@ const openPay = async () => {
     <div class="pay-schema">
       <van-checkbox v-model="agree">我已同意 <span class="text">支付协议</span></van-checkbox>
     </div>
-    <!-- 3. 支付 -->
+    <!-- 3. 打开支付弹层并创建问诊订单 -->
     <van-submit-bar
       :price="payInfo?.actualPayment! * 100"
       button-type="primary"

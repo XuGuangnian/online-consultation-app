@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getConsultOrderPre, createConsultOrder } from '@/api/consult'
+import { getConsultOrderPre, createConsultOrder, getConsultOrderPayUrl } from '@/api/consult'
 import { getPatientDetail } from '@/api/user'
 import { useConsultStore } from '@/stores'
 import type { ConsultOrderPreData } from '@/types/consult'
@@ -46,6 +46,7 @@ onMounted(() => {
 // 3. 点击立即支付，打开支付弹层
 const show = ref(false)
 const agree = ref(false)
+// 支付方式
 const paymentMethod = ref<0 | 1>()
 // 存储订单ID
 const orderId = ref('')
@@ -89,6 +90,18 @@ const onClose = async () => {
     router.push('/user/consult')
     return true
   }
+}
+// 5. 点击支付弹层中支付按钮，获取支付地址进行跳转支付
+const payOrder = async () => {
+  if (paymentMethod.value === undefined) return Toast.fail('请选择支付方式！')
+  Toast.loading('跳转支付！')
+  const { data } = await getConsultOrderPayUrl({
+    paymentMethod: paymentMethod.value, // 支付方式
+    orderId: orderId.value, // 问诊订单ID
+    payCallback: 'http://127.0.0.1:5173/room' // 支付成功后回跳地址
+  })
+  // 跳转到支付宝平台进行支付
+  window.location.href = data.payUrl
 }
 </script>
 
@@ -150,7 +163,7 @@ const onClose = async () => {
           </van-cell>
         </van-cell-group>
         <div class="btn">
-          <van-button type="primary" round block>立即支付</van-button>
+          <van-button @click="payOrder" type="primary" round block>立即支付</van-button>
         </div>
       </div>
     </van-action-sheet>

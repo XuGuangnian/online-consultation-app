@@ -91,22 +91,30 @@ const logout = () => {
         <h3>药品订单</h3>
         <router-link to="/order">全部订单 <van-icon name="arrow" /></router-link>
       </div>
-      <van-row>
+      <van-row v-if="userData.orderInfo">
         <van-col span="6">
-          <cp-icon name="user-paid" />
-          <p>待付款:{{ userData.orderInfo?.paidNumber }}</p>
+          <van-badge :content="userData.orderInfo.paidNumber">
+            <cp-icon name="user-paid" />
+          </van-badge>
+          <p>待付款</p>
         </van-col>
         <van-col span="6">
-          <cp-icon name="user-shipped" />
-          <p>待发货:{{ userData.orderInfo?.receivedNumber }}</p>
+          <van-badge :content="userData.orderInfo.shippedNumber || ''">
+            <cp-icon name="user-shipped" />
+          </van-badge>
+          <p>待发货</p>
         </van-col>
         <van-col span="6">
-          <cp-icon name="user-received" />
-          <p>待收货:{{ userData.orderInfo?.shippedNumber }}</p>
+          <van-badge :content="userData.orderInfo.receivedNumber || ''">
+            <cp-icon name="user-received" />
+          </van-badge>
+          <p>待收货</p>
         </van-col>
         <van-col span="6">
-          <cp-icon name="user-finished" />
-          <p>已完成:{{ userData.orderInfo?.finishedNumber }}</p>
+          <van-badge :content="userData.orderInfo.finishedNumber || ''">
+            <cp-icon name="user-finished" />
+          </van-badge>
+          <p>已完成</p>
         </van-col>
       </van-row>
     </div>

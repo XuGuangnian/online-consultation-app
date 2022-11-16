@@ -29,6 +29,7 @@ const routes = [
     // 父路由：layout公共布局页面
     path: '/',
     component: () => import('@/views/layout/index.vue'),
+    redirect: '/home',
     children: [
       // 二级路由：挂载点router-view放到父路由指定位置
       // 子路由：首页、健康百科、消息中心、我的

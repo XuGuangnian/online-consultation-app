@@ -12,12 +12,12 @@ import type { Message, TimeMessages } from '@/types/room'
 import { MsgType } from '@/enums'
 
 /**
- * 初始化创建ws长连接（打电话）
- * 1. 通过io函数传入后台ws连接地址和相关参数（token、orderId）
- * 2. 连接建立成功后的相关事件：
- *    1. 通过io实例的connect事件，监听连接是否成功
- *    2. 通过io实例的error事件，监听连接错误
- *    3. 通过io实例的disconnect事件，监听连接断开
+ * 1. 初始化创建ws长连接（打电话）
+ *    1. 通过io函数传入后台ws连接地址和相关参数（token、orderId）
+ *    2. 连接建立成功后的相关事件：
+ *       1. 通过io实例的connect事件，监听连接是否成功
+ *       2. 通过io实例的error事件，监听连接错误
+ *       3. 通过io实例的disconnect事件，监听连接断开
  */
 // 存储socket实例
 let socket: Socket
@@ -77,6 +77,11 @@ onUnmounted(() => {
   // 组件销毁关闭连接
   socket.close()
 })
+
+// 2. 发送文字消息=>父组件中使用socket.emit方法把聊天文字发送给ws服务器=》下发聊天内容给=》医生
+const sendText = (text: string) => {
+  console.log('文字消息内容：', text)
+}
 </script>
 
 <template>
@@ -87,7 +92,7 @@ onUnmounted(() => {
     <!-- 2. 问诊聊天列表消息：咨询中的医生和患者聊天的内容（列表） -->
     <room-message :list="list" />
     <!-- 3. 底部操作栏：发消息 -->
-    <room-action />
+    <room-action @send-text="sendText" />
   </div>
 </template>
 <style lang="scss" scoped>

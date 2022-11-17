@@ -8,7 +8,7 @@ import { baseURL } from '@/utils/request'
 import { useUserStore } from '@/stores'
 import { useRoute } from 'vue-router'
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
-import type { ConsultOrderItem } from '@/types/consult'
+import type { ConsultOrderItem, Image } from '@/types/consult'
 import type { Message, TimeMessages } from '@/types/room'
 import { MsgType, OrderType } from '@/enums'
 import { getConsultOrderDetail } from '@/api/consult'
@@ -73,6 +73,7 @@ const initSocket = () => {
 
   // 2. 接收医生回复的消息
   socket.on('receiveChatMsg', async (msg) => {
+    console.log('收消息：', msg)
     list.value.push(msg)
     // 说明❓：list消息列表更新后，直接滚动会失效
     // 原因❓：改了数据之后dom的更新是同步还是异步？异步的
@@ -120,6 +121,17 @@ const sendText = (text: string) => {
     }
   })
 }
+// 3. 发送图片消息
+const sendImg = (img: Image) => {
+  socket.emit('sendChatMsg', {
+    from: store.user.id, // 发消息的人ID=>登录人ID
+    to: consult.value?.docInfo?.id, //接收消息的人=>接诊的医生
+    msgType: MsgType.MsgImage, // 消息类型：图片消息
+    msg: {
+      picture: img
+    }
+  })
+}
 </script>
 
 <template>
@@ -130,7 +142,11 @@ const sendText = (text: string) => {
     <!-- 2. 问诊聊天列表消息：咨询中的医生和患者聊天的内容（列表） -->
     <room-message :list="list" />
     <!-- 3. 底部操作栏：发消息 -->
-    <room-action :disabled="consult?.status !== OrderType.ConsultChat" @send-text="sendText" />
+    <room-action
+      :disabled="consult?.status !== OrderType.ConsultChat"
+      @send-text="sendText"
+      @send-img="sendImg"
+    />
   </div>
 </template>
 <style lang="scss" scoped>

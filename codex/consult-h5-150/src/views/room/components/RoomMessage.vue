@@ -36,6 +36,12 @@ const perviewImg = (imgs?: Image[]) => {
 // 3. 格式化消息时间为时分
 const formatTime = (time: string) => dayjs(time).format('HH:mm')
 const store = useUserStore()
+
+// 4. 解决图片消息滚动失败问题
+const loadSuccess = () => {
+  // 等到图片下载渲染完执行滚动
+  window.scrollTo(0, document.body.scrollHeight)
+}
 </script>
 
 <template>
@@ -97,26 +103,20 @@ const store = useUserStore()
         <div class="pao">{{ msg.content }}</div>
       </div>
     </div>
-    <!-- 6. 发送图片 -->
-    <div class="msg msg-to" v-if="false">
+    <!-- 6. 发送图片：患者 -->
+    <div class="msg msg-to" v-if="msgType === MsgType.MsgImage && store.user?.id === from">
       <div class="content">
-        <div class="time">20:12</div>
-        <van-image
-          fit="contain"
-          src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg"
-        />
+        <div class="time">{{ formatTime(createTime) }}</div>
+        <van-image @load="loadSuccess()" fit="contain" :src="msg.picture?.url" />
       </div>
-      <van-image src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" />
+      <img class="van-image" src="@/assets/patient.png" />
     </div>
-    <!-- 7. 接收图片 -->
-    <div class="msg msg-from" v-if="false">
-      <van-image src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" />
+    <!-- 7. 接收图片：医生 -->
+    <div class="msg msg-from" v-if="msgType === MsgType.MsgImage && store.user?.id !== from">
+      <img class="van-image" src="@/assets/doctor.png" />
       <div class="content">
-        <div class="time">20:12</div>
-        <van-image
-          fit="contain"
-          src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg"
-        />
+        <div class="time">{{ formatTime(createTime) }}</div>
+        <van-image @load="loadSuccess()" fit="contain" :src="msg.picture?.url" />
       </div>
     </div>
     <!-- 8. 处方消息 -->

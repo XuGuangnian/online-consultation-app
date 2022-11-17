@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { uploadImage } from '@/api/consult'
+import type { Image } from '@/types/consult'
+import { Toast } from 'vant'
+import type { UploaderAfterRead } from 'vant/lib/uploader/types'
 
 // 1. 发送文字消息
 const text = ref('')
 const emit = defineEmits<{
   (e: 'send-text', data: string): void
+  (e: 'send-img', data: Image): void
 }>()
 // 说明❓：把输入的聊天文字子传父给父组件
 // 父组件中使用socket.emit方法把聊天文字发送给ws服务器=》下发聊天内容给=》医生
@@ -17,6 +22,26 @@ const sendText = () => {
 defineProps<{
   disabled: boolean
 }>()
+
+// 3. 发送图片消息
+const sendImage: UploaderAfterRead = async (data) => {
+  /**
+   * 点击上传图标触发：
+   * 1. 调用上传api函数，上传选择的图片
+   * 2. 上传成功后获取到url，通过子传父传递图片
+   * 3. 父组件获取到图片，使用socket.emit发送图片给医生
+   */
+  if (Array.isArray(data)) return
+  if (!data.file) return
+  // 开启loading
+  const t = Toast.loading('上传中...')
+  // 说明：{data:起别名}
+  const { data: img } = await uploadImage(data.file)
+  console.log('上传图片：', img)
+  // 关闭loading
+  t.clear()
+  emit('send-img', img)
+}
 </script>
 
 <template>
@@ -33,7 +58,7 @@ defineProps<{
       @keyup.enter="sendText"
     ></van-field>
     <!-- 2. 图片上传：发送图片消息 -->
-    <van-uploader :preview-image="false" :disabled="disabled">
+    <van-uploader :after-read="sendImage" :preview-image="false" :disabled="disabled">
       <cp-icon name="consult-img" />
     </van-uploader>
   </div>

@@ -20,6 +20,11 @@ import { getConsultOrderDetail } from '@/api/consult'
  *       1. 通过io实例的connect事件，监听连接是否成功
  *       2. 通过io实例的error事件，监听连接错误
  *       3. 通过io实例的disconnect事件，监听连接断开
+ *
+ * 重点：双向通信：服务器 《=》浏览器
+ * 业务场景：患者端 《=》ws服务器 《=》医生端
+ * 1. socket.on('和后台约定的事件名', callback回调函数) =》监听：接收服务器发送的数据
+ * 2. socket.emit('和后台约定的事件名', data数据) =》发送：发送数据给服务器
  */
 // 存储socket实例
 let socket: Socket

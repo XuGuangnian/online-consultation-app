@@ -7,7 +7,9 @@ import { io, type Socket } from 'socket.io-client'
 import { baseURL } from '@/utils/request'
 import { useUserStore } from '@/stores'
 import { useRoute } from 'vue-router'
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
+import type { Message, TimeMessages } from '@/types/room'
+import { MsgType } from '@/enums'
 
 /**
  * 初始化创建ws长连接（打电话）
@@ -19,6 +21,8 @@ import { onMounted, onUnmounted } from 'vue'
  */
 // 存储socket实例
 let socket: Socket
+// 聊天列表
+let list = ref<Message[]>([])
 const store = useUserStore()
 const route = useRoute()
 const initSocket = () => {
@@ -41,6 +45,29 @@ const initSocket = () => {
   socket.on('disconnect', () => {
     console.log('浏览器和ws服务器断开连接！')
   })
+  // 1. 接收ws服务器给浏览器（患者端）发送默认数据
+  // 说明：{data}:{data添加类型}
+  socket.on('chatMsgList', ({ data }: { data: TimeMessages[] }) => {
+    console.log('建立连接后，返回默认数据：', data)
+    const result: Message[] = []
+    data.forEach((item) => {
+      // 1. 发送消息的时间放入到result中
+      result.push({
+        id: item.createTime,
+        msgType: MsgType.Notify, // 决定使用哪个消息卡片渲染
+        createTime: item.createTime,
+        msg: {
+          content: item.createTime
+        }
+      })
+      // 2. 把items的消息放入到result中
+      result.push(...item.items)
+    })
+
+    // 把处理好的消息列表追加到list
+    list.value.push(...result)
+    console.log('最终默认消息列表：', list.value)
+  })
 }
 onMounted(() => {
   // 组件挂载建立连接
@@ -58,7 +85,7 @@ onUnmounted(() => {
     <!-- 1. 问诊状态：未接诊、咨询中、问诊结束-->
     <room-status />
     <!-- 2. 问诊聊天列表消息：咨询中的医生和患者聊天的内容（列表） -->
-    <room-message />
+    <room-message :list="list" />
     <!-- 3. 底部操作栏：发消息 -->
     <room-action />
   </div>

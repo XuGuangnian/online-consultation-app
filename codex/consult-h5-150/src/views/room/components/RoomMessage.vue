@@ -1,35 +1,50 @@
 <script setup lang="ts">
 // 评价医生
+import type { Message } from '@/types/room'
 import EvaluateCard from './EvaluateCard.vue'
+import { MsgType } from '@/enums'
+
+// 接收患者和医生聊天列表
+defineProps<{
+  list: Message[]
+}>()
 </script>
 
 <template>
   <!-- 消息列表：医生和患者聊天的内容（列表） -->
-  <template v-for="item in 2" :key="item">
+  <template v-for="{ msgType, msg, id } in list" :key="id">
+    <!-- == item的消息显示需要根据当前消息类型，匹配对应的消息卡片进行渲染 == -->
     <!-- 1. 病情描述 -->
-    <div class="msg msg-illness" v-if="true">
-      <div class="patient van-hairline--bottom">
-        <p>李富贵 男 31岁</p>
-        <p>一周内 | 未去医院就诊</p>
+    <div class="msg msg-illness" v-if="msgType === MsgType.CardPat">
+      <div class="patient van-hairline--bottom" v-if="msg.consultRecord">
+        <p>
+          {{ msg.consultRecord.patientInfo.name }}
+          {{ msg.consultRecord.patientInfo.genderValue }}
+          {{ msg.consultRecord.patientInfo.age }}岁
+        </p>
+        <p>
+          {{ msg.consultRecord.illnessTime }} |
+          {{ msg.consultRecord.consultFlag }}
+        </p>
       </div>
       <van-row>
         <van-col span="6">病情描述</van-col>
-        <van-col span="18">头痛、头晕、恶心</van-col>
+        <van-col span="18">{{ msg.consultRecord?.illnessDesc }}</van-col>
         <van-col span="6">图片</van-col>
-        <van-col span="18">点击查看</van-col>
+        <van-col span="18"> 点击查看 </van-col>
       </van-row>
     </div>
-    <!-- 2. 温馨提示 -->
-    <div class="msg msg-tip" v-if="true">
+    <!--2.  温馨提示 -->
+    <div class="msg msg-tip" v-if="msgType === MsgType.NotifyTip">
       <div class="content">
         <span class="green">温馨提示：</span>
-        <span>在线咨询不能代替面诊，医护人员建议仅供参考</span>
+        <span>{{ msg.content }}</span>
       </div>
     </div>
     <!-- 3. 通用通知 -->
-    <div class="msg msg-tip" v-if="true">
+    <div class="msg msg-tip" v-if="msgType === MsgType.Notify">
       <div class="content">
-        <span>医护人员正在赶来，请耐心等候</span>
+        <span>{{ msg.content }}</span>
       </div>
     </div>
     <!-- 4. 发送文字 -->

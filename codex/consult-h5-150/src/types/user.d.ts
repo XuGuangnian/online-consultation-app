@@ -42,6 +42,8 @@ export interface Patient {
    */
   gender: 0 | 1
 
+  genderValue?: 0 | 1
+
   id?: string
   /**
    * 患者身份证号

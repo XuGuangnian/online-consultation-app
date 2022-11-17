@@ -7,7 +7,7 @@ import { io, type Socket } from 'socket.io-client'
 import { baseURL } from '@/utils/request'
 import { useUserStore } from '@/stores'
 import { useRoute } from 'vue-router'
-import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import { onMounted, onUnmounted, ref, nextTick, provide } from 'vue'
 import type { ConsultOrderItem, Image } from '@/types/consult'
 import type { Message, TimeMessages } from '@/types/room'
 import { MsgType, OrderType } from '@/enums'
@@ -137,6 +137,20 @@ const sendImg = (img: Image) => {
     }
   })
 }
+// 4. 注意订单详情数据
+provide('consult', consult.value)
+// 评价成功，修改评价消息状态和数据，切换卡片展示
+const completeEva = (score: number) => {
+  // 获取评价信息数据
+  const item = list.value.find((item) => item.msgType === MsgType.CardEvaForm)
+  if (item) {
+    // 更新分数
+    item.msg.evaluateDoc = { score }
+    // 更新类型为已评价
+    item.msgType = MsgType.CardEva
+  }
+}
+provide('completeEva', completeEva)
 </script>
 
 <template>

@@ -46,3 +46,12 @@ export const getConsultOrderPayUrl = (data: {
 // 获取订单详情数据
 export const getConsultOrderDetail = (orderId: string) =>
   request.get<ConsultOrderItem>('/patient/consult/order/detail', { params: { orderId } })
+
+// 评价问诊
+export const evaluateConsultOrder = (data: {
+  docId: string // 医生ID
+  orderId: string // 订单ID
+  score: number
+  content: string
+  anonymousFlag: 0 | 1
+}) => request.post<{ id: string }>('/patient/order/evaluate', data)

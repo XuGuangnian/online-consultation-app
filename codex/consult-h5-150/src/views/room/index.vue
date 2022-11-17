@@ -82,6 +82,12 @@ const initSocket = () => {
     // window.scrollTo滚动到聊天列表最底部
     window.scrollTo(0, document.body.scrollHeight)
   })
+
+  // 3. 接收订单变化消息
+  socket.on('statusChange', () => {
+    getOrderDetail()
+    console.log('订单更新了！')
+  })
 }
 onMounted(() => {
   // 组件挂载建立连接
@@ -120,7 +126,7 @@ const sendText = (text: string) => {
   <div class="room-page">
     <cp-nav-bar title="医生问诊室" />
     <!-- 1. 问诊状态：未接诊、咨询中、问诊结束-->
-    <room-status />
+    <room-status :status="consult?.status" :countdown="consult?.countdown" />
     <!-- 2. 问诊聊天列表消息：咨询中的医生和患者聊天的内容（列表） -->
     <room-message :list="list" />
     <!-- 3. 底部操作栏：发消息 -->

@@ -9,6 +9,9 @@ import { timeOptions, flagOptions } from '@/api/const'
 import { ImagePreview, Toast } from 'vant'
 import type { Image } from '@/types/consult'
 
+import dayjs from 'dayjs'
+import { useUserStore } from '@/stores'
+
 // 接收患者和医生聊天列表
 defineProps<{
   list: Message[]
@@ -30,12 +33,15 @@ const perviewImg = (imgs?: Image[]) => {
     Toast('没有上传病情描述图片')
   }
 }
+// 3. 格式化消息时间为时分
+const formatTime = (time: string) => dayjs(time).format('HH:mm')
+const store = useUserStore()
 </script>
 
 <template>
   <!-- 消息列表：医生和患者聊天的内容（列表） -->
   <!-- template不会生成任何元素 -->
-  <template v-for="{ msgType, msg, id } in list" :key="id">
+  <template v-for="{ msgType, msg, id, from, createTime, fromAvatar } in list" :key="id">
     <!-- == item的消息显示需要根据当前消息类型，匹配对应的消息卡片进行渲染 == -->
     <!-- 1. 病情描述 -->
     <div class="msg msg-illness" v-if="msgType === MsgType.CardPat">
@@ -72,20 +78,21 @@ const perviewImg = (imgs?: Image[]) => {
         <span>{{ msg.content }}</span>
       </div>
     </div>
-    <!-- 4. 发送文字 -->
-    <div class="msg msg-to" v-if="false">
+    <!-- 4. 发送文字：患者发的消息 -->
+    <div class="msg msg-to" v-if="msgType === MsgType.MsgText && store.user?.id === from">
       <div class="content">
-        <div class="time">20:12</div>
-        <div class="pao">大夫你好？</div>
+        <div class="time">{{ formatTime(createTime) }}</div>
+        <div class="pao">{{ msg.content }}</div>
       </div>
-      <van-image src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" />
+      <van-image :src="store.user?.avatar" />
     </div>
-    <!-- 5. 接收文字 -->
-    <div class="msg msg-from" v-if="false">
-      <van-image src="https://yjy-oss-files.oss-cn-zhangjiakou.aliyuncs.com/tuxian/popular_3.jpg" />
+
+    <!-- 5. 接收文字：医生发的消息 -->
+    <div class="msg msg-from" v-if="msgType === MsgType.MsgText && store.user?.id !== from">
+      <van-image :src="fromAvatar" />
       <div class="content">
-        <div class="time">20:12</div>
-        <div class="pao">哪里不舒服</div>
+        <div class="time">{{ formatTime(createTime) }}</div>
+        <div class="pao">{{ msg.content }}</div>
       </div>
     </div>
     <!-- 6. 发送图片 -->

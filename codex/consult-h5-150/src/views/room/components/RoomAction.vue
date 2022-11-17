@@ -10,6 +10,7 @@ const emit = defineEmits<{
 // 父组件中使用socket.emit方法把聊天文字发送给ws服务器=》下发聊天内容给=》医生
 const sendText = () => {
   emit('send-text', text.value)
+  text.value = ''
 }
 </script>
 

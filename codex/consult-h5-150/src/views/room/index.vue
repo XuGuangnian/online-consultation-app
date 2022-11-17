@@ -76,7 +76,7 @@ const initSocket = () => {
     console.log('最终默认消息列表：', list.value)
   })
 
-  // 2. 接收医生回复的消息
+  // 2. 接收患者发送成功或医生回复的消息
   socket.on('receiveChatMsg', async (msg) => {
     console.log('收消息：', msg)
     list.value.push(msg)

@@ -10,7 +10,7 @@ import { useRoute } from 'vue-router'
 import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import type { ConsultOrderItem } from '@/types/consult'
 import type { Message, TimeMessages } from '@/types/room'
-import { MsgType } from '@/enums'
+import { MsgType, OrderType } from '@/enums'
 import { getConsultOrderDetail } from '@/api/consult'
 
 /**
@@ -124,7 +124,7 @@ const sendText = (text: string) => {
     <!-- 2. 问诊聊天列表消息：咨询中的医生和患者聊天的内容（列表） -->
     <room-message :list="list" />
     <!-- 3. 底部操作栏：发消息 -->
-    <room-action @send-text="sendText" />
+    <room-action :disabled="consult?.status !== OrderType.ConsultChat" @send-text="sendText" />
   </div>
 </template>
 <style lang="scss" scoped>

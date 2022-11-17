@@ -41,7 +41,7 @@ const store = useUserStore()
 <template>
   <!-- 消息列表：医生和患者聊天的内容（列表） -->
   <!-- template不会生成任何元素 -->
-  <template v-for="{ msgType, msg, id, from, createTime, fromAvatar } in list" :key="id">
+  <template v-for="{ msgType, msg, id, from, createTime } in list" :key="id">
     <!-- == item的消息显示需要根据当前消息类型，匹配对应的消息卡片进行渲染 == -->
     <!-- 1. 病情描述 -->
     <div class="msg msg-illness" v-if="msgType === MsgType.CardPat">
@@ -84,12 +84,14 @@ const store = useUserStore()
         <div class="time">{{ formatTime(createTime) }}</div>
         <div class="pao">{{ msg.content }}</div>
       </div>
-      <van-image :src="store.user?.avatar" />
+      <!-- <van-image :src="store.user?.avatar" /> -->
+      <img class="van-image" src="@/assets/patient.png" />
     </div>
 
     <!-- 5. 接收文字：医生发的消息 -->
     <div class="msg msg-from" v-if="msgType === MsgType.MsgText && store.user?.id !== from">
-      <van-image :src="fromAvatar" />
+      <!-- <van-image :src="fromAvatar" /> -->
+      <img class="van-image" src="@/assets/doctor.png" />
       <div class="content">
         <div class="time">{{ formatTime(createTime) }}</div>
         <div class="pao">{{ msg.content }}</div>

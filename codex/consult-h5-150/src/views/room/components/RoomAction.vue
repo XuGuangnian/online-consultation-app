@@ -12,12 +12,18 @@ const sendText = () => {
   emit('send-text', text.value)
   text.value = ''
 }
+
+// 2. 接收是否禁用输入
+defineProps<{
+  disabled: boolean
+}>()
 </script>
 
 <template>
   <div class="room-action">
     <!-- 1. 输入框：发送文字消息 -->
     <van-field
+      :disabled="disabled"
       v-model="text"
       type="text"
       class="input"
@@ -27,7 +33,7 @@ const sendText = () => {
       @keyup.enter="sendText"
     ></van-field>
     <!-- 2. 图片上传：发送图片消息 -->
-    <van-uploader :preview-image="false">
+    <van-uploader :preview-image="false" :disabled="disabled">
       <cp-icon name="consult-img" />
     </van-uploader>
   </div>

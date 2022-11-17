@@ -39,8 +39,8 @@ const initSocket = () => {
   socket.on('connect', () => {
     console.log('浏览器和ws服务器建立连接成功！')
   })
-  socket.on('error', () => {
-    console.log('出错了！')
+  socket.on('error', (error) => {
+    console.log('出错了！', error)
   })
   socket.on('disconnect', () => {
     console.log('浏览器和ws服务器断开连接！')

@@ -34,6 +34,7 @@ const onLoad = async () => {
   const { data } = await getConsultOrderList(params)
   // 追加当前页数据到列表
   list.value.push(...data.rows)
+  console.log('订单列表：', data.rows)
 
   // 数据请求成功后：关闭加载loading
   loading.value = false

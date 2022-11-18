@@ -18,7 +18,12 @@ defineProps<{ item: ConsultOrderItem }>()
         >{{ item.statusValue }}</span
       >
     </div>
+    <!-- 患者信息 -->
     <div class="body" @click="$router.push(`/user/consult/${item.id}`)">
+      <div class="body-row">
+        <div class="body-label">患者</div>
+        <div class="body-value">{{ item.patientInfo.name }}</div>
+      </div>
       <div class="body-row">
         <div class="body-label">病情描述</div>
         <div class="body-value">{{ item.illnessDesc }}</div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import ConsultList from './components/ConsultList.vue'
-// import { ConsultType } from '@/enums'
+import { ConsultType } from '@/enums'
 </script>
 
 <template>
@@ -10,9 +10,9 @@ import ConsultList from './components/ConsultList.vue'
     <!-- 2. 页签组件 -->
     <van-tabs sticky>
       <!-- 极速问诊 -->
-      <van-tab title="极速问诊"><consult-list :type="2" /></van-tab>
-      <van-tab title="找医生"><consult-list :type="1" /></van-tab>
-      <van-tab title="开药问诊"><consult-list :type="3" /></van-tab>
+      <van-tab title="极速问诊"><consult-list :type="ConsultType.Fast" /></van-tab>
+      <van-tab title="找医生"><consult-list :type="ConsultType.Doctor" /></van-tab>
+      <van-tab title="开药问诊"><consult-list :type="ConsultType.Medication" /></van-tab>
     </van-tabs>
   </div>
 </template>

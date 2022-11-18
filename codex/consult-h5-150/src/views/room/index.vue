@@ -138,7 +138,9 @@ const sendImg = (img: Image) => {
   })
 }
 // 4. 注意订单详情数据
-provide('consult', consult.value)
+// == 异步数据一定要注入响应式的 ==
+// 问题：注入的时候consult.value不是响应式的=》需要注入consult响应变量
+provide('consult', consult)
 // 评价成功，修改评价消息状态和数据，切换卡片展示
 const completeEva = (score: number) => {
   // 获取评价信息数据

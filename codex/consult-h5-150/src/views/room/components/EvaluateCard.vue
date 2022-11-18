@@ -19,19 +19,20 @@ const consult = inject<Ref<ConsultOrderItem>>('consult')
 const completeEva = inject<(score: number) => void>('completeEva')
 
 const onSubmit = async () => {
-  if (!score.value) return Toast('请选择评分')
-  if (!content.value) return Toast('请输入评价')
+  console.log('订单详情：', consult)
   if (!consult?.value) return Toast('未找到订单')
   if (consult.value.docInfo?.id) {
     await evaluateConsultOrder({
+      // 爷爷组件注入的响应数据
       docId: consult.value?.docInfo?.id, // 医生ID
       orderId: consult.value?.id, // 订单ID
+      // 表单评价数据
       score: score.value,
       content: content.value,
       anonymousFlag: anonymousFlag.value ? 1 : 0
     })
     // 修改消息：评价请求成功，改成已评价
-    completeEva!(score.value)
+    completeEva && completeEva(score.value)
   }
 }
 </script>
@@ -74,7 +75,7 @@ const onSubmit = async () => {
     ></van-field>
     <div class="footer">
       <van-checkbox v-model="anonymousFlag">匿名评价</van-checkbox>
-      <van-button type="primary" size="small" round :class="{ disabled }" @click="onSubmit">
+      <van-button type="primary" size="small" round :disabled="disabled" @click="onSubmit">
         提交评价
       </van-button>
     </div>

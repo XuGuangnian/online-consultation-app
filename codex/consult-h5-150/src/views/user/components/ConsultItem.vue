@@ -102,7 +102,9 @@ const { lookPre } = useLookPre()
         >{{ item.statusValue }}</span
       >
     </div>
-    <!-- 患者信息 -->
+    <!-- 患者信息 
+    说明：$router是vue2组件实例=》this.$router.push
+    -->
     <div class="body" @click="$router.push(`/user/consult/${item.id}`)">
       <div class="body-row">
         <div class="body-label">患者</div>

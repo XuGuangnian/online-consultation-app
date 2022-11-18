@@ -1,4 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useCopy } from '@/hooks'
+
+// 1. 根据订单ID，获取订单详情数据渲染（作业）
+
+// 2. 复制订单号
+const { onCopy } = useCopy()
+</script>
 
 <template>
   <div class="consult-detail-page">
@@ -31,7 +38,7 @@
       <van-cell-group :border="false">
         <van-cell title="订单编号">
           <template #value>
-            <span class="copy">复制</span>
+            <span @click="onCopy('202201127465')" class="copy">复制</span>
             202201127465
           </template>
         </van-cell>

@@ -104,6 +104,12 @@ const routes = [
     path: '/user/consult',
     component: () => import('@/views/user/ConsultOrder.vue'),
     meta: { title: '问诊记录' }
+  },
+  // 订单详情
+  {
+    path: '/user/consult/:id',
+    component: () => import('@/views/user/ConsultDetail.vue'),
+    meta: { title: '问诊详情' }
   }
 ]
 

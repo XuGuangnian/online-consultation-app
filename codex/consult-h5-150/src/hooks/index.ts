@@ -6,10 +6,11 @@
  */
 import { followDoctor } from '@/api/consult'
 import type { FollowType } from '@/types/consult'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { Toast, ImagePreview } from 'vant'
 // 导入查看处方api函数
 import { getPrescriptionPic } from '@/api/consult'
+import { useClipboard } from '@vueuse/core'
 // 关注医生或文章
 const useFollow = (type: FollowType = 'doc') => {
   const loading = ref(false)
@@ -51,4 +52,25 @@ const useLookPre = () => {
   return { lookPre }
 }
 
-export { useFollow, useLookPre }
+// 复制
+const useCopy = () => {
+  /**
+   * 1. copy 函数=》使用：copy(复制文本)=》copy方法会把传入的文本存储到系统剪切板
+   * 2. copied ref响应变量 =》true 复制成功 | false 复制失败
+   * 3. isSupported ref响应变量 =》true 授权支持 | false 未授权不支持
+   */
+  const { copy, copied, isSupported } = useClipboard()
+  // == 复制方法 ==
+  const onCopy = (copyText: string) => {
+    if (!isSupported.value) return Toast.fail('系统不支持复制！')
+    copy(copyText)
+  }
+  // 监听复制是否成功，做提示
+  watch(copied, () => {
+    if (copied.value) Toast.success('复制成功！')
+  })
+
+  return { onCopy }
+}
+
+export { useFollow, useLookPre, useCopy }

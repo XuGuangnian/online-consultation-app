@@ -55,3 +55,7 @@ export const evaluateConsultOrder = (data: {
   content: string
   anonymousFlag: 0 | 1
 }) => request.post<{ id: string }>('/patient/order/evaluate', data)
+
+// 查看处方
+export const getPrescriptionPic = (id: string) =>
+  request.get<{ url: string }>(`/patient/consult/prescription/${id}`)

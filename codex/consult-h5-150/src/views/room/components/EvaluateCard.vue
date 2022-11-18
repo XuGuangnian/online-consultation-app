@@ -24,8 +24,8 @@ const onSubmit = async () => {
   if (!consult?.value) return Toast('未找到订单')
   if (consult.value.docInfo?.id) {
     await evaluateConsultOrder({
-      docId: consult.value?.docInfo?.id,
-      orderId: consult.value?.id,
+      docId: consult.value?.docInfo?.id, // 医生ID
+      orderId: consult.value?.id, // 订单ID
       score: score.value,
       content: content.value,
       anonymousFlag: anonymousFlag.value ? 1 : 0
@@ -54,6 +54,7 @@ const onSubmit = async () => {
   <div class="evalutate-card" v-else>
     <p class="title">感谢您的评价</p>
     <p class="desc">本次在线问诊服务您还满意吗？</p>
+    <!-- 五星好评 -->
     <van-rate
       v-model="score"
       size="7vw"
@@ -62,6 +63,7 @@ const onSubmit = async () => {
       void-icon="star"
       void-color="rgba(0,0,0,0.04)"
     />
+    <!-- 输入框 -->
     <van-field
       v-model="content"
       type="textarea"

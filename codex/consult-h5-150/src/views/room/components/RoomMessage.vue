@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // 评价医生
-import type { Message } from '@/types/room'
+import type { Message, Prescription } from '@/types/room'
 import EvaluateCard from './EvaluateCard.vue'
-import { ConsultTime, MsgType } from '@/enums'
+import { ConsultTime, MsgType, PrescriptionStatus } from '@/enums'
 // 导入患病时间和是否就诊过常量
 import { timeOptions, flagOptions } from '@/api/const'
 // 预览图片方法
@@ -11,6 +11,10 @@ import type { Image } from '@/types/consult'
 
 import dayjs from 'dayjs'
 import { useUserStore } from '@/stores'
+
+// 导入查看处方api函数
+import { getPrescriptionPic } from '@/api/consult'
+import { useRouter } from 'vue-router'
 
 // 接收患者和医生聊天列表
 defineProps<{
@@ -41,6 +45,32 @@ const store = useUserStore()
 const loadSuccess = () => {
   // 等到图片下载渲染完执行滚动
   window.scrollTo(0, document.body.scrollHeight)
+}
+// 5. 查看处方
+// let test:string | undefined | null
+// let abc = test!
+const lookPre = async (id?: string) => {
+  try {
+    if (!id) return // 排除undefined情况，限定类型(推荐)
+    // const { data } = await getPrescriptionPic(id!)
+    const { data } = await getPrescriptionPic(id)
+    console.log('处方图片：', data.url)
+    // 实现图片预览
+    ImagePreview([data.url])
+  } catch (error) {
+    console.log(error)
+  }
+}
+// 6. 点击购买处方中的药品
+const router = useRouter()
+const goPay = (pre?: Prescription) => {
+  if (pre) {
+    // 1. 处方失效
+    if (pre.status === PrescriptionStatus.Invalid) return Toast.fail('处方失效了！')
+    // 2. 没有支付
+    if (pre.status === PrescriptionStatus.NotPayment)
+      return router.push(`/medicine/pay?id=${pre.id}`)
+  }
 }
 </script>
 
@@ -120,26 +150,33 @@ const loadSuccess = () => {
       </div>
     </div>
     <!-- 8. 处方消息 -->
-    <div class="msg msg-recipe" v-if="false">
+    <div class="msg msg-recipe" v-if="msgType === MsgType.CardPre">
       <div class="content">
         <div class="head van-hairline--bottom">
           <div class="head-tit">
             <h3>电子处方</h3>
-            <p>原始处方 <van-icon name="arrow"></van-icon></p>
+            <p @click="lookPre(msg.prescription?.id)">
+              原始处方 <van-icon name="arrow"></van-icon>
+            </p>
           </div>
-          <p>李富贵 男 31岁 血管性头痛</p>
-          <p>开方时间：2022-01-15 14:21:42</p>
+          <p>
+            {{ msg.prescription?.name }}
+            {{ msg.prescription?.genderValue }}
+            {{ msg.prescription?.age }}岁
+            {{ msg.prescription?.diagnosis }}
+          </p>
+          <p>开方时间：{{ msg.prescription?.createTime }}</p>
         </div>
         <div class="body">
-          <div class="body-item" v-for="i in 2" :key="i">
+          <div class="body-item" v-for="med in msg.prescription?.medicines" :key="med.id">
             <div class="durg">
-              <p>优赛明 维生素E乳</p>
-              <p>口服，每次1袋，每天3次，用药3天</p>
+              <p>{{ med.name }} {{ med.specs }}</p>
+              <p>{{ med.usageDosag }}</p>
             </div>
-            <div class="num">x1</div>
+            <div class="num">x{{ med.quantity }}</div>
           </div>
         </div>
-        <div class="foot"><span>购买药品</span></div>
+        <div @click="goPay(msg.prescription)" class="foot"><span>购买药品</span></div>
       </div>
     </div>
     <!-- 9. 订单取消/关闭诊室 -->
@@ -150,6 +187,7 @@ const loadSuccess = () => {
     </div>
     <!-- 10. 医生评价 -->
     <div class="msg" v-if="msgType === MsgType.CardEva || msgType === MsgType.CardEvaForm">
+      <!-- :evaluateDoc="msg.evaluateDoc" 传入已经评价过的数据回显 -->
       <evaluate-card :evaluateDoc="msg.evaluateDoc"></evaluate-card>
     </div>
   </template>

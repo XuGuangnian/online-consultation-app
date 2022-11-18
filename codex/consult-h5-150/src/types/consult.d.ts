@@ -4,9 +4,9 @@ import { ConsultType, ConsultTime } from '@/enums'
 export type KnowledgeType = 'like' | 'recommend' | 'fatReduction' | 'food'
 // 通用泛型工具
 export type PageData<T> = {
-  pageTotal: number
-  total: number
-  rows: T
+  pageTotal: number // 总页数
+  total: number // 数据总条数
+  rows: T // 当前页返回数据
 }
 
 // 1. 健康知识列表：文章信息类型

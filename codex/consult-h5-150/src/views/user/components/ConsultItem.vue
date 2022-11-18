@@ -2,6 +2,8 @@
 import type { ConsultOrderItem } from '@/types/consult'
 import { OrderType } from '@/enums'
 import { computed, ref } from 'vue'
+import { Dialog } from 'vant'
+import { cancelOrder } from '@/api/consult'
 
 const props = defineProps<{ item: ConsultOrderItem }>()
 
@@ -16,6 +18,35 @@ const actions = computed(() => [
 // 操作项的点击回调
 const onSelect = () => {
   //
+}
+
+// 1. 点击取消问诊订单：待支付和待接诊
+const loading = ref(false) // 放置重复点击
+const cancelOrderApi = async (item: ConsultOrderItem) => {
+  loading.value = true
+  Dialog.confirm({
+    title: '温馨提示',
+    message: '确认取消问诊吗，亲？'
+  })
+    .then(async () => {
+      console.log('点了确定')
+      try {
+        // 1. 后台数据库取消
+        await cancelOrder(item.id)
+        // 2. 局部刷新下，当前订单的状态，不需要重新刷新列表
+        item.status = OrderType.ConsultCancel
+        item.statusValue = '已取消'
+      } catch (error) {
+        console.log(error)
+      } finally {
+        // 不管成功还是失败都会执行
+        loading.value = false
+      }
+    })
+    .catch(() => {
+      console.log('点了取消')
+      loading.value = false
+    })
 }
 </script>
 
@@ -54,14 +85,30 @@ const onSelect = () => {
     <!-- == 根据不同的订单状态，显示不同的操作按钮 == -->
     <!-- 1. 待支付：取消问诊+去支付 -->
     <div class="foot" v-if="item.status === OrderType.ConsultPay">
-      <van-button class="gray" plain size="small" round>取消问诊</van-button>
+      <van-button
+        :loading="loading"
+        @click="cancelOrderApi(item)"
+        class="gray"
+        plain
+        size="small"
+        round
+        >取消问诊</van-button
+      >
       <van-button type="primary" plain size="small" round :to="`/user/consult/${item.id}`">
         去支付
       </van-button>
     </div>
     <!-- 2. 待接诊：取消问诊+继续沟通 -->
     <div class="foot" v-if="item.status === OrderType.ConsultWait">
-      <van-button class="gray" plain size="small" round>取消问诊</van-button>
+      <van-button
+        :loading="loading"
+        @click="cancelOrderApi(item)"
+        class="gray"
+        plain
+        size="small"
+        round
+        >取消问诊</van-button
+      >
       <van-button type="primary" plain size="small" round :to="`/room?orderId=${item.id}`">
         继续沟通
       </van-button>

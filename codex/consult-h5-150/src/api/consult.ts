@@ -68,3 +68,6 @@ export const getConsultOrderList = (params: ConsultOrderListParams) =>
 
 // 取消订单
 export const cancelOrder = (id: string) => request.put(`/patient/order/cancel/${id}`)
+
+// 删除订单
+export const deleteOrder = (id: string) => request.delete(`/patient/order/${id}`)

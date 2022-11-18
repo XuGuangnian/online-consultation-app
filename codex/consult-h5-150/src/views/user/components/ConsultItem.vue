@@ -2,8 +2,8 @@
 import type { ConsultOrderItem } from '@/types/consult'
 import { OrderType } from '@/enums'
 import { computed, ref } from 'vue'
-import { Dialog } from 'vant'
-import { cancelOrder } from '@/api/consult'
+import { Dialog, Toast, type PopoverAction } from 'vant'
+import { cancelOrder, deleteOrder } from '@/api/consult'
 
 const props = defineProps<{ item: ConsultOrderItem }>()
 
@@ -16,8 +16,12 @@ const actions = computed(() => [
   { text: '删除订单' }
 ])
 // 操作项的点击回调
-const onSelect = () => {
-  //
+const onSelect = (action: PopoverAction, i: number) => {
+  console.log(action, i)
+  if (i === 1) {
+    // 删除订单
+    deleteConsultOrder(props.item)
+  }
 }
 
 // 1. 点击取消问诊订单：待支付和待接诊
@@ -36,6 +40,7 @@ const cancelOrderApi = async (item: ConsultOrderItem) => {
         // 2. 局部刷新下，当前订单的状态，不需要重新刷新列表
         item.status = OrderType.ConsultCancel
         item.statusValue = '已取消'
+        Toast.success('取消成功')
       } catch (error) {
         console.log(error)
       } finally {
@@ -46,6 +51,33 @@ const cancelOrderApi = async (item: ConsultOrderItem) => {
     .catch(() => {
       console.log('点了取消')
       loading.value = false
+    })
+}
+// 2. 删除订单：已完成和已取消
+const emit = defineEmits<{
+  (e: 'on-delete', id: string): void
+}>()
+const deleteLoading = ref(false)
+const deleteConsultOrder = (item: ConsultOrderItem) => {
+  deleteLoading.value = true
+  Dialog.confirm({
+    title: '温馨提示',
+    message: '确认删除问诊订单吗，亲？'
+  })
+    .then(async () => {
+      try {
+        await deleteOrder(item.id)
+        // 通知父组件更新列表
+        emit('on-delete', item.id)
+        Toast.success('删除成功')
+      } catch (error) {
+        Toast.fail('删除失败')
+      } finally {
+        deleteLoading.value = false
+      }
+    })
+    .catch(() => {
+      deleteLoading.value = false
     })
 }
 </script>
@@ -145,7 +177,15 @@ const cancelOrderApi = async (item: ConsultOrderItem) => {
     </div>
     <!-- 5. 已取消：删除订单+咨询其他医生 -->
     <div class="foot" v-if="item.status === OrderType.ConsultCancel">
-      <van-button class="gray" plain size="small" round>删除订单</van-button>
+      <van-button
+        :loading="deleteLoading"
+        @click="deleteConsultOrder(item)"
+        class="gray"
+        plain
+        size="small"
+        round
+        >删除订单</van-button
+      >
       <van-button type="primary" plain size="small" round to="/">咨询其他医生</van-button>
     </div>
   </div>

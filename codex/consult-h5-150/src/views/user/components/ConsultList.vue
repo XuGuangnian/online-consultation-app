@@ -48,6 +48,10 @@ const onLoad = async () => {
     params.current++
   }
 }
+// 订单删除后，更新列表
+const onDelete = (id: string) => {
+  list.value = list.value.filter((item) => item.id !== id)
+}
 </script>
 
 <template>
@@ -59,7 +63,7 @@ const onLoad = async () => {
       @load="onLoad"
     >
       <!-- 订单列表：循环渲染问诊订单数据 -->
-      <consult-item v-for="item in list" :key="item.id" :item="item" />
+      <consult-item @on-delete="onDelete" v-for="item in list" :key="item.id" :item="item" />
     </van-list>
   </div>
 </template>

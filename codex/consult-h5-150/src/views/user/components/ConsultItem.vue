@@ -4,6 +4,7 @@ import { OrderType } from '@/enums'
 import { computed, ref } from 'vue'
 import { Dialog, Toast, type PopoverAction } from 'vant'
 import { cancelOrder, deleteOrder } from '@/api/consult'
+import { useLookPre } from '@/hooks'
 
 const props = defineProps<{ item: ConsultOrderItem }>()
 
@@ -21,6 +22,10 @@ const onSelect = (action: PopoverAction, i: number) => {
   if (i === 1) {
     // 删除订单
     deleteConsultOrder(props.item)
+  }
+  if (i === 0) {
+    // 查看处方
+    lookPre(props.item.prescriptionId)
   }
 }
 
@@ -80,6 +85,8 @@ const deleteConsultOrder = (item: ConsultOrderItem) => {
       deleteLoading.value = false
     })
 }
+// 3. 查看处方
+const { lookPre } = useLookPre()
 </script>
 
 <template>
@@ -147,7 +154,14 @@ const deleteConsultOrder = (item: ConsultOrderItem) => {
     </div>
     <!-- 3. 咨询中：查看处方（如果开了）+继续沟通 -->
     <div class="foot" v-if="item.status === OrderType.ConsultChat">
-      <van-button v-if="item.prescriptionId" class="gray" plain size="small" round>
+      <van-button
+        @click="lookPre(item.prescriptionId)"
+        v-if="item.prescriptionId"
+        class="gray"
+        plain
+        size="small"
+        round
+      >
         查看处方
       </van-button>
       <van-button type="primary" plain size="small" round :to="`/room?orderId=${item.id}`">

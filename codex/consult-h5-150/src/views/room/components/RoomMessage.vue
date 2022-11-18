@@ -11,10 +11,8 @@ import type { Image } from '@/types/consult'
 
 import dayjs from 'dayjs'
 import { useUserStore } from '@/stores'
-
-// 导入查看处方api函数
-import { getPrescriptionPic } from '@/api/consult'
 import { useRouter } from 'vue-router'
+import { useLookPre } from '@/hooks'
 
 // 接收患者和医生聊天列表
 defineProps<{
@@ -47,20 +45,21 @@ const loadSuccess = () => {
   window.scrollTo(0, document.body.scrollHeight)
 }
 // 5. 查看处方
+const { lookPre } = useLookPre()
 // let test:string | undefined | null
 // let abc = test!
-const lookPre = async (id?: string) => {
-  try {
-    if (!id) return // 排除undefined情况，限定类型(推荐)
-    // const { data } = await getPrescriptionPic(id!)
-    const { data } = await getPrescriptionPic(id)
-    console.log('处方图片：', data.url)
-    // 实现图片预览
-    ImagePreview([data.url])
-  } catch (error) {
-    console.log(error)
-  }
-}
+// const lookPre = async (id?: string) => {
+//   try {
+//     if (!id) return // 排除undefined情况，限定类型(推荐)
+//     // const { data } = await getPrescriptionPic(id!)
+//     const { data } = await getPrescriptionPic(id)
+//     console.log('处方图片：', data.url)
+//     // 实现图片预览
+//     ImagePreview([data.url])
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 // 6. 点击购买处方中的药品
 const router = useRouter()
 const goPay = (pre?: Prescription) => {

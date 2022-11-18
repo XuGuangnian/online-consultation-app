@@ -1,13 +1,16 @@
 /**
  * 全局可复用自定义hooks
  * 抽离技巧：
- * 1. 相同部分直接拷贝
+ * 1. 相同部分直接拷贝(复用)
  * 2. 不同的部分以函数参数形式传入
  */
 import { followDoctor } from '@/api/consult'
 import type { FollowType } from '@/types/consult'
 import { ref } from 'vue'
-import { Toast } from 'vant'
+import { Toast, ImagePreview } from 'vant'
+// 导入查看处方api函数
+import { getPrescriptionPic } from '@/api/consult'
+// 关注医生或文章
 const useFollow = (type: FollowType = 'doc') => {
   const loading = ref(false)
   // 点击执行回调函数
@@ -30,4 +33,22 @@ const useFollow = (type: FollowType = 'doc') => {
   return { loading, follow }
 }
 
-export { useFollow }
+// 查看处方
+const useLookPre = () => {
+  const lookPre = async (id?: string) => {
+    try {
+      if (!id) return // 排除undefined情况，限定类型(推荐)
+      // const { data } = await getPrescriptionPic(id!)
+      const { data } = await getPrescriptionPic(id)
+      console.log('处方图片：', data.url)
+      // 实现图片预览
+      ImagePreview([data.url])
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // 返回查看处方的方法
+  return { lookPre }
+}
+
+export { useFollow, useLookPre }

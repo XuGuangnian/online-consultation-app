@@ -116,6 +116,12 @@ const routes = [
     path: '/medicine/pay',
     component: () => import('@/views/medicine/OrderPay.vue'),
     meta: { title: '药品支付' }
+  },
+  // 支付结果
+  {
+    path: '/medicine/pay/result',
+    component: () => import('@/views/medicine/OrderPayResult.vue'),
+    meta: { title: '药品支付结果' }
   }
 ]
 

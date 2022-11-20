@@ -1,5 +1,5 @@
 import type { Medical } from './room'
-// 药品预订单数据
+// 1. 药品预订单数据
 export type OrderPre = {
   id: string
   couponId: string
@@ -25,4 +25,30 @@ export type Address = {
 export type AddressItem = Address & {
   isDefault: 0 | 1
   postalCode: string
+}
+// 2. 药品订单详情
+export type OrderDetail = {
+  id: string
+  orderNo: string
+  type: 4
+  createTime: string
+  prescriptionId: string
+  status: OrderType
+  statusValue: string
+  medicines: Medical[]
+  countDown: number
+  addressInfo: Address
+  expressInfo: {
+    content: string
+    time: string
+  }
+  payTime: string
+  paymentMethod?: 0 | 1
+  payment: number
+  pointDeduction: number
+  couponDeduction: number
+  payment: number
+  expressFee: number
+  actualPayment: number
+  roomId: string
 }

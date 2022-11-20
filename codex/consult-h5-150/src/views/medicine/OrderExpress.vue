@@ -3,8 +3,10 @@ import { onMounted, ref } from 'vue'
 import type { Express } from '@/types/medicine'
 import { getMedicalOrderLogistics } from '@/api/medicine'
 import { useRoute } from 'vue-router'
+// 导入高德地图依赖
+import AMapLoader from '@amap/amap-jsapi-loader'
 
-// 物流详情数据
+// 1. 物流详情数据
 const express = ref<Express>()
 // 获取物流详情数据
 const route = useRoute()
@@ -15,6 +17,40 @@ const getExpress = async () => {
 }
 onMounted(() => {
   getExpress()
+})
+
+// 2. 绘制高德地图物流轨迹
+// v2.0 需要配置安全密钥jscode
+// 说明：将来高地图会校验秘钥
+window._AMapSecurityConfig = {
+  securityJsCode: '9ad2b31a5625c678a3e315dd51e130f3'
+}
+onMounted(async () => {
+  try {
+    // 回调写法：AMapLoader.load 返回Promise
+    // AMapLoader.load({
+    //   key: 'fe7e550905bb36171ef9c9e86fdfb358',
+    //   version: '2.0'
+    // }).then((AMap) => {
+    //   // 使用 Amap 初始化地图
+    //   console.log('高德地图api对象：', AMap)
+    // })
+    // async/await写法：
+    const AMap = await AMapLoader.load({
+      key: 'fe7e550905bb36171ef9c9e86fdfb358',
+      version: '2.0'
+    })
+    // 1. 使用 Amap 初始化地图=》创建地图
+    console.log('高德地图api对象：', AMap)
+    const map = new AMap.Map('map', {
+      //初始化地图层级: 2-20  特点：值越小地图显示的范围越大，值越大显示信息越详细
+      zoom: 12,
+      // center: [116.627733, 40.164908], //初始化地图中心点
+      mapStyle: 'amap://styles/whitesmoke'
+    })
+  } catch (error) {
+    console.log(error)
+  }
 })
 </script>
 

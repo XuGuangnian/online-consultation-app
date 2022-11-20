@@ -6,11 +6,16 @@
  */
 import { followDoctor } from '@/api/consult'
 import type { FollowType } from '@/types/consult'
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { Toast, ImagePreview } from 'vant'
 // 导入查看处方api函数
 import { getPrescriptionPic } from '@/api/consult'
 import { useClipboard } from '@vueuse/core'
+
+import { getMedicalOrderDetail } from '@/api/medicine'
+import type { OrderDetail } from '@/types/medicine'
+import { useRoute } from 'vue-router'
+
 // 关注医生或文章
 const useFollow = (type: FollowType = 'doc') => {
   const loading = ref(false)
@@ -73,4 +78,16 @@ const useCopy = () => {
   return { onCopy }
 }
 
-export { useFollow, useLookPre, useCopy }
+// 获取药品订单详情
+const useMedicineDetail = (id: string) => {
+  const order = ref<OrderDetail>()
+  onMounted(async () => {
+    const res = await getMedicalOrderDetail(id)
+    console.log('药品订单详情：', res.data)
+    order.value = res.data
+  })
+
+  return { order }
+}
+
+export { useFollow, useLookPre, useCopy, useMedicineDetail }

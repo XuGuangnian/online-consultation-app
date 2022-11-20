@@ -122,6 +122,18 @@ const routes = [
     path: '/medicine/pay/result',
     component: () => import('@/views/medicine/OrderPayResult.vue'),
     meta: { title: '药品支付结果' }
+  },
+  // 药品订单详情
+  {
+    path: '/medicine/:id',
+    component: () => import('@/views/medicine/OrderDetail.vue'),
+    meta: { title: '药品订单详情' }
+  },
+  // 药品发货后：物流详情
+  {
+    path: '/medicine/express/:id',
+    component: () => import('@/views/medicine/OrderExpress.vue'),
+    meta: { title: '物流详情' }
   }
 ]
 

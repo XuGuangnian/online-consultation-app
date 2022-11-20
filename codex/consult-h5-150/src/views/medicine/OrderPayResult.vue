@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { getMedicalOrderDetail } from '@/api/medicine'
-import type { OrderDetail } from '@/types/medicine'
-import { onMounted, ref } from 'vue'
+// import { getMedicalOrderDetail } from '@/api/medicine'
+// import type { OrderDetail } from '@/types/medicine'
+// import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
+import { useMedicineDetail } from '@/hooks'
+
 const route = useRoute()
-const order = ref<OrderDetail>()
-onMounted(async () => {
-  const res = await getMedicalOrderDetail(route.query.orderId as string)
-  order.value = res.data
-})
+// const order = ref<OrderDetail>()
+// onMounted(async () => {
+//   const res = await getMedicalOrderDetail(route.query.orderId as string)
+//   order.value = res.data
+// })
+const { order } = useMedicineDetail(route.query.orderId as string)
 </script>
 
 <template>

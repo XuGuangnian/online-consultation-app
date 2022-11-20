@@ -4,11 +4,12 @@ import { Toast } from 'vant'
 import { ref } from 'vue'
 
 // 接收props api
-const { orderId } = defineProps<{
+const { orderId, payCallback } = defineProps<{
   show: boolean // 控制支付弹层显示
   orderId: string // 支付需要使用的订单ID
   payment?: number // 支付钱数
   onClose?: () => void // 支付窗口关闭控制
+  payCallback?: string // 支付回跳地址
 }>()
 
 const emit = defineEmits<{
@@ -22,7 +23,7 @@ const payOrder = async () => {
   const { data } = await getConsultOrderPayUrl({
     paymentMethod: paymentMethod.value, // 支付方式
     orderId: orderId, // 问诊订单ID
-    payCallback: 'http://127.0.0.1:5173/room' // 支付成功后回跳地址
+    payCallback: payCallback || 'http://127.0.0.1:5173/room' // 支付成功后回跳地址
   })
   // 跳转到支付宝平台进行支付
   window.location.href = data.payUrl
@@ -32,7 +33,7 @@ const payOrder = async () => {
 <template>
   <!-- 
  问题❓： v-model:show="show" show是父传子过来的
- 父组件的变量，v-model会直接修改ta，违背了单向数据流
+ 父组件的变量，v-model会直接修改它，违背了单向数据流
 
  解决：通过子传父修改父组件的show变量
  $event获取van-action-sheet组件视图变化的值

@@ -110,6 +110,12 @@ const routes = [
     path: '/user/consult/:id',
     component: () => import('@/views/user/ConsultDetail.vue'),
     meta: { title: '问诊详情' }
+  },
+  // 药品支付
+  {
+    path: '/medicine/pay',
+    component: () => import('@/views/medicine/OrderPay.vue'),
+    meta: { title: '药品支付' }
   }
 ]
 

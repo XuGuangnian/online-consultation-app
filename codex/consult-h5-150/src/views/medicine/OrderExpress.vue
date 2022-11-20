@@ -5,6 +5,10 @@ import { getMedicalOrderLogistics } from '@/api/medicine'
 import { useRoute } from 'vue-router'
 // 导入高德地图依赖
 import AMapLoader from '@amap/amap-jsapi-loader'
+// 导入自定义图标
+import startIcon from '@/assets/start.png'
+import endIcon from '@/assets/end.png'
+import carIcon from '@/assets/car.png'
 
 // 1. 物流详情数据
 const express = ref<Express>()
@@ -46,7 +50,66 @@ onMounted(async () => {
       //初始化地图层级: 2-20  特点：值越小地图显示的范围越大，值越大显示信息越详细
       zoom: 12,
       // center: [116.627733, 40.164908], //初始化地图中心点
-      mapStyle: 'amap://styles/whitesmoke'
+      mapStyle: 'amap://styles/whitesmoke' // 设置地图主题
+    })
+
+    // 2. 绘制物流轨迹
+    // 说明❓：必须使用AMap.plugin先加载AMap.Driving类后，才能使用
+    AMap.plugin('AMap.Driving', () => {
+      // 异步加载插件
+      // 构造路线导航类
+      const driving = new AMap.Driving({
+        map, // 指定绘制的路线轨迹显示到map地图
+        showTraffic: false, // 关闭实施交通状况显示
+        hideMarkers: true // 关闭默认轨迹图标
+      })
+
+      // 1. 轨迹的起点
+      const start = express.value?.logisticsInfo.shift()
+      // 2. 轨迹的终点
+      const end = express.value?.logisticsInfo.pop()
+      // 3. 轨迹的途经点(shift和pop掐头去尾之后的结果)
+      const ways = express.value?.logisticsInfo.map((item) => [item.longitude, item.latitude])
+
+      // 4. 自定义坐标点显示的图表
+      const startMarker = new AMap.Marker({
+        position: [start?.longitude, start?.latitude], // 自定义图标的位置
+        icon: startIcon, // 自定义图片
+        map // 指定图标显示的地图实例
+      })
+      const endMarker = new AMap.Marker({
+        position: [end?.longitude, end?.latitude],
+        icon: endIcon,
+        map
+      })
+
+      // 根据起终点经纬度规划驾车导航路线
+      driving.search(
+        // longitude 经度 | latitude 维度
+        [start?.longitude, start?.latitude],
+        [end?.longitude, end?.latitude],
+        {
+          // 轨迹途经点的坐标(二维数组)：[[lt1,la1], [lt2,la2]...]
+          waypoints: ways
+        },
+        (status: string, result: object) => {
+          // result 即是对应的驾车导航信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_DrivingResult
+          // 显示当前物流运送位置图标
+          const currentMarker = new AMap.Marker({
+            position: [
+              express.value?.currentLocationInfo.longitude,
+              express.value?.currentLocationInfo.latitude
+            ],
+            icon: carIcon,
+            map
+          })
+
+          setTimeout(() => {
+            // 调整视野达到最佳显示区域
+            map.setFitView([currentMarker, endMarker])
+          }, 3000)
+        }
+      )
     })
   } catch (error) {
     console.log(error)
@@ -96,7 +159,7 @@ onMounted(async () => {
 }
 #map {
   height: 450px;
-  background-color: var(--cp-bg);
+  background-color: const(--cp-bg);
   overflow: hidden;
   position: relative;
   .title {
@@ -122,7 +185,7 @@ onMounted(async () => {
       font-size: 18px;
       color: #666;
       &:last-child {
-        color: var(--cp-primary);
+        color: const(--cp-primary);
       }
     }
   }
@@ -144,7 +207,7 @@ onMounted(async () => {
       line-height: 26px;
     }
     .predict {
-      color: var(--cp-tip);
+      color: const(--cp-tip);
       font-size: 13px;
       margin-top: 5px;
       > span {
@@ -167,17 +230,17 @@ onMounted(async () => {
     }
     .status {
       font-size: 15px;
-      color: var(--cp-text3);
+      color: const(--cp-text3);
       margin-bottom: 4px;
     }
     .content {
       font-size: 13px;
-      color: var(--cp-tip);
+      color: const(--cp-tip);
       margin-bottom: 4px;
     }
     .time {
       font-size: 13px;
-      color: var(--cp-tag);
+      color: const(--cp-tag);
     }
   }
 }

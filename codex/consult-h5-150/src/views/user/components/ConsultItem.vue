@@ -87,6 +87,9 @@ const deleteConsultOrder = (item: ConsultOrderItem) => {
 }
 // 3. 查看处方
 const { lookPre } = useLookPre()
+
+// 4. 支付
+const show = ref(false)
 </script>
 
 <template>
@@ -135,9 +138,7 @@ const { lookPre } = useLookPre()
         round
         >取消问诊</van-button
       >
-      <van-button type="primary" plain size="small" round :to="`/user/consult/${item.id}`">
-        去支付
-      </van-button>
+      <van-button @click="show = true" type="primary" plain size="small" round> 去支付 </van-button>
     </div>
     <!-- 2. 待接诊：取消问诊+继续沟通 -->
     <div class="foot" v-if="item.status === OrderType.ConsultWait">
@@ -205,6 +206,8 @@ const { lookPre } = useLookPre()
       <van-button type="primary" plain size="small" round to="/">咨询其他医生</van-button>
     </div>
   </div>
+  <!-- 复用支付弹层 -->
+  <cp-pay-sheet v-model:show="show" :orderId="item.id" :payment="item.payment"></cp-pay-sheet>
 </template>
 
 <style lang="scss" scoped>

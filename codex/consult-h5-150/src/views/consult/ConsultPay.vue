@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getConsultOrderPre, createConsultOrder, getConsultOrderPayUrl } from '@/api/consult'
+import { getConsultOrderPre, createConsultOrder } from '@/api/consult'
 import { getPatientDetail } from '@/api/user'
 import { useConsultStore } from '@/stores'
 import type { ConsultOrderPreData } from '@/types/consult'
@@ -46,8 +46,7 @@ onMounted(() => {
 // 3. 点击立即支付，打开支付弹层
 const show = ref(false)
 const agree = ref(false)
-// 支付方式
-const paymentMethod = ref<0 | 1>()
+
 // 存储订单ID
 const orderId = ref('')
 const openPay = async () => {
@@ -92,17 +91,17 @@ const onClose = async () => {
   }
 }
 // 5. 点击支付弹层中支付按钮，获取支付地址进行跳转支付
-const payOrder = async () => {
-  if (paymentMethod.value === undefined) return Toast.fail('请选择支付方式！')
-  Toast.loading('跳转支付！')
-  const { data } = await getConsultOrderPayUrl({
-    paymentMethod: paymentMethod.value, // 支付方式
-    orderId: orderId.value, // 问诊订单ID
-    payCallback: 'http://127.0.0.1:5173/room' // 支付成功后回跳地址
-  })
-  // 跳转到支付宝平台进行支付
-  window.location.href = data.payUrl
-}
+// const payOrder = async () => {
+//   if (paymentMethod.value === undefined) return Toast.fail('请选择支付方式！')
+//   Toast.loading('跳转支付！')
+//   const { data } = await getConsultOrderPayUrl({
+//     paymentMethod: paymentMethod.value, // 支付方式
+//     orderId: orderId.value, // 问诊订单ID
+//     payCallback: 'http://127.0.0.1:5173/room' // 支付成功后回跳地址
+//   })
+//   // 跳转到支付宝平台进行支付
+//   window.location.href = data.payUrl
+// }
 </script>
 
 <template>
@@ -143,8 +142,18 @@ const payOrder = async () => {
       @click="openPay"
     />
 
-    <!-- 支付弹层 -->
-    <van-action-sheet
+    <!-- 支付弹层 
+    根据需求，需要传入什么props的值
+     v-model:show="show"语法糖 =》:show + @update:show
+
+    -->
+    <cp-pay-sheet
+      v-model:show="show"
+      :orderId="orderId"
+      :payment="payInfo?.actualPayment"
+      :onClose="onClose"
+    ></cp-pay-sheet>
+    <!-- <van-action-sheet
       :before-close="onClose"
       :closeable="false"
       v-model:show="show"
@@ -166,7 +175,7 @@ const payOrder = async () => {
           <van-button @click="payOrder" type="primary" round block>立即支付</van-button>
         </div>
       </div>
-    </van-action-sheet>
+    </van-action-sheet> -->
   </div>
 </template>
 
@@ -230,28 +239,6 @@ const payOrder = async () => {
     .van-submit-bar__button {
       font-weight: normal;
       width: 160px;
-    }
-  }
-}
-// 支付弹层样式
-.pay-type {
-  .amount {
-    padding: 20px;
-    text-align: center;
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .btn {
-    padding: 15px;
-  }
-  .van-cell {
-    align-items: center;
-    .cp-icon {
-      margin-right: 10px;
-      font-size: 18px;
-    }
-    .van-checkbox :deep(.van-checkbox__icon) {
-      font-size: 16px;
     }
   }
 }

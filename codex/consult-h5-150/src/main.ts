@@ -21,5 +21,7 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 
+console.log('读取环境变量：', import.meta.env)
+
 // 3. 挂载渲染App根组件
 app.mount('#app')

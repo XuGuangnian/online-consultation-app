@@ -1,9 +1,0 @@
-<script setup lang="ts">
-import { RouterView } from 'vue-router'
-</script>
-
-<template>
-  <!-- 路由挂载点 -->
-  <router-view />
-  <!-- <RouterView /> -->
-</template>

@@ -108,6 +108,8 @@ tsc -v
 ## 类型注解{#annotate}
 
 > 知道：TypeScript 类型注解
+>
+> 语法：let 变量名:类型 = 值
 
 示例代码：
 
@@ -187,6 +189,8 @@ let strings: Array<string> = ['a', 'b', 'c'];
 ## 联合类型{#union}
 
 > 掌握：通过联合类型将多个类型合并为一个类型
+>
+> 语法：type1 | type2 ...
 
 需求：数组中有 `number` 和 `string` 类型，这个数组的类型如何书写？
 
@@ -217,6 +221,8 @@ let arr: number | string[];
 ## 类型别名{#alias}
 
 > 掌握：使用类型别名语法给类型取别字
+>
+> 语法：type 别名变量名 = types类型值
 
 示例代码：
 
@@ -349,6 +355,8 @@ mySlice(1, 2);
 ### 基本使用{#obj-base}
 
 > 掌握：对象类型语法
+>
+> 语法：变量名:{key1:type1; key2:type2...}
 
 - TS 的对象类型，其实就是描述对象中的 `属性` `方法` 的类型，因为对象是由属性和方法组成的。
 
@@ -431,11 +439,13 @@ const axios = (config: Config) => {};
 - 方法：学习、打游戏（可选）
   :::
 
-## 接口 interface{#interface}
+## 接口类型{#interface}
 
 ### 基本使用{#interface-base}
 
 > 掌握：使用 interface 声明对象类型
+>
+> 语法：interface 接口类型名字 {key1:type1; key2?:type2...}
 
 - 接口声明是命名对象类型的另一种方式
 
@@ -583,7 +593,7 @@ const p: Person = {
 
 ### 字面量类型介绍{#literal-intro}
 
-> 知道：什么是字面量类型
+> 知道：什么是字面量类型？类型是一个具体的值（类似常量）
 
 - js 字面量如：`18` `'jack'` `['a']` `{age: 10}` 等等。
 - 使用 `js字面量` 作为变量类型，这种类型就是字面量类型。
@@ -646,7 +656,7 @@ changeDirection('up')
 
 ## 类型推断{#type-infer}
 
-> 知道：TS 的的类型推断机制作用
+> 知道：TS 的的类型推断机制作用？根据定义变量的值，自动添加类型约束
 
 - 在 TS 中存在类型推断机制，在没有指定类型的情况下，TS 也会给变量提供类型。
 
@@ -678,6 +688,8 @@ const add = (num1: number, num2: number) => {
 
 
 ## 类型断言{#type-assert}
+
+> 语法：let 变量名 = 值 as 类型
 
 有时候你会比 TS 更加明确一个值的类型，此时，可以使用类型断言来指定更具体的类型。 比如，
 
@@ -718,6 +730,8 @@ const img = document.getElementById('img') as HTMLImageElement
 ### 泛型别名{#generic-alias}
 
 > 掌握：泛型别名基本使用，实现类型复用
+>
+> 语法：type 类型别名<Type1, Type2...> = {}
 
 ```ts
 // 对后台返回的数据进行类型定义
@@ -754,6 +768,8 @@ type GoodsData = Data<Goods>
 ### 泛型接口{#generic-interface}
 
 > 掌握：泛型接口基本使用，实现类型复用，了解内置泛型接口
+>
+> interface 接口名<Type1, Type2...> {}
 
 ```ts
 // 对象，获取单个ID函数，获取所有ID函数，ID的类型肯定是一致的，但是可能是数字可能是字符串
@@ -786,6 +802,8 @@ arr.forEach((item) => console.log(item));
 ### 泛型函数{#generic-fn}
 
 > 掌握：泛型函数基本使用，保证函数内类型复用，且保证类型安全
+>
+> 语法：const fn = <Type1, Type2...>(a:Type1, b:Type2):Type1=>{}
 
 ```ts
 // 函数的参数是什么类型，返回值就是什么类型
@@ -1091,7 +1109,7 @@ function handleChange(event: Event) {
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 
-const el = ref<HTMLInputElement>(null)
+const el = ref<HTMLInputElement>()
 
 onMounted(() => {
   el.value?.focus()
@@ -1180,7 +1198,7 @@ TypeScript 给 JS 运行时可用的所有标准化内置 API 都提供了声明
 - [DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped/) 是一个 github 仓库，用来提供高质量 TypeScript 类型声明
 - 当安装 `@types/*` 类型声明包后，TS 也会自动加载该类声明包，以提供该库的类型声明
 
-https://www.typescriptlang.org/dt/search  可以搜索是否有对应的 `@types/*`
+
 
 
 ## 自定义类型声明文件{#ts-declare-custom}

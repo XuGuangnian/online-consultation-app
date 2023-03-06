@@ -1305,10 +1305,7 @@ ponit({x: 100, y: 200})
 
 ```vue
 <script setup lang="ts">
-import axios from 'axios';
-// 使用TS的时候，axios()调用需要改为 axios.request()，可以使用泛型
-// 1. 使用泛型的目的的告诉axios返回数据的类型如何
-// 2. 泛型的类型需要和接口返回的一致，否则无意义
+import axios from 'axios'
 // 频道对象
 type ChannelItem = {
   id: number;
@@ -1327,7 +1324,7 @@ axios
     url: 'http://geek.itheima.net/v1_0/channels',
   })
   .then((res) => {
-    // res.data 的类型就是 Data
+    // res.data.data 的类型就是 ChannelResData
     console.log(res.data.data.channels[0].name);
   });
 </script>
@@ -1340,9 +1337,65 @@ axios
 - 提供的类型要注意啥？
   - 类型需要根据接口返回的数据类声明，或者根据接口文档
 
+
+
+## axios封装优化
+
+> 优化axios数据获取和类型定义
+
+1. 封装axios
+
+   ```js
+   import axios from 'axios'
+   
+   const request = axios.create({
+     baseURL: 'http://geek.itheima.net/v1_0'
+   })
+   
+   request.interceptors.request.use((config) => {
+     return config
+   })
+   
+   request.interceptors.response.use((res) => {
+     return res.data?.data
+   })
+   
+   export default request
+   ```
+
+2. 使用
+
+   ```js
+   <script setup lang="ts">
+   import request from '../utils/request';
+   
+   // 频道对象
+   type ChannelItem = {
+     id: number;
+     name: string;
+   };
+   
+   // 频道接口响应数据
+   type ChannelResData =  {
+     channels: ChannelItem[];
+   }
+   
+   axios
+     .request<any, ChannelData>({
+       url: '/channels',
+     })
+     .then((res) => {
+       // res 的类型就是 ChannelResData
+       console.log(res.channels[0].name);
+     });
+   </script>
+   ```
+
+
+
 ## 频道渲染{#case-channel}
 
-> 完成：axios获取数据后频道列表渲染
+> 完成：axios获取数据后[频道列表](https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/api-23348775)渲染
 
 步骤：
 
@@ -1360,27 +1413,24 @@ export type ChannelItem = {
 };
 
 // 频道接口响应数据
-export type ChannelResData = {
-  data: {
+export type ChannelResData =  {
     channels: ChannelItem[];
-  };
-  message: string;
-};
+}
 ```
 
 `ChannelNav.vue`
 
 ```vue
 <script setup lang="ts">
-import axios from 'axios';
+import request from '../utils/request';
 import { onMounted, ref } from 'vue';
 import { ChannelItem, ChannelResData } from '../types/data'
 // 创建响应式数据
 const channels = ref<ChannelItem[]>([])
 onMounted(async ()=>{
-  const res = await axios.get<ChannelResData>('http://geek.itheima.net/v1_0/channels')
+  const res = await request.get<any, ChannelResData>('/channels')
   // 给响应式数据赋值
-  channels.value = res.data.data.channels
+  channels.value = res.channels
 })
 </script>
 
@@ -1513,12 +1563,9 @@ export type ArticleItem = {
 
 // 文章接口响应数据
 export type ArticleResData = {
-  data: {
-    pre_timestamp: string;
-    results: ArticleItem[];
-  };
-  message: string;
-};
+  pre_timestamp: string;
+  results: ArticleItem[];
+}
 ```
 
 - 监听频道ID变化，开启默认执行，获取数据
@@ -1532,7 +1579,7 @@ export type ArticleResData = {
 `ArticleList.vue`
 
 ```ts
-import axios from 'axios';
+import request from '../utils/request';
 import { ref, watch } from 'vue';
 import { ArticleItem, ArticleResData } from '../types/data';
 
@@ -1542,8 +1589,8 @@ const articles = ref<ArticleItem[]>([]);
 watch(
   () => props.channelId,
   async () => {
-    const res = await axios.get<ArticleResData>(
-      `http://geek.itheima.net/v1_0/articles`,
+    const res = await request.get<any, ArticleResData>(
+      `/articles`,
       {
         params: {
           channel_id: props.channelId,
@@ -1551,7 +1598,7 @@ watch(
         },
       },
     );
-    articles.value = res.data.data.results;
+    articles.value = res.results;
   },
   { immediate: true }
 );

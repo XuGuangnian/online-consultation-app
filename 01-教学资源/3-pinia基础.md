@@ -235,7 +235,7 @@ import ArticleList from './components/ArticleList.vue'
 
 ```diff
 <script setup lang="ts">
-import axios from 'axios';
+import request from '../utils/request';
 import { onMounted, ref } from 'vue';
 +import { useChannelStore } from '../store/channel';
 import { ChannelItem, ChannelResData } from '../types/data';
@@ -243,10 +243,10 @@ import { ChannelItem, ChannelResData } from '../types/data';
 // 1. 获取频道数据
 const channels = ref<ChannelItem[]>([]);
 onMounted(async () => {
-  const res = await axios.get<ChannelResData>(
-    'http://geek.itheima.net/v1_0/channels',
+  const res = await request.get<any, ChannelResData>(
+    '/channels',
   );
-  channels.value = res.data.data.channels;
+  channels.value = res.channels;
 });
 
 // 2.完成切换效果
@@ -276,7 +276,7 @@ onMounted(async () => {
 
 ```diff
 <script setup lang="ts">
-import axios from 'axios';
+import request from '../utils/request';
 import { ref, watch } from 'vue';
 +import { useChannelStore } from '../store/channel';
 import { ArticleItem, ArticleResData } from '../types/data';
@@ -287,8 +287,8 @@ const articles = ref<ArticleItem[]>([]);
 watch(
 +  () => store.channelId,
   async () => {
-    const res = await axios.get<ArticleResData>(
-      `http://geek.itheima.net/v1_0/articles`,
+    const res = await request.get<any, ArticleResData>(
+      `/articles`,
       {
         params: {
           channel_id: store.channelId,
@@ -296,7 +296,7 @@ watch(
         },
       },
     );
-    articles.value = res.data.data.results;
+    articles.value = res.results;
   },
   { immediate: true }
 );

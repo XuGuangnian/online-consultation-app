@@ -89,7 +89,7 @@ export type Consult = {
   consultFlag: 0 | 1 // 是否问诊过：0未问诊1问诊过
   pictures: Image[] // 病例信息-图片集合
   patientId: string // 患者id
-  couponId: string // 优惠卷id
+  // couponId: string // 优惠卷id
 }
 
 // 问诊记录-全部可选
@@ -122,7 +122,6 @@ export type ConsultOrderPreParams = Pick<PartialConsult, 'type' | 'illnessType'>
 export type ConsultOrderPreData = {
   pointDeduction: number
   couponDeduction: number
-  couponId: string
   payment: number // 应付
   couponId: number
   actualPayment: number // 实付

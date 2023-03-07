@@ -1,5 +1,5 @@
 /**
- * 用户相关后台api接口
+ * 登录和个人中心、家庭档案api接口
  */
 import type { User, CodeType, UserInfo, PatientList, Patient } from '@/types/user'
 import { request } from '@/utils/request'

@@ -97,10 +97,10 @@ export const getConsultOrderList = (params: ConsultOrderParams) =>
 export const evaluateConsultOrder = (data: {
   docId: string // 医生ID
   orderId: string // 订单ID
-  score: number
-  content: string
-  anonymousFlag: 0 | 1
-}) => request.post<any, { id: string }>('/patient/order/evaluate', data)
+  score: number // 评价星级
+  content: string // 评价留言
+  anonymousFlag: 0 | 1 // 是否匿名评价：1匿名 0实名
+}) => request.post('/patient/order/evaluate', data)
 // 取消订单
 export const cancelOrder = (id: string) => request.put(`/patient/order/cancel/${id}`)
 // 删除订单

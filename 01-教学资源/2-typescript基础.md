@@ -1324,7 +1324,7 @@ axios
     url: 'http://geek.itheima.net/v1_0/channels',
   })
   .then((res) => {
-    // res.data.data 的类型就是 ChannelResData
+    // res.data 的类型就是 ChannelResData
     console.log(res.data.data.channels[0].name);
   });
 </script>

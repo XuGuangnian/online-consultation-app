@@ -20,8 +20,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 /**
- * computed函数
- * 作用：根据一个或多个data变量，return 得到一个新变量
+ * computed函数（计算属性）
+ * 作用：根据一个或多个data变量，return 得到一个==新变量==
  * 步骤：
 - 1. 从 `vue` 中导入 `computed` 函数
 - 在 `setup` 函数中，使用 `computed` 函数，传入一个函数，函数返回计算好的数据

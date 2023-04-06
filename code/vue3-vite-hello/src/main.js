@@ -7,7 +7,9 @@ import { createApp } from 'vue'
 // import App from './views/vue2vs3/index.vue'
 // import App from './views/setup函数/index.vue'
 // import App from './views/data变量定义/reactive函数.vue'
-import App from './views/data变量定义/ref函数.vue'
+// import App from './views/data变量定义/ref函数.vue'
+import App from './views/data变量处理/computed函数.vue'
+
 
 
 

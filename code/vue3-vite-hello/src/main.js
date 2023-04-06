@@ -11,7 +11,13 @@ import { createApp } from 'vue'
 // import App from './views/data变量处理/computed函数.vue'
 // import App from './views/data变量处理/watch函数.vue'
 // import App from './views/生命周期/index.vue'
-import App from './views/模版ref/index.vue'
+// import App from './views/模版ref/index.vue'
+import App from './views/案例/index.vue'
+
+// 引入饿了吗组件库
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+
 
 
 
@@ -23,4 +29,5 @@ import App from './views/模版ref/index.vue'
 
 
 // 2. 创建根实例，挂载显示根组件
-createApp(App).mount('#app')
+// 注册组件库
+createApp(App).use(ElementPlus).mount('#app')

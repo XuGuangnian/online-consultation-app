@@ -5,7 +5,7 @@
 <script setup>
 // 1. 导入生命周期钩子函数
 import { onMounted } from 'vue'
-// 使用=> 语法：onMounted(()=>{ ... })
+// 2. 使用=> 语法：onMounted(()=>{ ... })
 onMounted(() => {
   /**
    * 使用场景：

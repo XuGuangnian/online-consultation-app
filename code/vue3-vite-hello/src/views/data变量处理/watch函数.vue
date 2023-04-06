@@ -22,26 +22,39 @@ import { watch, ref } from 'vue'
  * 1. 监听一个变量变化：watch(变量, ()=>{...}, {deep:true, immediate: true})
  * 2. 监听多个变量变化：watch([变量1, 变量2...], ()=>{...}, {deep:true, immediate: true})
  */
+// 监听一个变量变化
 // 1. 简单类型
 const count = ref(1)
-watch(count, (newVal, oldVal) => {
-  console.log('count变化了：', newVal, oldVal)
-})
+// watch(count, (newVal, oldVal) => {
+//   console.log('count变化了：', newVal, oldVal)
+// })
 // 2. 复杂类型
 const person = ref({
   name: '程旭',
   age: 18,
   sarlay: 18000,
 })
+// watch(
+//   person,
+//   (newVal, oldVal) => {
+//     // 说明：地址一样，所以新老值一样的
+//     console.log('person变化了：', newVal, oldVal)
+//   },
+//   {
+//     deep: true, // 开启深度监控
+//     immediate: true, // 组件加载后，立即执行一次监听函数
+//   }
+// )
+
+// 监听多个变量变化
 watch(
-  person,
+  [person, count],
   (newVal, oldVal) => {
-    // 说明：地址一样，所以新老值一样的
-    console.log('person变化了：', newVal, oldVal)
+    console.log('多个变量中某一个变化了：', newVal, oldVal)
+    console.log('获取count最新值：', newVal[1])
   },
   {
-    deep: true, // 开启深度监控
-    immediate: true, // 组件加载后，立即执行一次监听函数
+    deep: true,
   }
 )
 </script>

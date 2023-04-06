@@ -9,6 +9,12 @@
       <li></li>
     </ul>
   </div>
+  <hr />
+  <div>
+    <ul>
+      <li v-for="(cj, i) in newList" :key="i">{{ cj }}</li>
+    </ul>
+  </div>
 </template>
 
 <script setup>

@@ -1,8 +1,10 @@
 <script setup>
+// 今天重点学习=》组合式api
 import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
+  <!-- vue3支持写多个根元素（vue2不支持） -->
   <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
@@ -11,7 +13,7 @@ import HelloWorld from './components/HelloWorld.vue'
       <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
     </a>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <HelloWorld msg="Vite + Vue3" />
 </template>
 
 <style scoped>

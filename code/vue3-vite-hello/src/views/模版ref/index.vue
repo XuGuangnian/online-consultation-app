@@ -18,7 +18,8 @@ import ElForm from './son.vue'
     1. 创建 ref =>  `const hRef = ref(null)`
     2. 模板中建立关联  =>  `<h1 ref="hRef">我是标题</h1>`
     3. 使用 => `hRef.value`
- * 2-获取组件实例   
+ * 2-获取组件实例
+   场景：调用组件提供的方法   
  */
 // 1-获取dom对象 (了解)
 const h1Ref = ref()

@@ -10,7 +10,9 @@ import { createApp } from 'vue'
 // import App from './views/data变量定义/ref函数.vue'
 // import App from './views/data变量处理/computed函数.vue'
 // import App from './views/data变量处理/watch函数.vue'
-import App from './views/生命周期/index.vue'
+// import App from './views/生命周期/index.vue'
+import App from './views/模版ref/index.vue'
+
 
 
 

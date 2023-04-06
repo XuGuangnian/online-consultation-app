@@ -4,7 +4,9 @@ import { createApp } from 'vue'
 // import App from './App.vue'
 
 // 导入练习的页面
-import App from './views/vue2vs3/index.vue'
+// import App from './views/vue2vs3/index.vue'
+import App from './views/setup函数/index.vue'
+
 
 
 

@@ -3,7 +3,8 @@
     <h1>父组件</h1>
     <hr />
     <!-- 1. 父传子=》:父传子属性名="data" -->
-    <Son :money="money" meng="123"></Son>
+    <Son :money="money" meng="123" @change-money="changeMoney"></Son>
+    <!-- 1. 子传父=》@事件名="回调函数" -->
   </div>
 </template>
 
@@ -16,7 +17,8 @@ import Son from './son.vue'
  * 通过通信
  * 作用：共享组件内的数据
  * 1.父子通信（常用）
- *
+ *   父传子=》传数据
+ *   子传父=》修改数据（传）=》原则：遵循单向数据流
  *
  *
  * 2.跨多级组件通信
@@ -24,6 +26,10 @@ import Son from './son.vue'
 // 父传子
 // 说明：科学计数法=》1e4 === 10000 =》e后边数字代表几个零
 const money = ref(1e4)
+const changeMoney = (mky) => {
+  console.log('子传父数据：', mky)
+  money.value = mky
+}
 </script>
 
 <style lang="scss" scoped></style>

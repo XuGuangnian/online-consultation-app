@@ -28,6 +28,27 @@ if (person2.wirteCode) {
   person2.wirteCode()
 }
 
+// 课堂练习=> 推荐写法
+type Student = {
+  name: string
+  age: number
+  sex: string
+  cj: number
+  height?: number
+  study?: () => void
+  play?: () => void
+}
+
+let stu: Student
+
+stu = {
+  name: '小红',
+  age: 18,
+  sex: '男',
+  cj: 100,
+}
+
+
 
 
 

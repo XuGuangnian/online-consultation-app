@@ -13,7 +13,7 @@ person = {
 person.wirteCode(3)
 
 // 怎么复用对象类型？=》类型别名(推荐写法)
-type Person = { name: string; age?: number; wirteCode: (a?: number) => void }
+type Person = { name: string; age?: number; wirteCode?: (a?: number) => void }
 
 let person2: Person = {
   name: '冯鑫涛',
@@ -22,6 +22,12 @@ let person2: Person = {
 
   },
 }
+// ts让js代码更严谨=> 健壮性（鲁棒性）
+person2.wirteCode && person2.wirteCode()
+if (person2.wirteCode) {
+  person2.wirteCode()
+}
+
 
 
 

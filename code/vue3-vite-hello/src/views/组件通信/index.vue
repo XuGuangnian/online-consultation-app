@@ -1,0 +1,29 @@
+<template>
+  <div>
+    <h1>父组件</h1>
+    <hr />
+    <!-- 1. 父传子=》:父传子属性名="data" -->
+    <Son :money="money" meng="123"></Son>
+  </div>
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import Son from './son.vue'
+/**
+ * 组件通信
+ * 为什么通信？因为组件是一个封闭的单元，如果需要共享组件内的数据，就需要
+ * 通过通信
+ * 作用：共享组件内的数据
+ * 1.父子通信（常用）
+ *
+ *
+ *
+ * 2.跨多级组件通信
+ */
+// 父传子
+// 说明：科学计数法=》1e4 === 10000 =》e后边数字代表几个零
+const money = ref(1e4)
+</script>
+
+<style lang="scss" scoped></style>

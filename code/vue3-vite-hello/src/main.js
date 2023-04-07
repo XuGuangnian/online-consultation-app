@@ -12,7 +12,9 @@ import { createApp } from 'vue'
 // import App from './views/data变量处理/watch函数.vue'
 // import App from './views/生命周期/index.vue'
 // import App from './views/模版ref/index.vue'
-import App from './views/案例/index.vue'
+// import App from './views/案例/index.vue'
+import App from './views/组件通信/index.vue'
+
 
 // 引入饿了吗组件库
 import ElementPlus from 'element-plus'

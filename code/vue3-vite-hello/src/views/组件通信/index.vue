@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import Son from './son.vue'
 /**
  * 组件通信
@@ -22,6 +22,7 @@ import Son from './son.vue'
  *
  *
  * 2.跨多级组件通信
+ *  依赖注入=> provide('注入数据的名字', data)
  */
 // 父传子
 // 说明：科学计数法=》1e4 === 10000 =》e后边数字代表几个零
@@ -30,6 +31,9 @@ const changeMoney = (mky) => {
   console.log('子传父数据：', mky)
   money.value = mky
 }
+// 1. 注入
+provide('mky', money)
+provide('change-mky', changeMoney)
 </script>
 
 <style lang="scss" scoped></style>

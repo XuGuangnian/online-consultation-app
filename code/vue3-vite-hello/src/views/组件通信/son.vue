@@ -2,10 +2,13 @@
   <div>
     <h2>子组件</h2>
     <p>{{ money }}</p>
+    <hr />
+    <GrandSon />
   </div>
 </template>
 
 <script setup>
+import GrandSon from './grandSon.vue'
 // vue2接收：props:{ key1:Type... } = emits:['事件名1', '事件名2'...]
 // 2. 接收父组件传递的数据=》defineProps({ key1:Type... })
 const props = defineProps({

@@ -8,7 +8,7 @@ let arr2: (number | string | boolean)[]
 arr2 = [1, false]
 
 // 问题：怎么去复用一个类型？
-// 解决：使用类型别名
+// 解决：使用类型别名=》推荐用大驼峰命名法
 // 1. 定义类型别名
 type Arr = (number | string | boolean)[]
 

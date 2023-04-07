@@ -24,7 +24,14 @@ const fn = (a: string, b: string): void => {
 
 add2(1, 2)
 
+// 函数的可选参数=》参数定义为可选参数，使用的时候这个参数可以传也可以不传
+// 注意：必传参数前不能有可选参数=》打乱了顺序
+const slice = (start?: number, end?: number) => {
 
+}
+
+slice()
+slice(1, 2)
 
 
 export { }

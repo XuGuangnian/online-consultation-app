@@ -87,8 +87,9 @@ const ref = <Data>(data: Data) => {
 }
 
 const count = ref<number>(1)
-
-const count2 = ref(1)
+// 函数范型传参可以省略不写
+let count2 = ref(1)
+count2 = 10
 const bool = ref(true)
 
 

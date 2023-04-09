@@ -17,6 +17,13 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import axios from 'axios'
+import _ from 'lodash'
+
+console.log(axios.get)
+
+console.log('lodash:', _.isArray([]))
+
 // 1. ref函数
 // 简单类型=> 可以不用传递范型参数指定类型=》类型推断
 const count = ref<number>(1)
@@ -44,6 +51,10 @@ const newList = computed(() => {
   // 根据返回值=》类型推断机制会自动推导类型
   return list.value.filter((item) => item.isDone === false)
 })
+
+let arr = [1, 2, 3]
+
+arr.filter
 </script>
 
 <style scoped></style>

@@ -41,7 +41,7 @@ list.value = [
 
 // 需求：获取未完成的任务列表并绑定渲染
 const newList = computed(() => {
-  // 返回值类型推断机制会自动推导类型
+  // 根据返回值=》类型推断机制会自动推导类型
   return list.value.filter((item) => item.isDone === false)
 })
 </script>

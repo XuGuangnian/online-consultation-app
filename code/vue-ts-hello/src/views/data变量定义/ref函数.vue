@@ -1,4 +1,5 @@
 <template>
+  <h1>首页</h1>
   <ul>
     <li>{{ count }}</li>
     <li v-if="show">show</li>
@@ -19,6 +20,8 @@
 import { computed, ref } from 'vue'
 import axios from 'axios'
 import _ from 'lodash'
+// 说明：type 声明=》说明导入的是类型
+import type { List } from '../../types/home.d'
 
 console.log(axios.get)
 
@@ -33,13 +36,7 @@ const show = ref(true)
 show.value = false
 
 // 复杂类型 =》需要指定类型
-type List = {
-  id: number
-  name: string
-  isDone: boolean // 任务是否完成：true 完成 ｜ false 未完成
-}[]
 const list = ref<List>([])
-
 list.value = [
   { id: 0, name: '学习', isDone: true },
   { id: 1, name: '背面试题', isDone: false },

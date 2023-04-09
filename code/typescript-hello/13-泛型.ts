@@ -42,7 +42,13 @@ type UserData = Response<{
 // 新闻列表
 type ListData = Response<{ id: string; tittle: string }[]>
 
-
+let list: ListData = {
+  message: 'ok',
+  data: [
+    { id: 'df', tittle: '1' },
+    { id: 'df', tittle: '1' }
+  ]
+}
 
 
 export { }

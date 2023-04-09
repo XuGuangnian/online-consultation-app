@@ -23,4 +23,10 @@ let person = {
 person.say()
 
 
+// 函数返回值的类型被自动推断为：number
+const add = (num1: number, num2: number) => {
+  return num1 + num2;
+};
+
+
 export { }

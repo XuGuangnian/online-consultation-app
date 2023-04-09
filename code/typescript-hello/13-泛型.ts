@@ -60,7 +60,7 @@ let list: ListData = {
 }
 
 
-// 2. 泛型接口
+// 2. 泛型接口 =》语法：interface 接口名<Type1, Type2...> {}
 interface Person<Sex> {
   name: string
   age: number
@@ -80,6 +80,16 @@ let student2: Person<string> = {
   sex: '男'
 }
 
+// 3. 泛型函数 => 语法：const fn = <Type1, Type2...>(a:Type1, b:Type2):Type1=>{}
+// 场景：模拟vue3的ref函数
+const ref = <Data>(data: Data) => {
+  return data
+}
+
+const count = ref<number>(1)
+
+const count2 = ref(1)
+const bool = ref(true)
 
 
 export { }

@@ -23,9 +23,14 @@ import _ from 'lodash'
 // 说明：type 声明=》说明导入的是类型
 import type { List } from '../../types/home.d'
 
+// 导入别人写好的js文件
+import { add } from '../../utils/add'
+
 console.log(axios.get)
 
 console.log('lodash:', _.isArray([]))
+
+add(1, 1)
 
 // 1. ref函数
 // 简单类型=> 可以不用传递范型参数指定类型=》类型推断

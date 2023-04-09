@@ -60,6 +60,28 @@ let list: ListData = {
 }
 
 
+// 2. 泛型接口
+interface Person<Sex> {
+  name: string
+  age: number
+  sex: Sex
+}
+
+
+let student: Person<number> = {
+  name: '张涛',
+  age: 18,
+  sex: 1
+}
+
+let student2: Person<string> = {
+  name: '张天娇',
+  age: 18,
+  sex: '男'
+}
+
+
+
 export { }
 
 

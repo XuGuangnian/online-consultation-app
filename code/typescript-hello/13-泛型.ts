@@ -39,14 +39,23 @@ type UserData = Response<{
   age: number
 }>
 
+let user: UserData = {
+  message: 'ok',
+  data: {
+    id: 'dfd',
+    name: '小刚',
+    age: 18
+  }
+}
+
 // 新闻列表
-type ListData = Response<{ id: string; tittle: string }[]>
+type ListData = Response<{ id: string; title: string }[]>
 
 let list: ListData = {
   message: 'ok',
   data: [
-    { id: 'df', tittle: '1' },
-    { id: 'df', tittle: '1' }
+    { id: 'df1', title: '新闻1' },
+    { id: 'df2', title: '新闻2' }
   ]
 }
 

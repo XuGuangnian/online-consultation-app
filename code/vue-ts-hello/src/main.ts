@@ -1,5 +1,8 @@
 import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+// import './style.css'
+// import App from './App.vue'
+
+// 导入自己练习页面
+import App from './views/data变量定义/ref函数.vue'
 
 createApp(App).mount('#app')

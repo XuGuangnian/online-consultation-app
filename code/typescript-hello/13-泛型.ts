@@ -81,7 +81,7 @@ let student2: Person<string> = {
 }
 
 // 3. 泛型函数 => 语法：const fn = <Type1, Type2...>(a:Type1, b:Type2):Type1=>{}
-// 场景：模拟vue3的ref函数
+// 场景：模拟vue3的ref函数 => 传入什么类型，数据就是什么类型
 const ref = <Data>(data: Data) => {
   return data
 }

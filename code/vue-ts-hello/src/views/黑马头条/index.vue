@@ -8,6 +8,8 @@ import ArticleList from './components/ArticleList.vue'
 </script>
 
 <template>
+  <!-- 菜单组件 -->
   <ChannelNav />
+  <!-- 新闻列表 -->
   <ArticleList />
 </template>

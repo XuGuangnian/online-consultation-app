@@ -3,13 +3,16 @@
     <h1>测试pinia</h1>
     <ul>
       <li>{{ store.count }}-{{ store.doubleCount }}</li>
+      <li>{{ store.person }}</li>
       <li>
         <button @click="store.add()">同步修改store</button>
       </li>
       <li>
         <button @click="store.asyncAdd()">异步修改store</button>
       </li>
-      <li></li>
+      <li>
+        <button @click="store.person.age++">直接修改</button>
+      </li>
       <li></li>
       <li></li>
     </ul>

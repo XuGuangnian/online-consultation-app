@@ -9,7 +9,9 @@ import { createApp } from 'vue'
 // import App from './views/事件处理/index.vue'
 
 // 黑马头条案例
-import App from './views/黑马头条/index.vue'
+// import App from './views/黑马头条/index.vue'
+import App from './views/test/index.vue'
+
 
 
 // 1. 导入创建pinia的函数

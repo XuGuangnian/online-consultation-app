@@ -30,5 +30,5 @@ const changeId = (id: number) => {
   <ChannelNav :channelId="channelId" @change-channel="changeId" />
 
   <!-- 新闻列表 -->
-  <ArticleList />
+  <ArticleList :channelId="channelId" />
 </template>

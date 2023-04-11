@@ -1,15 +1,41 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { getNews } from '../../../api/channel'
 import { Result } from '../../../types/channel'
 
-// 获取新闻列表数据
+// 接收当前点击选中的菜单ID
+const props = defineProps<{
+  channelId: number
+}>()
+
+// 需求：点击对应菜单，显示当前菜单下的新闻列表
+// 问题：怎么知道菜单点击变化了？=》监听channelId变化，重新发请求
+// 问题：props是个对象，对象中其他属性发生变化，也会执行监听函数
+// watch(props, (newId) => {
+//   console.log('channelId变化:', newId.channelId)
+// })
+// 需求：只有channelId，也会执行监听函数
 const list = ref<Result[]>([])
-onMounted(async () => {
-  const res = await getNews({ channel_id: 0, timestamp: Date.now() })
-  console.log('新闻列表：', res)
-  list.value = res.results
-})
+watch(
+  () => props.channelId, // 通过函数返回要监听对象中某个属性
+  async (newId) => {
+    console.log('channelId变化:', newId)
+    const res = await getNews({ channel_id: newId, timestamp: Date.now() })
+    console.log('新闻列表：', res)
+    list.value = res.results
+  },
+  {
+    immediate: true, // 组件默认加载后，立即执行监听函数=》获取推荐新闻
+  }
+)
+
+// 获取新闻列表数据
+// const list = ref<Result[]>([])
+// onMounted(async () => {
+//   const res = await getNews({ channel_id: 0, timestamp: Date.now() })
+//   console.log('新闻列表：', res)
+//   list.value = res.results
+// })
 </script>
 
 <template>

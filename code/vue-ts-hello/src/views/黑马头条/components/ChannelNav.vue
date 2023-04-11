@@ -17,8 +17,10 @@ const getChannels = async () => {
    * 2. == res.data需要开发者自己根据公司后台返回数据结构=》定义类型 ==
    * ChannelData是给res.data定义类型
    */
-  console.log('菜单数据：', res.data.data.channels)
-  list.value = res.data.data.channels
+  console.log('2.res:', res)
+  // console.log('菜单数据：', res.data.data.channels)
+  // list.value = res.data.data.channels
+  list.value = res.channels
 }
 
 onMounted(() => {

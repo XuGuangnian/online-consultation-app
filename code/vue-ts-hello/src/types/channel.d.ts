@@ -1,19 +1,19 @@
 // 第一个就是需要传给axios的后台数据的类型
-export interface ChannelData {
-  /**
-   * 响应数据
-   */
-  data: Data
-  /**
-   * 响应消息
-   */
-  message: string
-}
+// export interface ChannelData {
+//   /**
+//    * 响应数据
+//    */
+//   data: Data
+//   /**
+//    * 响应消息
+//    */
+//   message: string
+// }
 
 /**
  * 响应数据
  */
-export interface Data {
+export interface ChannelData {
   /**
    * 响应频道数组
    */

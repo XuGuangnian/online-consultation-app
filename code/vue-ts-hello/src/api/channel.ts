@@ -5,7 +5,13 @@ import type { ChannelData } from '../types/channel'
  * @returns 
  */
 export const getNavs = () => {
-  return request.get<ChannelData>(
-    'http://geek.itheima.net/v1_0/channels'
+  // 1. 拦截器默认返回response=> 第一个范型参数指定
+  // return request.get<ChannelData>(
+  //   '/channels'
+  // )
+  // 2. 拦截器返回自定义response.data.data=》第二个范型参数指定
+  // 说明：any相当于js的null,什么也不传
+  return request.get<any, ChannelData>(
+    '/channels'
   )
 }

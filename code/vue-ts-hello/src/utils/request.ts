@@ -18,7 +18,8 @@ request.interceptors.request.use(function (config) {
 request.interceptors.response.use(function (response) {
   // 成功：2xx 范围内的状态码都会触发该函数。
   // 对响应数据做点什么=》1. 简化返回的数据  2. 统一的错误提示
-  return response;
+  console.log('1.添加响应拦截器:', response)
+  return response.data.data
 }, function (error) {
   // 失败：超出 2xx 范围的状态码都会触发该函数。
   // 对响应错误做点什么=》token失效（401），跳回登录页

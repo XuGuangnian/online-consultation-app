@@ -1,45 +1,16 @@
 <script setup lang="ts">
-import axios from 'axios'
 import { onMounted, ref } from 'vue'
+import type { Channel } from '../../../types/channel'
+
+import { getNavs } from '../../../api/channel'
 
 // 获取菜单数据
-// 第一个就是需要传给axios的后台数据的类型
-export interface ChannelData {
-  /**
-   * 响应数据
-   */
-  data: Data
-  /**
-   * 响应消息
-   */
-  message: string
-}
-
-/**
- * 响应数据
- */
-export interface Data {
-  /**
-   * 响应频道数组
-   */
-  channels: Channel[]
-}
-
-export interface Channel {
-  /**
-   * 频道id
-   */
-  id: number
-  /**
-   * 频道名字
-   */
-  name: string
-}
 const list = ref<Channel[]>([])
 const getChannels = async () => {
-  const res = await axios.get<ChannelData>(
-    'http://geek.itheima.net/v1_0/channels'
-  )
+  // const res = await request.get<ChannelData>(
+  //   'http://geek.itheima.net/v1_0/channels'
+  // )
+  const res = await getNavs()
   /**
    * 说明：
    * 1. axios请求返回的res已经定义类型=》问题：后台返回的数据res.data没有定义类型

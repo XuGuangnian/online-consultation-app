@@ -14,7 +14,7 @@ const props = defineProps<{
 // watch(props, (newId) => {
 //   console.log('channelId变化:', newId.channelId)
 // })
-// 需求：只有channelId，也会执行监听函数
+// 需求：只有channelId变化，才会执行监听函数
 const list = ref<Result[]>([])
 watch(
   () => props.channelId, // 通过函数返回要监听对象中某个属性

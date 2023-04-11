@@ -12,6 +12,18 @@ import { createApp } from 'vue'
 import App from './views/黑马头条/index.vue'
 
 
+// 1. 导入创建pinia的函数
+import { createPinia } from 'pinia'
+
+// 2. 创建pinia实例
+const pinia = createPinia()
 
 
-createApp(App).mount('#app')
+// 3. 注册pinia
+// 写法1：链式写法
+// createApp(App).use(pinia).mount('#app') 
+// 写法2: 普通写法
+const app = createApp(App)
+app.use(pinia)
+app.mount('#app')
+

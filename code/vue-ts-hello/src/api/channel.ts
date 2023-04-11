@@ -1,5 +1,5 @@
 import { request } from '../utils/request'
-import type { ChannelData } from '../types/channel'
+import type { ChannelData, NewsData } from '../types/channel'
 /**
  * 获取菜单数据
  * @returns 
@@ -15,3 +15,11 @@ export const getNavs = () => {
     '/channels'
   )
 }
+/**
+ * 获取新闻列表
+ * @param params { channel_id: 菜单ID; timestamp: 时间戳 }
+ * @returns 
+ */
+export const getNews = (params: { channel_id: number; timestamp: number }) => request.get<any, NewsData>('/articles', {
+  params
+})

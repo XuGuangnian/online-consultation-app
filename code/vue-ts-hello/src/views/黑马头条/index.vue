@@ -27,8 +27,8 @@ const changeId = (id: number) => {
    -->
   <!-- <ChannelNav :channelId="channelId" @change-channel="channelId = $event" />
    -->
-  <ChannelNav :channelId="channelId" @change-channel="changeId" />
+  <ChannelNav />
 
   <!-- 新闻列表 -->
-  <ArticleList :channelId="channelId" />
+  <ArticleList />
 </template>

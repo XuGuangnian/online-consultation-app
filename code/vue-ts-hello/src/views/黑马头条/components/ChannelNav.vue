@@ -2,12 +2,15 @@
 import { onMounted, ref } from 'vue'
 import type { Channel } from '../../../types/channel'
 import { getNavs } from '../../../api/channel'
+import { useChannelStore } from '../../../store/channel'
 
 // 接收选中的菜单ID
-defineProps<{ channelId: number }>()
-const emit = defineEmits<{
-  (e: 'changeChannel', id: number): void
-}>()
+// defineProps<{ channelId: number }>()
+// const emit = defineEmits<{
+//   (e: 'changeChannel', id: number): void
+// }>()
+const store = useChannelStore()
+
 // 获取菜单数据
 const list = ref<Channel[]>([])
 const getChannels = async () => {
@@ -37,8 +40,8 @@ onMounted(() => {
     <nav class="list">
       <a
         class="item"
-        :class="{ active: channelId === item.id }"
-        @click="emit('changeChannel', item.id)"
+        :class="{ active: store.channelId === item.id }"
+        @click="store.changeChannel(item.id)"
         href="javascript:;"
         v-for="(item, i) in list"
         :key="item.id"

@@ -2,11 +2,14 @@
 import { onMounted, ref, watch } from 'vue'
 import { getNews } from '../../../api/channel'
 import { Result } from '../../../types/channel'
+import { useChannelStore } from '../../../store/channel'
 
 // 接收当前点击选中的菜单ID
-const props = defineProps<{
-  channelId: number
-}>()
+// const props = defineProps<{
+//   channelId: number
+// }>()
+
+const store = useChannelStore()
 
 // 需求：点击对应菜单，显示当前菜单下的新闻列表
 // 问题：怎么知道菜单点击变化了？=》监听channelId变化，重新发请求
@@ -17,7 +20,7 @@ const props = defineProps<{
 // 需求：只有channelId变化，才会执行监听函数
 const list = ref<Result[]>([])
 watch(
-  () => props.channelId, // 通过函数返回要监听对象中某个属性
+  () => store.channelId, // 通过函数返回要监听对象中某个属性
   async (newId) => {
     console.log('channelId变化:', newId)
     const res = await getNews({ channel_id: newId, timestamp: Date.now() })

@@ -424,7 +424,7 @@ export default {
 
 发现：
 
-- 使用 setup 有几件事必须做：默认导出配置选项，setup函数声明，返回模板需要数据与函数。
+- 使用 setup 有几件事必须做：默认导出配置选项，setup函数声明，返回模板需要数据与函数。ccc
 
 ```vue
 <script>
@@ -503,7 +503,7 @@ export default {
 <script setup>
   import { ref, computed } from "vue";
 
-  const scoreList = ref([80, 100, 90, 70, 60]);
+  const scoreList = ref([80, 100, 90, 70, 60]); 
   // 计算属性
   const betterList = computed(() => scoreList.value.filter((item) => item >= 90));
   // 改变数据，计算属性改变
@@ -622,6 +622,27 @@ export default {
 </template>
 ```
 
+* 使用watch监听单个对象属性
+
+```vue
+<script setup>
+  import { ref, watch } from "vue";
+  const obj = ref({a:1})
+  // 1. 监听一个响应式数据
+  watch(() => obj.a, () => {
+    console.log("obj-a改变了");
+  });
+  // 2s改变数据
+  setTimeout(() => {
+    obj.value.a++
+  }, 2000);
+</script>
+
+<template>
+  <p>计数器：{{ count }}</p>
+</template>
+```
+
 
 
 总结：
@@ -629,6 +650,7 @@ export default {
 - `watch(需要监听的数据,数据改变执行函数,配置对象)` 来进行数据的侦听
 - 数据：单个数据，多个数据，函数返回对象属性，属性复杂需要开启深度监听
 - 配置对象：`deep` 深度监听 `immediate` 默认执行
+- 监听单个对象属性，语法：watch(()=>object.attribute, ()=>{})
 
 
 
@@ -648,18 +670,18 @@ export default {
 
 - Vue3和vue2的生命周期对比
 
-| 选项式API下的生命周期函数使用 | 组合式API下的生命周期函数使用 |
-| ----------------------------- | ----------------------------- |
-| beforeCreate                  | 不需要（直接写到setup函数中） |
-| created                       | 不需要（直接写到setup函数中） |
-| beforeMount                   | `onBeforeMount`               |
-| mounted                       | `onMounted`                   |
-| beforeUpdate                  | `onBeforeUpdate`              |
-| updated                       | `onUpdated`                   |
-| beforeDestroyed               | `onBeforeUnmount`             |
-| destroyed                     | `onUnmounted`                 |
-| activated                     | `onActivated`                 |
-| deactivated                   | `onDeactivated`               |
+| 选项式API下的生命周期函数使用         | 组合式API下的生命周期函数使用 |
+| ------------------------------------- | ----------------------------- |
+| beforeCreate                          | 不需要（直接写到setup函数中） |
+| created                               | 不需要（直接写到setup函数中） |
+| beforeMount                           | `onBeforeMount`               |
+| mounted                               | `onMounted`                   |
+| beforeUpdate                          | `onBeforeUpdate`              |
+| updated                               | `onUpdated`                   |
+| beforeDestroyed                       | `onBeforeUnmount`             |
+| destroyed                             | `onUnmounted`                 |
+| activated (<keep-alive></keep-alive>) | `onActivated`                 |
+| deactivated                           | `onDeactivated`               |
 
 - 参考代码
 
